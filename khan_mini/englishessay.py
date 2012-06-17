@@ -13,7 +13,7 @@ class EnglishEssay(object):
             username = cherrypy.session.get('username', None)
             if username == None:
                 raise cherrypy.HTTPRedirect("/login")                
-        return "Hallo world"
+        return "Hallo world" + username
 
 if __name__=="__main__":
     # load config for global and application
