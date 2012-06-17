@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Menu{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+    function submit (dest,username) {
+        var form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', dest);
+        form.style.display = 'hidden';
+        form.submit();
+    }
+    </script>
+{% endblock %}
+{% block content %}
+    <h1>Menu</h1>
+    <button onclick="submit('khan');">Khan Academy</button>
+    <button onclick="submit('englishessay');">English Essay</button>
+{% endblock %}
+
+
+
+

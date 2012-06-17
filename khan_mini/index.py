@@ -4,6 +4,7 @@ import urllib2
 import json
 from stream import Stream
 from settings import *
+import englishessay
 
 # Jinja templating engine
 from jinja2 import Environment, FileSystemLoader
@@ -22,8 +23,14 @@ class KhanAcademyMini(object):
             user = None
             tmpl = env.get_template('login.html')
             return tmpl.render({})
-        
-        user = username
+        tmpl = env.get_template('landing.html')
+        cherrypy.session['username'] = username;
+        return tmpl.render()   
+
+    @cherrypy.expose
+    def khan(self):
+        #user = username
+        user = cherrypy.session['username']
         tmpl = env.get_template('postlogin.html')
         data = {
             'username' : user,
@@ -74,6 +81,7 @@ class KhanAcademyMini(object):
 # load config for global and application
 cherrypy.config.update(khanconf)
 cherrypy.tree.mount(KhanAcademyMini(), '/', config=khanconf)
+cherrypy.tree.mount(englishessay.EnglishEssay(), '/englishessay', config=enlishessayconf)
 
 cherrypy.engine.start()
 cherrypy.engine.block()
