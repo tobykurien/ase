@@ -3,16 +3,11 @@ import urllib
 import urllib2
 import json
 from stream import Stream
+from settings import *
 
 # Jinja templating engine
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('templates'))
-
-# Settings
-KHAN_BASE_URL = "http://localhost:8080"
-KHAN_VIDEOS_DIR = '/home/toby/Downloads/khanacademy/ase/khan_mini/static/videos'
-KHAN_MINI_BASE_URL = "http://localhost:8081"
-STATIC_DIR = '/home/toby/Downloads/khanacademy/ase/khan_mini/static/'
 
 user = None
 
@@ -76,21 +71,9 @@ class KhanAcademyMini(object):
         tmpl = env.get_template('exercise.html')
         return tmpl.render(data)
 
-cherrypy.config.update({'server.socket_host': '0.0.0.0',
-                         'server.socket_port': 8081,
-                        }) 
-
-#serve static files
-cherrypy.tree.mount(KhanAcademyMini(), '/', config={
-        '/': {
-                'tools.staticdir.on': True,
-                'tools.staticdir.dir': STATIC_DIR,
-                'tools.staticdir.index': 'index.html',
-            },
-    })
-
-#video media directory (where offline Khan Academy videos are downloaded)
-cherrypy.server.mediadir = KHAN_VIDEOS_DIR
+# load config for global and application
+cherrypy.config.update(khanconf)
+cherrypy.tree.mount(KhanAcademyMini(), '/', config=khanconf)
 
 cherrypy.engine.start()
 cherrypy.engine.block()
