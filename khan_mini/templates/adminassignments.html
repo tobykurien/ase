@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Assignments{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script language="javascript"> 
+    function toggle(captionText) {
+        var caption = document.getElementById("caption");
+        caption.innerHTML = captionText
+	    var ele = document.getElementById("toggleText");
+	    if(ele.style.display == "block") {
+      		ele.style.display = "none";
+      	}
+	    else {
+		    ele.style.display = "block";
+	    }
+    } 
+    </script>
+     
+{% endblock %}
+
+
+{% block content %}
+    <h1>Assignments</h1>
+    <br/>
+    <button onclick="javascript:toggle('Adding new assignment');">Add New</button>
+
+    <div id="toggleText" style="display: none">
+          <H3><div id="caption"> </div></H3>
+          <form action="updateassignment" method="post">
+              <input type="hidden" name="id" value=""/>
+              <table>
+              <tr><td>Title</td><td><input name="title" size=50/></td></tr>
+              <tr><td>Description</td><td><textarea name="description" rows=5 cols=50></textarea></td></tr>
+              </table>
+              <input type="submit" name="bsubmit"/>
+          </form>
+    </div>
+    <br/><br/>
+
+    <table class="altrowstable">
+        <tr>
+        {% for col in cols %}
+             <th>{{ col }}</th>
+        {% endfor %}
+        </tr>
+        {% for row in rows %}
+            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+            {% for cell in row %}
+                <td>{{ cell }}</td>
+            {% endfor %}
+                <td>
+                    {% if row[3]=='COMPLETED' %}<button>View</button> {% endif %}
+                    {% if row[3]=='READY' %}<button>Start</button><button>Edit</button><button>Del</button> {% endif %}
+                </td> 
+            </tr>   
+        {% endfor %}
+    </table>
+{% endblock %}
+
+
+
+

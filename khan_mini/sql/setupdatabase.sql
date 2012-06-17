@@ -1,5 +1,9 @@
 PRAGMA foreign_keys = ON;
 
+drop table if exists admin;
+create table admin (
+ password text);
+
 drop table if exists assignment;
 create table assignment (
  id INTEGER PRIMARY KEY,

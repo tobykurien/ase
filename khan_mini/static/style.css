@@ -12,3 +12,32 @@ ul, ol {margin: 1em 0; padding-left: 40px;}
 p, figure {margin: 1em 0;}
 a img {border: none;}
 sup, sub {line-height: 0;}
+
+table.altrowstable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 0px;
+    border-color: #a9c6c9;
+    border-collapse: collapse;
+}
+table.altrowstable th {
+    border-width: 0px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+    background-color:#629DD1;
+    color:#ffffff;
+}
+table.altrowstable td {
+    border-width: 0px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+.evenrowcolor{
+    background-color:#EBE8EC;
+}
+.oddrowcolor{
+    background-color:#ffffff;
+}
