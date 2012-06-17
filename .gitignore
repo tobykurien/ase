@@ -1,2 +1,3 @@
 *.pyc
-sessions/
+khan_mini/sessions/
+khan_mini/db/
