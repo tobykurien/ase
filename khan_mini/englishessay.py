@@ -39,7 +39,7 @@ class EnglishEssay(object):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         conn = essaylib.db.makeConnection(ESSAY_DB)
-        rows = essaylib.db.listEssays(conn, assignmentid, cols = "student_name, submitteddatetime, score,substr(essay_text,1,50)||' .....', id ", orderby="score")
+        rows = essaylib.db.listEssays(conn, where='assignment_id=%s' % int(assignmentid), cols = "student_name, submitteddatetime, score,substr(essay_text,1,50)||' .....', id ", orderby="score")
         assignmentTitle = essaylib.db.listAssignments(conn, where="id=%s" % int(assignmentid))[0][1]
         cols = ['Student','Submitted','Score','Essay','Action']
         result = env.get_template('adminessayresults.html').render({'rows':rows,'cols':cols,'assignmentTitle':assignmentTitle,'assignmentid':assignmentid})
@@ -50,8 +50,8 @@ class EnglishEssay(object):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         conn = essaylib.db.makeConnection(ESSAY_DB)
-        row = essaylib.db.listEssays(conn, assignmentid, cols = "id,student_name, submitteddatetime, score,essay_text", where=" assignment_id=%s and id=%s " % (int(assignmentid),int(essayid)), orderby="score")[0]
-        ids = essaylib.db.listEssays(conn, assignmentid, cols = "id", where=" assignment_id=%s " % (int(assignmentid)), orderby="score")
+        row = essaylib.db.listEssays(conn, cols = "id,student_name, submitteddatetime, score,essay_text", where=" assignment_id=%s and id=%s " % (int(assignmentid),int(essayid)), orderby="score")[0]
+        ids = essaylib.db.listEssays(conn, cols = "id", where=" assignment_id=%s " % (int(assignmentid)), orderby="score")
         ids = [i[0] for i in ids]
         i = ids.index(int(essayid))
         previousid =  ids[len(ids)-1] if i == 0 else ids[i-1]
@@ -85,7 +85,47 @@ class EnglishEssay(object):
                 oper = 'edit'
             result = env.get_template('admineditassignments.html').render({'id':row[0],'title':row[1],'description':row[2],'oper':oper})
             return result
+
+
+    def adminchangestate(self, state, assignmentid):
+        conn = essaylib.db.makeConnection(ESSAY_DB)
+        state = state.upper()
+        busy = False
+        if state == 'BUSY':  
+            r = essaylib.db.listAssignments(conn, where="state='BUSY'")
+            if(len(r) != 0):
+                busy = True
         
+        if not busy:        
+            essaylib.db.updateAssignmentState(conn, assignmentid, state)
+
+        raise cherrypy.HTTPRedirect("admin")   
+
+    @cherrypy.expose    
+    def adminstartassignment(self, assignmentid):
+        if cherrypy.session.get('admin',None) == None:
+             return env.get_template('adminlogin.html').render()
+        return self.adminchangestate('BUSY',assignmentid)
+        
+    @cherrypy.expose    
+    def adminreadyassignment(self, assignmentid):
+        if cherrypy.session.get('admin',None) == None:
+             return env.get_template('adminlogin.html').render()
+        return self.adminchangestate('READY',assignmentid)
+
+    @cherrypy.expose    
+    def adminmarkassignment(self, assignmentid):
+        if cherrypy.session.get('admin',None) == None:
+             return env.get_template('adminlogin.html').render()
+        return self.adminchangestate('MARKING',assignmentid)
+
+    @cherrypy.expose    
+    def admincompleteassignment(self, assignmentid):
+        if cherrypy.session.get('admin',None) == None:
+             return env.get_template('adminlogin.html').render()
+        return self.adminchangestate('COMPLETED',assignmentid)
+
+
     
 
 if __name__=="__main__":

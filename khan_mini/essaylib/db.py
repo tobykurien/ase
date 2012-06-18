@@ -48,9 +48,16 @@ def deleteAssignment(conn, assignment_id):
     c.close() 
 
 
+def updateAssignmentState(conn, assignment_id, state):
+    c = conn.cursor()
+    startdatetime = (datetime.datetime.now().isoformat(' '))[:19]
+    state = state.upper()
+    c.execute("update assignment set startdatetime=?,state=? where id=?",(startdatetime,state,assignment_id))
+    conn.commit()
+    c.close() 
 
 
-def listEssays(conn, assignmentid, cols="*", where='1=1', orderby='id'):
+def listEssays(conn, cols="*", where='1=1', orderby='id'):
     c = conn.cursor()
     c.execute('select %s from essay where %s order by %s' % (cols,where, orderby))
     result = c.fetchall()
