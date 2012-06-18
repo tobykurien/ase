@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{% if id=='new' %}Add {% else %}Edit{% endif %} Assignment{% endblock %}
+
+{% block content %}
+<div id="container">   
+    <h1>{% if id=='new' %}Add {% else %}Edit{% endif %} Assignment</h1>
+      <button onclick='document.location="admin"'>Back</button>
+    <br/><br/>
+
+      <form action="admineditassignment" method="post">
+          <input type="hidden" name="assignmentid" value="{{ id }}"/>
+          <input type="hidden" name="oper" value="{{ oper }}"/>
+          <table>
+          <tr><td>Title</td><td><input name="title" size=50 value="{{ title }}" /></td></tr>
+          <tr><td>Description</td><td><textarea name="description" rows=5 cols=50>{{ description }}</textarea></td></tr>
+          </table>
+          <input type="submit" name="bsubmit"/>    
+      </form>
+
+    <br/><br/>
+
+</div>
+{% endblock %}
+
+
+
+

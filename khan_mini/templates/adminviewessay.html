@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Essays for assignment {{ assignmentTitle }}{% endblock %}
+
+{% block content %}
+<div id="container">   
+    <h1>Essay of {{ student_name }} for {{ assignmentTitle }}</h1>
+    <br/>
+    <b>Score</b> : {{ score }}<br/>
+    <b>Submitted</b> : {{ submitteddatetime }}<br/>
+    <br/>
+
+    <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ previousid }}'">Previous</button>
+    <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ nextid }}'">Next</button>
+    <button onclick="document.location='adminessayresults?assignmentid={{ assignmentid }}'">Up</button>
+
+    <br/>
+    {{ essay_text | e }}
+    <br/>
+ 
+</div>
+{% endblock %}
+
+
+
+
