@@ -14,8 +14,17 @@ class EnglishEssay(object):
         if username == None:
             username = cherrypy.session.get('username', None)
             if username == None:
-                raise cherrypy.HTTPRedirect("/login")                
-        return "Hallo world" + username
+                raise cherrypy.HTTPRedirect("/login")
+        conn = essaylib.db.makeConnection(ESSAY_DB)
+        state = essaylib.db.currentState(conn)
+        if state == 'BUSY':
+            return env.get_template('studentbusy.html').render({'username':username}) 
+        elif state == 'MARKING':
+            return env.get_template('studentmarking.html').render({'username':username}) 
+        elif state == 'COMPLETE':
+            return env.get_template('studentcomplete.html').render({'username':username}) 
+        else:
+            return env.get_template('studentready.html').render({'username':username}) 
 
     @cherrypy.expose    
     def admin(self, password=None, bsubmit=None):
@@ -102,29 +111,19 @@ class EnglishEssay(object):
         raise cherrypy.HTTPRedirect("admin")   
 
     @cherrypy.expose    
-    def adminstartassignment(self, assignmentid):
+    def adminopassignment(self, assignmentid,oper):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
-        return self.adminchangestate('BUSY',assignmentid)
+        if oper=='busy':
+            return self.adminchangestate('BUSY',assignmentid)
+        if oper=='ready':
+            return self.adminchangestate('READY',assignmentid)
+        if oper=='marking':
+            return self.adminchangestate('MARKING',assignmentid)
+        if oper=='completed':
+            return self.adminchangestate('COMPLETED',assignmentid)
+
         
-    @cherrypy.expose    
-    def adminreadyassignment(self, assignmentid):
-        if cherrypy.session.get('admin',None) == None:
-             return env.get_template('adminlogin.html').render()
-        return self.adminchangestate('READY',assignmentid)
-
-    @cherrypy.expose    
-    def adminmarkassignment(self, assignmentid):
-        if cherrypy.session.get('admin',None) == None:
-             return env.get_template('adminlogin.html').render()
-        return self.adminchangestate('MARKING',assignmentid)
-
-    @cherrypy.expose    
-    def admincompleteassignment(self, assignmentid):
-        if cherrypy.session.get('admin',None) == None:
-             return env.get_template('adminlogin.html').render()
-        return self.adminchangestate('COMPLETED',assignmentid)
-
 
     
 

@@ -26,17 +26,17 @@
                           <button onclick="javascript:document.location='admineditassignment?assignmentid={{ row[0] }}&oper=del'">Del</button> 
                     {% endif %}
                     {% if row[3]=='READY' %}
-                          <button onclick="javascript:document.location='adminstartassignment?assignmentid={{ row[0] }}'">Start</button>
+                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=busy'">Start</button>
                           <button onclick="javascript:document.location='admineditassignment?assignmentid={{ row[0] }}&oper=toedit'">Edit</button>
                           <button onclick="javascript:document.location='admineditassignment?assignmentid={{ row[0] }}&oper=del'">Del</button> 
                     {% endif %}
                     {% if row[3]=='BUSY' %}
-                          <button onclick="javascript:document.location='adminmarkassignment?assignmentid={{ row[0] }}'">Mark</button>
-                          <button onclick="javascript:document.location='adminreadyassignment?assignmentid={{ row[0] }}'">Cancel</button>
+                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=marking'">Mark</button>
+                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=ready'">Cancel</button>
                     {% endif %}
                     {% if row[3]=='MARKING' %}
-                          <button onclick="javascript:document.location='admincompleteassignment?assignmentid={{ row[0] }}'">Complete</button>
-                          <button onclick="javascript:document.location='adminreadyassignment?assignmentid={{ row[0] }}'">Cancel</button>
+                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=complete'">Complete</button>
+                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=ready'">Cancel</button>
                     {% endif %}
 
                 </td> 

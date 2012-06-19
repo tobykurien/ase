@@ -16,6 +16,10 @@ class KhanAcademyMini(object):
     def __init__(self):
         self.stream = Stream()
         
+    def getUser(self):
+        return cherrypy.session.get('username', None)
+  
+
     @cherrypy.expose
     def login(self, username=None, **args):
         global user
@@ -41,6 +45,7 @@ class KhanAcademyMini(object):
         
     @cherrypy.expose    
     def index(self, topic='root'):
+        user = self.getUser()
         if user == None:
             return self.login()
         
