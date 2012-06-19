@@ -17,14 +17,27 @@ class EnglishEssay(object):
                 raise cherrypy.HTTPRedirect("/login")
         conn = essaylib.db.makeConnection(ESSAY_DB)
         state = essaylib.db.currentState(conn)
-        if state == 'BUSY':
-            return env.get_template('studentbusy.html').render({'username':username}) 
+        if 'BUSY' in state:
+            a = essaylib.db.listAssignments(conn, where="state='BUSY'")[0]
+            e = essaylib.db.listEssays(conn, cols='essay_text', where="student_name='%s' and assignment_id=%s" % (username.replace(';',''), int(a[0])) )
+            essay_text = e[0][0] if len(e)>0 else ''
+            return env.get_template('studentbusy.html' ).render({'username':username, 'title':a[1],'assignmentid':a[0], 'description':a[2],'essay_text':essay_text }) 
         elif state == 'MARKING':
             return env.get_template('studentmarking.html').render({'username':username}) 
         elif state == 'COMPLETE':
             return env.get_template('studentcomplete.html').render({'username':username}) 
         else:
             return env.get_template('studentready.html').render({'username':username}) 
+
+    @cherrypy.expose
+    def submitAssignment(self, essay_text, assignmentid, bsubmit):
+        username = cherrypy.session.get('username',None)
+        if  username == None:
+             raise cherrypy.HTTPRedirect("/login")
+        conn = essaylib.db.makeConnection(ESSAY_DB)
+        essaylib.db.submitEssay(conn, username, assignmentid, essay_text)
+        return self.index() 
+
 
     @cherrypy.expose    
     def admin(self, password=None, bsubmit=None):
@@ -101,9 +114,14 @@ class EnglishEssay(object):
         state = state.upper()
         busy = False
         if state == 'BUSY':  
-            r = essaylib.db.listAssignments(conn, where="state='BUSY'")
+            r = essaylib.db.listAssignments(conn, where="state='BUSY' or state='MARKING'")
             if(len(r) != 0):
                 busy = True
+  
+        if state == 'MARKING':
+            e = essaylib.db.listEssays(conn, cols='id', where="assignment_id=%s" % (int(assignmentid)) ) 
+            pairs =essaylib.pairs.assignPairs(e)
+            essaylib.db.insertEssayEval(conn, pairs, assignmentid)
         
         if not busy:        
             essaylib.db.updateAssignmentState(conn, assignmentid, state)

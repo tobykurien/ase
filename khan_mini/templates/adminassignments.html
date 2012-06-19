@@ -33,6 +33,7 @@
                     {% if row[3]=='BUSY' %}
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=marking'">Mark</button>
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=ready'">Cancel</button>
+                          <button onclick="document.location='adminessayresults?assignmentid={{ row[0] }}'">View</button> 
                     {% endif %}
                     {% if row[3]=='MARKING' %}
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row[0] }}&oper=complete'">Complete</button>

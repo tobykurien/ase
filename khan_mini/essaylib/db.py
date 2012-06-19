@@ -63,3 +63,20 @@ def listEssays(conn, cols="*", where='1=1', orderby='id'):
     result = c.fetchall()
     c.close()
     return result
+
+def submitEssay(conn, username, assignment_id, essay_text):
+    c = conn.cursor()
+    startdatetime = (datetime.datetime.now().isoformat(' '))[:19]
+    id = getNextId(conn, 'essay')
+    c.execute("delete from essay where assignment_id=? and student_name=?",(assignment_id,username))    
+    c.execute("insert into essay (id,assignment_id, student_name, essay_text, submitteddatetime) values (?,?,?,?,?) ",(id,assignment_id, username, essay_text,startdatetime))
+    conn.commit()
+    c.close()    
+
+def currentState(conn):
+    c = conn.cursor()
+    c.execute('select distinct state from assignment')
+    result = c.fetchall()
+    c.close()
+    return [r[0] for r in result]
+
