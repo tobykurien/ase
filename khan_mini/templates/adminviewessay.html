@@ -3,10 +3,10 @@
 
 {% block content %}
 <div id="container">   
-    <h1>Essay of {{ student_name }} for {{ assignmentTitle }}</h1>
+    <h1>Essay of {{ row['student_name'] }} for {{ assignmentTitle }}</h1>
     <br/>
-    <b>Score</b> : {{ score }}<br/>
-    <b>Submitted</b> : {{ submitteddatetime }}<br/>
+    <b>Score</b> : {{ row['score'] }}<br/>
+    <b>Submitted</b> : {{ row['submitteddatetime'] }}<br/>
     <br/>
 
     <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ previousid }}'">Previous</button>
@@ -14,7 +14,7 @@
     <button onclick="document.location='adminessayresults?assignmentid={{ assignmentid }}'">Up</button>
 
     <br/>
-    {{ essay_text | e }}
+    {{ row['essay_text'] | e }}
     <br/>
  
 </div>

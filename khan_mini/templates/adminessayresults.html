@@ -9,19 +9,17 @@
 
     <table class="altrowstable">
         <tr>
-        {% for col in cols %}
+        {% for col in ['Student','Submitted','Score','Essay','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-            {% for cell in row %}
-                {% if loop.index<5 %} 
-                <td>{{ cell }}</td>
-                {% else %}
-                <td><button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ cell }}'">View</button></a></td>
-                {% endif %} 
-            {% endfor %}
+                {% for key in ['student_name','startdatetime','score'] %}
+                     <td>{{ row[key] }}</td>
+                {% endfor %}
+                <td>{{ row['essay_text'][:20].ljust(20) }} </td>
+                <td><button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ row['id'] }}'">View</button></a></td>
             </tr>   
         {% endfor %}
     </table>

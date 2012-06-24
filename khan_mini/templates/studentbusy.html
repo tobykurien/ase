@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Assignment - {{ title }}{% endblock %}
+{% block title %}Assignment - {{ asm['title'] }}{% endblock %}
 
 {% block content %}
 <div id="container">   
-    <h1>Assignment</h1>
+    <h1>Assignment for {{ username }}</h1>
 
       <form action="submitAssignment" method="post">
           <input type="hidden" name="assignmentid" value="{{ assignmentid }}"/>
           <table>
-          <tr><td><b>Title</b></td><td>{{ title }}</td></tr>
-          <tr><td><b>Description</b></td><td>{{ description }}</td></tr>
+          <tr><td><b>Title</b></td><td>{{ asm['title'] }}</td></tr>
+          <tr><td><b>Description</b></td><td>{{ asm['description'] }}</td></tr>
           </table>
           <textarea name="essay_text" rows=15 cols=80>{{ essay_text }}</textarea><br> 
           <input type="submit" name="bsubmit" value="Save"></input>    
