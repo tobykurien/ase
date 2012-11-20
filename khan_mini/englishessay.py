@@ -30,6 +30,7 @@ class EnglishEssay(object):
         if 'BUSY' in state:
             a = self.activeAssignment(conn, 'BUSY')
             esql = db.essayTable.select(and_(db.essayTable.c.student_name == username, db.essayTable.c.assignment_id == a['id']))
+            print ">>>>>>",esql, username, a['id'], str(a)
             e = conn.execute(esql).fetchall()
             essay_text = e[0]['essay_text'] if len(e)>0 else ''
             return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text }) 
@@ -91,6 +92,7 @@ class EnglishEssay(object):
         submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
         sql = db.essayTable.insert().values({'student_name':username,'assignment_id':assignmentid,'essay_text':essay_text,'submitteddatetime':submitteddatetime})
         conn.execute(sql)
+        print sql
         return self.index() 
 
 

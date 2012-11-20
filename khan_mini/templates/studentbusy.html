@@ -6,7 +6,7 @@
     <h1>Assignment for {{ username }}</h1>
 
       <form action="submitAssignment" method="post">
-          <input type="hidden" name="assignmentid" value="{{ assignmentid }}"/>
+          <input type="hidden" name="assignmentid" value="{{ asm['id'] }}"/>
           <table>
           <tr><td><b>Title</b></td><td>{{ asm['title'] }}</td></tr>
           <tr><td><b>Description</b></td><td>{{ asm['description'] }}</td></tr>
