@@ -11,7 +11,7 @@ import essaylib.scoring as scoring
 import numpy
 
 
-
+MARKINGREPETITIONS = 3
 # Jinja templating engine
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('templates'))
@@ -135,14 +135,14 @@ class EnglishEssay(object):
              return env.get_template('adminlogin.html').render()
              
         conn = request.db
-        esql = "select student_name, sum(case when score1 is not null and score2 is not null then 1 else 0 end) num_submitted from essay_eval where assignment_id = %s  group by student_name" % (assignmentid) 
+        esql = """select student_name, sum(case when score1 is not null and score2 is not null then 1 else 0 end) num_submitted, count(1) repetitions
+                  from essay_eval where assignment_id = %s  group by student_name""" % (assignmentid) 
         rows = conn.execute(esql).fetchall()
+        sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
+        assignmentTitle = conn.execute(sql).fetchone()['title']
 
         result = env.get_template('adminmarkingresults.html').render({'rows':rows,'assignmentTitle':assignmentTitle,'assignmentid':assignmentid})
-        return str(e)
-        
-        
-         
+        return result        
 
 
     @cherrypy.expose    
@@ -215,7 +215,7 @@ class EnglishEssay(object):
             esql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
             e = conn.execute(esql)
             essays = conn.execute(esql).fetchall()
-            repetitions = 3
+            repetitions = MARKINGREPETITIONS
             N =  len(essays)
             maxCombinations = math.factorial(N)/math.factorial(N-2)/math.factorial(2)
             if maxCombinations< N*repetitions:

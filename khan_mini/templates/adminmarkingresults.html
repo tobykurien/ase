@@ -6,7 +6,7 @@
     <h1>Students reviewing {{ assignmentTitle }}</h1>
     <button onclick="document.location='admin'">Up</button>
     <br/>    <br/>
-
+    <p>Each student should mark at most {{ rows[0]['repetitions'] }} pair{% if rows[0]['repetitions'] >1 %}s{% endif %} of essays
     <table class="altrowstable">
         <tr>
         {% for col in ['Student','# marked'] %}
