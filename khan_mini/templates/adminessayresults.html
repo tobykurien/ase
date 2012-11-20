@@ -15,7 +15,7 @@
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-                {% for key in ['student_name','startdatetime','score'] %}
+                {% for key in ['student_name','submitteddatetime','score'] %}
                      <td>{{ row[key] }}</td>
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>

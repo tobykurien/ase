@@ -38,6 +38,7 @@
                     {% if row[3]=='MARKING' %}
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=complete'">Complete</button>
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=ready'">Cancel</button>
+                          <button onclick="document.location='adminessayviewmarking?assignmentid={{ row[0] }}'">View</button>                           
                     {% endif %}
 
                 </td> 

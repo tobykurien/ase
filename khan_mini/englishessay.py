@@ -123,6 +123,27 @@ class EnglishEssay(object):
         assignmentTitle = conn.execute(sql).fetchone()['title']
         result = env.get_template('adminessayresults.html').render({'rows':rows,'assignmentTitle':assignmentTitle,'assignmentid':assignmentid})
         return result
+   
+    @cherrypy.expose
+    def adminessayviewmarking(self,assignmentid):
+        if cherrypy.session.get('admin',None) == None:
+             return env.get_template('adminlogin.html').render()
+
+        try:
+             assignmentid = float(assignmentid)
+        except:
+             return env.get_template('adminlogin.html').render()
+             
+        conn = request.db
+        esql = "select student_name, sum(case when score1 is not null and score2 is not null then 1 else 0 end) num_submitted from essay_eval where assignment_id = %s  group by student_name" % (assignmentid) 
+        rows = conn.execute(esql).fetchall()
+
+        result = env.get_template('adminmarkingresults.html').render({'rows':rows,'assignmentTitle':assignmentTitle,'assignmentid':assignmentid})
+        return str(e)
+        
+        
+         
+
 
     @cherrypy.expose    
     def adminviewessay(self, assignmentid, essayid):
