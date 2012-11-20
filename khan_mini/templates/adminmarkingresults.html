@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Students reviewing {{ assignmentTitle }}{% endblock %}
+
+{% block content %}
+<div id="container">   
+    <h1>Students reviewing {{ assignmentTitle }}</h1>
+    <button onclick="document.location='admin'">Up</button>
+    <br/>    <br/>
+
+    <table class="altrowstable">
+        <tr>
+        {% for col in ['Student','# marked'] %}
+             <th>{{ col }}</th>
+        {% endfor %}
+        </tr>
+        {% for row in rows %}
+            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+                {% for key in ['student_name','num_submitted'] %}
+                     <td>{{ row[key] }}</td>
+                {% endfor %}
+            </tr>   
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+
+
+
+
