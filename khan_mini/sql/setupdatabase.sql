@@ -26,9 +26,10 @@ drop table if exists essay_eval;
 create table essay_eval(
  id INTEGER PRIMARY KEY AUTOINCREMENT,
  assignment_id INTEGER REFERENCES assignment(id) ON DELETE CASCADE,
- essay1_name text,
- essay2_name text,
- essay3_name text,
+ student_name text,
+ essay1_id integer,
+ essay2_id integer,
+ essay3_id integer,
  score1 real,
  score2 real,
  score3 real 

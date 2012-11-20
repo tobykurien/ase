@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Assignment - {{ asm['title'] }}{% endblock %}
+
+{% block content %}
+<div id="container">   
+    <h1>Student Marking: {{ username }}</h1>
+
+      <form action="evalEssay" method="post">
+          <input type="hidden" name="essayeval_id" value="{{ essayeval_id }}"/>
+          <table>
+          <tr><td><b>Title</b></td><td>{{ asm['title'] }}</td></tr>
+          <tr><td><b>Description</b></td><td>{{ asm['description'] }}</td></tr>
+          </table>
+          <br><b>Essay 1:</b><br>
+
+          {{ essay1_text }}
+          <br>
+          <br><b>Essay 2:</b><br>
+          {{ essay2_text }}
+          <br><br>
+          <b>Essay 1</b>
+             {% for i in range(11) %}
+              <input type="radio" name="scorerange" value="{{ i/10.0 }}" class="score" {% if(i == score*10) %} checked="checked" {% endif %} /> 
+             {% endfor %}
+
+          <b>Essay 2</b> <br/><br/>
+          <input type="submit" name="bsubmit" value="Next >"></input>    
+
+      </form>
+
+    <br/><br/>
+
+</div>
+{% endblock %}
+
+
+
+
