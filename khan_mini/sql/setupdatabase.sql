@@ -12,6 +12,7 @@ create table assignment (
  title text,
  description text,
  state text,
+ duration integer,
  startdatetime text
 );
 

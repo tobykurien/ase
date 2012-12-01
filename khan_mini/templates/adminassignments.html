@@ -11,14 +11,14 @@
 
     <table class="altrowstable">
         <tr>
-        {% for col in ['Id','Title','Description','State','Date','Action'] %}
+        {% for col in ['Id','Title','Description','State','Date','Duration','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-            {% for cell in row %}
-                <td>{{ cell }}</td>
+            {% for col in ['id','title','description','state','startdatetime','duration'] %}
+                <td>{{ row[col] }}</td>
             {% endfor %}
                 <td>
                     {% if row['state']=='COMPLETED' %}

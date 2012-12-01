@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="style.css" />
     <title>{% block title %}{% endblock %} - KhanAcademy</title>
     {% endblock %}
+    {% block js %}
+    {% endblock %}
 </head>
-<body>
+<body onload="{% block onload %}{% endblock %}">
   <div id="wrapper">
 	<div id="header">
     	<div id="logo">
