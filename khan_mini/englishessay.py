@@ -94,21 +94,21 @@ class EnglishEssay(object):
         conn.execute(sql)
         print sql
         return self.index() 
-	
+    
     @cherrypy.expose
     def submitComment(self, comment_text, comment_type, essay_id ):
         username = cherrypy.session.get('username',None)
         if  username == None:
-		    raise cherrypy.HTTPRedirect("/login")
+            raise cherrypy.HTTPRedirect("/login")
         conn = request.db
-		
+        
         submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
         sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':comment_text,'comment_type':comment_type,'submitteddatetime':submitteddatetime, 'username':username})
         conn.execute(sql)
         print sql
         return self.index();
-		
-	
+        
+    
 
 
     @cherrypy.expose    
@@ -173,16 +173,16 @@ class EnglishEssay(object):
         assignmentTitle = conn.execute(sql).fetchone()['title']
         
         result = env.get_template('adminessayresults.html').render({'rows':rows,'assignmentTitle':assignmentTitle,'assignmentid':assignmentid})
-		
+        
         return result
     
     def getCommentCount(self,conn,essay_id,student_name):
-		  sql = db.commentTable.select(and_(db.commentTable.c.student_name = student_name, db.commentTable.c.essay_id = essay_id))
-		  rows = conn.execute(rowsSql).fetchall(); 
-		  return len(rows)
-	
+          sql = db.commentTable.select(and_(db.commentTable.c.student_name == student_name, db.commentTable.c.essay_id == essay_id))
+          rows = conn.execute(sql).fetchall() 
+          return len(rows)
     
-	@cherrypy.expose
+    
+    @cherrypy.expose
     def adminessayviewmarking(self,assignmentid):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
