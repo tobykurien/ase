@@ -4,7 +4,7 @@ drop table if exists admin;
 create table admin (
  password text);
 
-insert into admin values('9dd4e461268c8034f5c8564e155c67a6');
+insert into admin values('54a2f7f92a5f975d8096af77a126edda7da60c5aa872ef1b871701ae');
 
 drop table if exists assignment;
 create table assignment (

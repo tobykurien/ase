@@ -194,8 +194,12 @@ class EnglishEssay(object):
             sql = db.assignmentTable.insert().values({'title':title, 'description':description,'state':'READY','startdatetime':startdatetime})
             conn.execute(sql)
         elif oper == 'del': 
+            conn.execute("delete from comments where essay_id in (select id from essays where assignment_id = %s)" % (int(assignmentid)))
+            conn.execute("delete from essays where assignment_id = %s" % (int(assignmentid)))
+            conn.execute("delete from essay_eval where assignment_id = %s" % (int(assignmentid)))
             sql = db.assignmentTable.delete().where(db.assignmentTable.c.id == assignmentid)
             conn.execute(sql)
+            
         
         if oper in ['edit','add','del']: 
              raise cherrypy.HTTPRedirect("admin")   
