@@ -1,3 +1,73 @@
+@charset "utf-8";
+/* CSS Document */
+*,html{
+	padding:0;
+	margin:0;
+}
+body{
+	background:#ececec;
+	font-family:Verdana, Geneva, sans-serif;
+}
+#logo{
+	width:850px;
+	margin:0 auto;
+	height:80px;
+}
+#wrapper{
+	width:850px;
+	margin:0 auto;
+	margin-top:20px;
+	border-top:8px solid #000;
+	border-radius:5px;
+}
+#header{
+	background:url(img/bg_h.png) repeat-x;
+	padding:10px;
+}
+#content{
+	background:#fff;
+	margin-top:15px;
+	padding:18px;
+}
+#nav{
+	background:#fff;
+	height:46px;
+}
+#nav ul{
+	background:#fff;
+	border-bottom:2px solid #ccc;
+}
+#nav ul li{
+	float:left;
+	padding:15px;
+	font-family:Verdana, Geneva, sans-serif;
+	list-style:none;
+	font-size:12px;
+}
+#nav ul li a{
+	color:#000;
+	text-decoration:none;
+}
+#content{
+	font-size:12px;
+	border-bottom:2px solid #ccc;
+}
+#footer{
+	font-size:12px;
+	background:#3a3a3a;
+	border:1px solid #3a3a3a;
+	border-radius:5px;
+	color:#636262;
+	padding:15px;
+	margin-top:15px;
+}
+#footer a{
+	color:#636262;
+}
+#footer a:hover{
+	color:#fff;
+}
+
 /*
    Simple Base Stylesheet - http://fvsch.com/code/base-stylesheet/
    Helps makes browser default styles more consistent. Updated: 2011-10-02.
@@ -53,4 +123,3 @@ table.altrowstable td {
   width: 40px;
   height: 40px;
 }
-
