@@ -1,4 +1,3 @@
-insert into admin (password) values ('f780d931aa1fb59b3b80cc40792d336f97dc2af9965402cee3434bb0');
 insert into assignment (id,title, description, state, startdatetime) values (1,'Assignment 1','Your favourite holiday','COMPLETED','2012-06-18 12:00:00');
 insert into assignment (id,title, description, state, startdatetime) values (2,'Assignment 2','My pet','BUSY','2012-06-18 12:00:00');
 insert into assignment (id,title, description, state, startdatetime) values (3,'Assignment 3','My school','READY','2012-06-18 12:00:00');
