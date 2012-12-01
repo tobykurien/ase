@@ -25,8 +25,8 @@ create table essay(
 
 drop table if exists comments; 
 create table comments(
-  id INTEGER PRIMARY KEY
-  essay_id INTEGER REFERENCES essay(id) ON DELETE CASCADE
+  id INTEGER PRIMARY KEY,
+  essay_id INTEGER REFERENCES essay(id) ON DELETE CASCADE,
   comment_text text,
   comment_type INTEGER, 
   submitteddatetime text
