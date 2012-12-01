@@ -94,7 +94,19 @@ class EnglishEssay(object):
         conn.execute(sql)
         print sql
         return self.index() 
-
+	
+	@cherrypy.expose
+	def submitComment(self, comment_text, comment_type, essay_id ):
+    	#username = cherrypy.session.get('username',None)
+		#if  username == None:
+		#	raise cherrypy.HTTPRedirect("/login")
+		conn = request.db
+		
+		submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
+		sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':comment_text,'comment_type':comment_type,'submitteddatetime':submitteddatetime})
+		conn.execute(sql)
+		print sql
+		return self.index();
 
     @cherrypy.expose    
     def admin(self, password=None, bsubmit=None):
