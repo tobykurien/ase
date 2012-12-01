@@ -22,6 +22,17 @@ create table essay(
  submitteddatetime text,
  score real);
 
+
+drop table if exists comments; 
+create table comments(
+  id INTEGER PRIMARY KEY
+  essay_id INTEGER REFERENCES essay(id) ON DELETE CASCADE
+  comment_text text,
+  comment_type INTEGER, 
+  submitteddatetime text
+);
+	
+
 drop table if exists essay_eval;
 create table essay_eval(
  id INTEGER PRIMARY KEY AUTOINCREMENT,

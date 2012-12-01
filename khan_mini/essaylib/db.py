@@ -8,6 +8,5 @@ assignmentTable = Table('assignment', metadata, autoload = True, autoload_with= 
 adminTable = Table('admin', metadata, autoload = True, autoload_with= engine)
 essayTable = Table('essay', metadata, autoload = True, autoload_with= engine)
 essayEvalTable = Table('essay_eval',metadata, autoload = True, autoload_with= engine)
-
-
+commentTable = Table('comments', metadata, autoload = True, autoload_with= engine)
 
