@@ -4,6 +4,23 @@
 {% block content %}
 <div id="container">   
     <h1>Welcome {{ username }}</h1>
+    <p>Here is a list of your previous assignments
+    <table class="altrowstable">
+        <tr>
+        {% for col in ['Submitted','Score','Essay','Action'] %}
+             <th>{{ col }}</th>
+        {% endfor %}
+        </tr>
+        {% for row in rows %}
+            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+                {% for key in ['submitteddatetime','score'] %}
+                     <td>{{ row[key] }}</td>
+                {% endfor %}
+                <td>{{ row['essay_text'][:20].ljust(20) }} </td>
+                <td><button onclick="document.location='viewessay?essayid={{ row['id'] }}'">View</button></a></td>
+            </tr>   
+        {% endfor %}
+    </table>
 
 
     <br/><br/>
