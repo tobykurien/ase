@@ -4,7 +4,7 @@ from settings import *
 import essaylib.db as db
 import hashlib
 from essaylib.saplugin import SAEnginePlugin, SATool
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, asc
 import datetime
 import random, math
 import essaylib.scoring as scoring
@@ -117,7 +117,7 @@ class EnglishEssay(object):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         conn = request.db
-        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
+        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(asc(db.essayTable.c.student_name))
         rows = conn.execute(rowsSql).fetchall()
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
