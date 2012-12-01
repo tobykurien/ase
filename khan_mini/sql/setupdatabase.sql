@@ -31,7 +31,8 @@ create table comments(
   essay_id INTEGER REFERENCES essay(id) ON DELETE CASCADE,
   comment_text text,
   comment_type INTEGER, 
-  submitteddatetime text
+  submitteddatetime text,
+  student_name text
 );
 	
 
