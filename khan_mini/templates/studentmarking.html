@@ -17,15 +17,17 @@
           <div class="comment">
           <form action="#">
           	<label>Positive comment</label>
-            <textarea name="positivec"></textarea>
-            <label class="sub">(Maximum characters: 140) characters left: 140</label>
+            <textarea name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,100);" 
+onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,100);"></textarea>
+            <label class="sub">(Maximum characters: 140), you have <input readonly type="text" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
           </form>
           <br/><br/>
           <form action="#">
           	<label>Constructive comment</label>
-            <textarea name="positivec"></textarea>
-            <label class="sub">(Maximum characters: 140) characters left: 140</label>
+            <textarea name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,140);" 
+onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,140);"></textarea>
+            <label class="sub">(Maximum characters: 140), you have <input readonly type="text" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
           </form>
           </div>
@@ -35,15 +37,17 @@
           <div class="comment">
           <form action="#">
           	<label>Positive comment</label>
-            <textarea name="positivec"></textarea>
-             <label class="sub">(Maximum characters: 140) characters left: 140</label>
+            <textarea name="limitedtextarea" onKeyDown="limitText(this,this.form.countdown,140);" 
+onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
+             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
           </form>
           <br/>
           <form action="#">
           	<label>Constructive comment</label>
-            <textarea name="positivec"></textarea>
-             <label class="sub">(Maximum characters: 140) characters left: 140</label>
+            <textarea name="limitedtextarea" onKeyDown="limitText(this,this.form.countdown,140);" 
+onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
+             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
           </form>
           </div>
@@ -59,9 +63,18 @@
       </form>
 
     <br/><br/>
-
+<script language="javascript" type="text/javascript">
+function limitText(limitField, limitCount, limitNum) {
+	if (limitField.value.length > limitNum) {
+		limitField.value = limitField.value.substring(0, limitNum);
+	} else {
+		limitCount.value = limitNum - limitField.value.length;
+	}
+}
+</script>
 </div>
 {% endblock %}
+
 
 
 
