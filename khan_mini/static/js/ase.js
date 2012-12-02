@@ -1,7 +1,6 @@
 function countdown(element, minutes, seconds) {
     var time = minutes*60 + seconds;
-    var interval = setInterval(function() {
-        var el = document.getElementById(element);
+    var el = document.getElementById(element);
         if(time == 0) {
             el.innerHTML = "Please save your work, the assignment time has expired";    
             clearInterval(interval);
@@ -12,7 +11,5 @@ function countdown(element, minutes, seconds) {
         var seconds = time % 60;
         if (seconds < 10) seconds = "0" + seconds;
         var text = minutes + ':' + seconds;
-        el.innerHTML = text;
-        time--;
-    }, 1000);
+		return text;
     }

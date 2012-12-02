@@ -9,15 +9,15 @@
     <b>Submitted</b> : {{ row['submitteddatetime'] }}<br/>
     <br/>
 
-    <button onclick="document.location='viewessay?essayid={{ previousid }}'">Previous</button>
-    <button onclick="document.location='viewessay?essayid={{ nextid }}'">Next</button>
-    <button onclick="document.location='index'">Up</button>
-
+    <button class="btn" onclick="document.location='viewessay?essayid={{ previousid }}'">&lt; Previous</button>
+    <button class="btn" onclick="document.location='viewessay?essayid={{ nextid }}'">Next &gt;</button>
+    <button class="btn" onclick="document.location='index'">Up &uarr;</button>
+<br/>
     <br/>
     {{ row['essay_text'] | e }}
     <br/>
-    
-    <table class="altrowstable">
+    <br/>
+    <table class="data_table">
         <tr>
              <th>Positive comments</th>
         </tr>
@@ -27,8 +27,8 @@
             </tr>   
         {% endfor %}
     </table>
-
-    <table class="altrowstable">
+<br/>
+    <table class="data_table">
         <tr>
              <th>Constructive comments</th>
         </tr>
