@@ -81,6 +81,9 @@ body{
 .comment label{
 	display:block;
 }
+label.sub{
+	font-size:10px;
+}
 /*
    Simple Base Stylesheet - http://fvsch.com/code/base-stylesheet/
    Helps makes browser default styles more consistent. Updated: 2011-10-02.
