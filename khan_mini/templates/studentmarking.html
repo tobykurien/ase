@@ -14,9 +14,33 @@
           <br><b>Essay 1:</b><br>
 
           {{ essay1_text }}
+          <div class="comment">
+          <form action="#">
+          	<label>Positive comment</label>
+            <textarea name="positivec"></textarea>
+            <input type="submit" value="Save comment"/>
+          </form>
+          <form action="#">
+          	<label>Constructive comment</label>
+            <textarea name="positivec"></textarea>
+            <input type="submit" value="Save comment"/>
+          </form>
+          </div>
           <br>
           <br><b>Essay 2:</b><br>
           {{ essay2_text }}
+          <div class="comment">
+          <form action="#">
+          	<label>Positive comment</label>
+            <textarea name="positivec"></textarea>
+            <input type="submit" value="Save comment"/>
+          </form>
+          <form action="#">
+          	<label>Constructive comment</label>
+            <textarea name="positivec"></textarea>
+            <input type="submit" value="Save comment"/>
+          </form>
+          </div>
           <br><br>
           <b>Essay 1</b>
              {% for i in range(11) %}
