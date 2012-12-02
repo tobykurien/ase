@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Essays for assignment {{ assignmentTitle }}{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/englishessay/admin">Admin</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 {% block content %}
 <div id="container">   
     <h1>Essay for {{ assignmentTitle }}</h1>
@@ -9,15 +14,15 @@
     <b>Submitted</b> : {{ row['submitteddatetime'] }}<br/>
     <br/>
 
-    <button onclick="document.location='viewessay?essayid={{ previousid }}'">Previous</button>
-    <button onclick="document.location='viewessay?essayid={{ nextid }}'">Next</button>
-    <button onclick="document.location='index'">Up</button>
-
+    <button class="btn" onclick="document.location='viewessay?essayid={{ previousid }}'">&lt; Previous</button>
+    <button class="btn" onclick="document.location='viewessay?essayid={{ nextid }}'">Next &gt;</button>
+    <button class="btn" onclick="document.location='index'">Up &uarr;</button>
+<br/>
     <br/>
     {{ row['essay_text'] | e }}
     <br/>
-    
-    <table class="altrowstable">
+    <br/>
+    <table class="data_table">
         <tr>
              <th>Positive comments</th>
         </tr>
@@ -27,8 +32,8 @@
             </tr>   
         {% endfor %}
     </table>
-
-    <table class="altrowstable">
+<br/>
+    <table class="data_table">
         <tr>
              <th>Constructive comments</th>
         </tr>

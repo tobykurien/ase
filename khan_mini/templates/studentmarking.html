@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Assignment - {{ asm['title'] }}{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/englishessay/admin">Admin</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 {% block content %}
 <div id="container">   
     <h1>Student Marking: {{ username }}</h1>
@@ -21,20 +26,18 @@
             <textarea name="pcomment" onKeyDown="limitText(this.form.pcomment,this.form.countdown,140);" 
 onKeyUp="limitText(this.form.pcomment,this.form.countdown,140);"></textarea>
             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
-            <input type="submit" value="Save comment"/>
-            </form>
-             </div>
-
-          <div>
+            <input class="btn" type="submit" value="Save comment"/>
+           </form>
+           </div>
+         <div>
          <form action="submitConstructiveComment" method = "post">
-	         <input type= "hidden" name = "essayeval_id" value = "{{ essayeval_id }}">
+	         <input type= "hidden" name = "essayeval_id" value = "{{essayeval_id }}">
           	<label>Constructive comment</label>
             <textarea name="ccomment" onKeyDown="limitText(this.form.ccomment,this.form.countdown,140);" 
 onKeyUp="limitText(this.form.ccomment,this.form.countdown,140);"></textarea>
             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
-            <input type="submit" value="Save comment"/>
-          </form> 
-           </div>
+            <input class="btn" type="submit" value="Save comment"/>
+          </form>
           </div>
           <br>
           <br><b>Essay 2:</b><br>
@@ -47,7 +50,7 @@ onKeyUp="limitText(this.form.ccomment,this.form.countdown,140);"></textarea>
             <textarea name="pcomment" onKeyDown="limitText(this,this.form.countdown,140);" 
 onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
              <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
-            <input type="submit" value="Save comment"/>
+            <input class="btn" type="submit" value="Save comment"/>
           </form>
           </div>
           <div>
@@ -57,7 +60,7 @@ onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
             <textarea name="ccomment" onKeyDown="limitText(this,this.form.countdown,140);" 
 onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
              <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
-            <input type="submit" value="Save comment"/>
+            <input type="submit" class="btn" value="Save comment"/>
           </form>
           </div>
           </div>
@@ -71,7 +74,7 @@ onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
              {% endfor %}
 
           <b>Essay 2</b> <br/><br/>
-          <input type="submit" name="bsubmit" value="Next >"></input>    
+          <input class="btn" type="submit" name="bsubmit" value="Next >"></input>    
 
       </form>
 

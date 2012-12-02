@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% block title %}{% if id=='new' %}Add {% else %}Edit{% endif %} Assignment{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/login">Student</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 {% block content %}
 <div id="container">   
     <h1>{% if id=='new' %}Add {% else %}Edit{% endif %} Assignment</h1>
-      <button onclick='document.location="admin"'>Back</button>
+      <button class="btn" onclick='document.location="admin"'>Back</button>
     <br/><br/>
 
       <form action="admineditassignment" method="post">
@@ -12,9 +17,11 @@
           <input type="hidden" name="oper" value="{{ oper }}"/>
           <table>
           <tr><td>Title</td><td><input name="title" size=50 value="{{ title }}" /></td></tr>
-          <tr><td>Description</td><td><textarea name="description" rows=5 cols=50>{{ description }}</textarea></td></tr>
+
+          <tr><td valign="top">Description</td><td><textarea name="description" rows=5 cols=50>{{ description }}</textarea></td></tr>
+          <tr><td>Duration(minutes)</td><td><input name="duration" size=50 value="{{ duration }}"/></td></tr>
           </table>
-          <input type="submit" name="bsubmit"/>    
+          <input type="submit" class="btn" name="bsubmit"/>    
       </form>
 
     <br/><br/>

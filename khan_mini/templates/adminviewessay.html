@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Essays for assignment {{ assignmentTitle }}{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/login">Student</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 {% block content %}
 <div id="container">   
     <h1>Essay of {{ row['student_name'] }} for {{ assignmentTitle }}</h1>
@@ -9,10 +14,11 @@
     <b>Submitted</b> : {{ row['submitteddatetime'] }}<br/>
     <br/>
 
-    <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ previousid }}'">Previous</button>
-    <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ nextid }}'">Next</button>
-    <button onclick="document.location='adminessayresults?assignmentid={{ assignmentid }}'">Up</button>
+    <button class="btn" onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ previousid }}'">&lt; Previous</button>
+    <button class="btn" onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ nextid }}'">Next &gt;</button>
+    <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ assignmentid }}'">Up &uarr;</button>
 
+    <br/>
     <br/>
     {{ row['essay_text'] | e }}
     <br/>

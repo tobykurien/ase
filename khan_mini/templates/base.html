@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="style.css" />
     <title>{% block title %}{% endblock %} - KhanAcademy</title>
     {% endblock %}
+    {% block js %}
+    {% endblock %}
 </head>
-<body>
+<body onload="{% block onload %}{% endblock %}">
   <div id="wrapper">
 	<div id="header">
     	<div id="logo">
@@ -16,9 +18,11 @@
     </div>
     <div id="nav">
     	<ul>
+		{% block navigation %}
         	<li><a href="#">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contacts</a></li>
+		{% endblock %}
         </ul>
         <div style="clear:both"></div>
     </div>

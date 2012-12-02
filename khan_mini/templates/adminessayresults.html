@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Essays for assignment {{ assignmentTitle }}{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/login">Student</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 {% block content %}
 <div id="container">   
     <h1>Essays for assignment {{ assignmentTitle }}</h1>
-    <button onclick="document.location='admin'">Up</button>
+    <button class="btn" onclick="document.location='admin'">Up</button>
     <br/>    <br/>
 
-    <table class="altrowstable">
+    <table class="data_table">
         <tr>
         {% for col in ['Student','Submitted','Score','Essay','Action'] %}
              <th>{{ col }}</th>
@@ -19,7 +24,7 @@
                      <td>{{ row[key] }}</td>
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>
-                <td><button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ row['id'] }}'">View</button></a></td>
+                <td><button class="btn" onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ row['id'] }}'">View</button></a></td>
             </tr>   
         {% endfor %}
     </table>

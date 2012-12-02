@@ -1,44 +1,48 @@
 {% extends "base.html" %}
 {% block title %}Assignments{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/login">Student</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 
 {% block content %}
 <div id="container">   
     <h1>Assignments</h1>
-    <br/>
-    <button id='addnew' onclick="javascript:document.location='admineditassignment?oper=addnew'">Add New</button>
+    <p><button id='addnew' onclick="javascript:document.location='admineditassignment?oper=addnew'">+ Add New</button></p>
     <br/>
 
-    <table class="altrowstable">
+    <table class="data_table">
         <tr>
-        {% for col in ['Id','Title','Description','State','Date','Action'] %}
+        {% for col in ['Id','Title','Description','State','Date','Duration','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-            {% for cell in row %}
-                <td>{{ cell }}</td>
+            {% for col in ['id','title','description','state','startdatetime','duration'] %}
+                <td>{{ row[col] }}</td>
             {% endfor %}
                 <td>
                     {% if row['state']=='COMPLETED' %}
-                          <button onclick="document.location='adminessayresults?assignmentid={{ row['id'] }}'">View</button> 
-                          <button onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=del'">Del</button> 
+                          <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ row['id'] }}'">View</button> 
+                          <button class="btn" onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=del'">Del</button> 
                     {% endif %}
                     {% if row[3]=='READY' %}
-                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=busy'">Start</button>
-                          <button onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=toedit'">Edit</button>
-                          <button onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=del'">Del</button> 
+                          <button class="btn" onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=busy'">Start</button>
+                          <button class="btn" onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=toedit'">Edit</button>
+                          <button class="btn" onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=del'">Del</button> 
                     {% endif %}
                     {% if row[3]=='BUSY' %}
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=marking'">Mark</button>
-                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=ready'">Cancel</button>
-                          <button onclick="document.location='adminessayresults?assignmentid={{ row[0] }}'">View</button> 
+                          <button class="btn" onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=ready'">Cancel</button>
+                          <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ row[0] }}'">View</button> 
                     {% endif %}
                     {% if row[3]=='MARKING' %}
-                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=complete'">Complete</button>
-                          <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=ready'">Cancel</button>
-                          <button onclick="document.location='adminessayviewmarking?assignmentid={{ row[0] }}'">View</button>                           
+                          <button class="btn" onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=complete'">Complete</button>
+                          <button class="btn" onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=ready'">Cancel</button>
+                          <button class="btn" onclick="document.location='adminessayviewmarking?assignmentid={{ row[0] }}'">View</button>                           
                     {% endif %}
 
                 </td> 
