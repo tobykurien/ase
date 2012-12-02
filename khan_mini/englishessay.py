@@ -188,17 +188,25 @@ class EnglishEssay(object):
         rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(asc(db.essayTable.c.student_name))
         
         rows = conn.execute(rowsSql).fetchall()
+        results = []
+        
+        for row in rows:
+            result_row = {'id':row['id'],'student_name':row['student_name'], 'score':row['score'], 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
+         
+            essayid =  row['id']
+            result_row['comment_count'] = self.getCommentCount(conn, essayid)
+            results.append(result_row) 			
+
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
-        
-        result = env.get_template('adminessayresults.html').render({'rows':rows,'assignmentTitle':assignmentTitle,'assignmentid':assignmentid})
-        
+        result = env.get_template('adminessayresults.html').render({'rows':results, 'assignmentTitle':assignmentTitle,'assignmentid':assignmentid })
         return result
     
-    def getCommentCount(self,conn,essay_id,student_name):
-          sql = db.commentTable.select(and_(db.commentTable.c.student_name == student_name, db.commentTable.c.essay_id == essay_id))
-          rows = conn.execute(sql).fetchall() 
-          return len(rows)
+    
+    def getCommentCount(self, conn, essayid):
+	    sql = db.commentTable.select(db.commentTable.c.essay_id == essayid)
+	    rows = conn.execute(sql).fetchall() 
+	    return len(rows)
     
     
     @cherrypy.expose

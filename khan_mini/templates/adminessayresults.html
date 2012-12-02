@@ -14,7 +14,7 @@
 
     <table class="data_table">
         <tr>
-        {% for col in ['Student','Submitted','Score','Essay','Action'] %}
+        {% for col in ['Student','Submitted','Score','Essay','Comment Count','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
@@ -24,6 +24,7 @@
                      <td>{{ row[key] }}</td>
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>
+                 <td>{{ row['comment_count'] }} </td>
                 <td><button class="btn" onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ row['id'] }}'">View</button></a></td>
             </tr>   
         {% endfor %}
