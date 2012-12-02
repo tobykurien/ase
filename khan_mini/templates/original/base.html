@@ -8,26 +8,11 @@
     {% endblock %}
 </head>
 <body>
-  <div id="wrapper">
-	<div id="header">
-    	<div id="logo">
-        	<img src="img/logo.png" width="229"/>
-        </div>
-    </div>
-    <div id="nav">
-    	<ul>
-        	<li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contacts</a></li>
-        </ul>
-        <div style="clear:both"></div>
-    </div>
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}
         &copy; Copyright 2012 by <a href="http://africanschoolforexcellence.org/">ASE</a>.
         {% endblock %}
     </div>
-   </div>
 </body>
 
