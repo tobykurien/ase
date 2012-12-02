@@ -22,6 +22,28 @@
     <br/>
     {{ row['essay_text'] | e }}
     <br/>
+
+   	   <table class="data_table">
+	        <tr>
+	             <th>Positive comments</th>
+	        </tr>
+	        {% for row in positive %}
+	            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+	                     <td>{{ row['comment_text'] | e }}</td>
+	            </tr>   
+	        {% endfor %}
+	    </table>
+	<br/>
+	    <table class="data_table">
+	        <tr>
+	             <th>Constructive comments</th>
+	        </tr>
+	        {% for row in negative %}
+	            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+	                     <td>{{ row['comment_text'] | e}}</td>
+	            </tr>   
+	        {% endfor %}
+	    </table>
  
 </div>
 {% endblock %}

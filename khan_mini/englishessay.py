@@ -238,6 +238,15 @@ class EnglishEssay(object):
         rowsSql = db.essayTable.select(and_(db.essayTable.c.assignment_id == assignmentid, db.essayTable.c.id == essayid))
         row = conn.execute(rowsSql).fetchone()
 
+       
+        positivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == -1))
+        positive = conn.execute(positivesql).fetchall()
+        
+
+        constructivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == 1))
+        constructive = conn.execute(constructivesql).fetchall()
+      
+
         # figure out the next and previous essay id
         idSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
         ids = conn.execute(idSql).fetchall()
@@ -249,7 +258,7 @@ class EnglishEssay(object):
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
           
-        result = env.get_template('adminviewessay.html').render({'row':row,'assignmentid':assignmentid,'assignmentTitle':assignmentTitle, 'previousid':previousid, 'nextid':nextid})
+        result = env.get_template('adminviewessay.html').render({'row':row,'positive':positive, 'constructive':constructive, 'assignmentid':assignmentid,'assignmentTitle':assignmentTitle, 'previousid':previousid, 'nextid':nextid})
         return result
         
     @cherrypy.expose    
