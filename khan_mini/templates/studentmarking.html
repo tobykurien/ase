@@ -5,8 +5,7 @@
 <div id="container">   
     <h1>Student Marking: {{ username }}</h1>
 
-      <form action="evalEssay" method="post">
-          <input type="hidden" name="essayeval_id" value="{{ essayeval_id }}"/>
+      
           <table>
           <tr><td><b>Title</b></td><td>{{ asm['title'] }}</td></tr>
           <tr><td><b>Description</b></td><td>{{ asm['description'] }}</td></tr>
@@ -15,43 +14,57 @@
 
           {{ essay1_text }}
           <div class="comment">
-          <form action="#">
+          <div>
+	      <form  action="submitPositiveComment" method = "post">
+		     <input type="hidden" name="essayeval_id" value="{{essayeval_id }}"/>
           	<label>Positive comment</label>
-            <textarea name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,140);" 
-onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,140);"></textarea>
+            <textarea name="pcomment" onKeyDown="limitText(this.form.pcomment,this.form.countdown,140);" 
+onKeyUp="limitText(this.form.pcomment,this.form.countdown,140);"></textarea>
             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
-          </form>
-          <br/><br/>
-          <form action="#">
+            </form>
+             </div>
+
+          <div>
+         <form action="submitConstructiveComment" method = "post">
+	         <input type= "hidden" name = "essayeval_id" value = "{{ essayeval_id }}">
           	<label>Constructive comment</label>
-            <textarea name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,140);" 
-onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,140);"></textarea>
+            <textarea name="ccomment" onKeyDown="limitText(this.form.ccomment,this.form.countdown,140);" 
+onKeyUp="limitText(this.form.ccomment,this.form.countdown,140);"></textarea>
             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
-          </form>
+          </form> 
+           </div>
           </div>
           <br>
           <br><b>Essay 2:</b><br>
           {{ essay2_text }}
           <div class="comment">
-          <form action="#">
+	      <div>
+          <form action="submitPositiveComment" method = "post">
+		    <input type= "hidden" name = "essayeval_id" value = "{{ essayeval_id }}">
           	<label>Positive comment</label>
-            <textarea name="limitedtextarea" onKeyDown="limitText(this,this.form.countdown,140);" 
-onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
-             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
-            <input type="submit" value="Save comment"/>
-          </form>
-          <br/>
-          <form action="#">
-          	<label>Constructive comment</label>
-            <textarea name="limitedtextarea" onKeyDown="limitText(this,this.form.countdown,140);" 
+            <textarea name="pcomment" onKeyDown="limitText(this,this.form.countdown,140);" 
 onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
              <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" value="Save comment"/>
           </form>
           </div>
+          <div>
+          <form action="submitConstructiveComment" method = "post">
+	         <input type= "hidden" name = "essayeval_id" value = "{{ essayeval_id }}">
+          	<label>Constructive comment</label>
+            <textarea name="ccomment" onKeyDown="limitText(this,this.form.countdown,140);" 
+onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
+             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
+            <input type="submit" value="Save comment"/>
+          </form>
+          </div>
+          </div>
           <br><br>
+          
+          <form action="evalEssay" method="post">
+	          <input type="hidden" name="essayeval_id" value="{{ essayeval_id }}"/>
           <b>Essay 1</b>
              {% for i in range(11) %}
               <input type="radio" name="scorerange" value="{{ i/10.0 }}" class="score" {% if(i == score*10) %} checked="checked" {% endif %} /> 
