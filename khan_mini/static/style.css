@@ -150,3 +150,44 @@ table.altrowstable td {
   width: 40px;
   height: 40px;
 }
+/* data table */
+.data_table{
+	border-collapse:collapse;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	width:598px;
+}
+.data_table th{
+	border-top: 4px solid #aabcfe;
+	border-bottom: 1px solid #fff;
+	background: #b9c9fe;
+	padding:6px;
+	font-size:13px;
+}
+.data_table td{
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid transparent;
+	background: #e8edff;
+	padding:6px;
+}
+.data_table tbody tr:hover td{
+	background: #d0dafd;
+}
+/* buttons */
+#addnew{
+	border:1px solid #ccc;
+	padding:4px;
+	cursor:pointer;
+	box-shadow:1px 1px 5px #ccc;
+}
+#addnew:hover{
+	background:#CFCFCF;
+}
+.btn{
+	border:1px solid #ccc;
+	padding:2px;
+	cursor:pointer;
+	box-shadow:1px 1px 3px #ccc;
+}
+.btn:hover{
+	background:#C4C4C4;
+}

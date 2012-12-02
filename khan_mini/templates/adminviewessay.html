@@ -9,10 +9,11 @@
     <b>Submitted</b> : {{ row['submitteddatetime'] }}<br/>
     <br/>
 
-    <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ previousid }}'">Previous</button>
-    <button onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ nextid }}'">Next</button>
-    <button onclick="document.location='adminessayresults?assignmentid={{ assignmentid }}'">Up</button>
+    <button class="btn" onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ previousid }}'">&lt; Previous</button>
+    <button class="btn" onclick="document.location='adminviewessay?assignmentid={{ assignmentid }}&essayid={{ nextid }}'">Next &gt;</button>
+    <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ assignmentid }}'">Up &uarr;</button>
 
+    <br/>
     <br/>
     {{ row['essay_text'] | e }}
     <br/>
