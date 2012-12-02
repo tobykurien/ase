@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Essays for assignment {{ assignmentTitle }}{% endblock %}
+
+{% block content %}
+<div id="container">   
+    <h1>Essay for {{ assignmentTitle }}</h1>
+    <br/>
+    <b>Score</b> : {{ row['score'] }}<br/>
+    <b>Submitted</b> : {{ row['submitteddatetime'] }}<br/>
+    <br/>
+
+    <button onclick="document.location='viewessay?essayid={{ previousid }}'">Previous</button>
+    <button onclick="document.location='viewessay?essayid={{ nextid }}'">Next</button>
+    <button onclick="document.location='index'">Up</button>
+
+    <br/>
+    {{ row['essay_text'] | e }}
+    <br/>
+    
+    <table class="altrowstable">
+        <tr>
+             <th>Positive comments</th>
+        </tr>
+        {% for row in positive %}
+            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+                     <td>{{ row['comment_text'] | e }}</td>
+            </tr>   
+        {% endfor %}
+    </table>
+
+    <table class="altrowstable">
+        <tr>
+             <th>Constructive comments</th>
+        </tr>
+        {% for row in negative %}
+            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
+                     <td>{{ row['comment_text'] | e}}</td>
+            </tr>   
+        {% endfor %}
+    </table>
+
+ 
+</div>
+{% endblock %}
+
+
+
+

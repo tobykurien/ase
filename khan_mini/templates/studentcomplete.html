@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Assignment - {{ asm['title'] }}{% endblock %}
+
+{% block content %}
+<div id="container">   
+    <h1>Result of the assignment for {{ username }}</h1>
+
+      <form action="submitAssignment" method="post">
+          <input type="hidden" name="assignmentid" value="{{ asm['id'] }}"/>
+          <table>
+          <tr><td><b>Title</b></td><td>{{ asm['title'] }}</td></tr>
+          <tr><td><b>Description</b></td><td>{{ asm['description'] }}</td></tr>
+          </table>
+          <textarea name="essay_text" rows=15 cols=80 readonly="readonly">{{ essay_text }}</textarea><br> 
+          <input type="submit" name="bsubmit" value="Reload"></input>    
+      </form>
+
+    <br/><br/>
+
+</div>
+{% endblock %}
+
+
+
+
