@@ -4,7 +4,7 @@ from settings import *
 import essaylib.db as db
 import hashlib
 from essaylib.saplugin import SAEnginePlugin, SATool
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, asc
 import datetime
 import random, math
 import essaylib.scoring as scoring
@@ -94,7 +94,19 @@ class EnglishEssay(object):
         conn.execute(sql)
         print sql
         return self.index() 
-
+	
+	@cherrypy.expose
+	def submitComment(self, comment_text, comment_type, essay_id ):
+    	#username = cherrypy.session.get('username',None)
+		#if  username == None:
+		#	raise cherrypy.HTTPRedirect("/login")
+		conn = request.db
+		
+		submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
+		sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':comment_text,'comment_type':comment_type,'submitteddatetime':submitteddatetime})
+		conn.execute(sql)
+		print sql
+		return self.index();
 
     @cherrypy.expose    
     def admin(self, password=None, bsubmit=None):
@@ -117,7 +129,7 @@ class EnglishEssay(object):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         conn = request.db
-        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
+        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(asc(db.essayTable.c.student_name))
         rows = conn.execute(rowsSql).fetchall()
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
@@ -182,8 +194,12 @@ class EnglishEssay(object):
             sql = db.assignmentTable.insert().values({'title':title, 'description':description,'state':'READY','startdatetime':startdatetime})
             conn.execute(sql)
         elif oper == 'del': 
+            conn.execute("delete from comments where essay_id in (select id from essays where assignment_id = %s)" % (int(assignmentid)))
+            conn.execute("delete from essays where assignment_id = %s" % (int(assignmentid)))
+            conn.execute("delete from essay_eval where assignment_id = %s" % (int(assignmentid)))
             sql = db.assignmentTable.delete().where(db.assignmentTable.c.id == assignmentid)
             conn.execute(sql)
+            
         
         if oper in ['edit','add','del']: 
              raise cherrypy.HTTPRedirect("admin")   

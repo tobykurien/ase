@@ -4,6 +4,8 @@ drop table if exists admin;
 create table admin (
  password text);
 
+insert into admin values('54a2f7f92a5f975d8096af77a126edda7da60c5aa872ef1b871701ae');
+
 drop table if exists assignment;
 create table assignment (
  id INTEGER PRIMARY KEY,
@@ -21,6 +23,17 @@ create table essay(
  essay_text text, 
  submitteddatetime text,
  score real);
+
+
+drop table if exists comments; 
+create table comments(
+  id INTEGER PRIMARY KEY, 
+  essay_id INTEGER REFERENCES essay(id) ON DELETE CASCADE,
+  comment_text text,
+  comment_type INTEGER, 
+  submitteddatetime text
+);
+	
 
 drop table if exists essay_eval;
 create table essay_eval(
