@@ -4,7 +4,7 @@
 	<li><a href="#">Home</a></li>
 	<li><a href="#">About</a></li>
 	<li><a href="/englishessay/admin">Admin</a></li>
-	<li><a href="#">Logout</a></li>
+	<li><a href="/login">Logout</a></li>
 {% endblock %}
 {% block content %}
 <div id="container">   
@@ -21,20 +21,20 @@
           <div class="comment">
           <div>
 	      <form  action="submitPositiveComment" method = "post">
-		     <input type="hidden" name="essayeval_id" value="{{essayeval_id }}"/>
+		     <input type="hidden" name="essay_id" value="{{essay1_id }}"/>
           	<label>Positive comment</label>
             <textarea name="pcomment" onKeyDown="limitText(this.form.pcomment,this.form.countdown,140);" 
-onKeyUp="limitText(this.form.pcomment,this.form.countdown,140);"></textarea>
+onKeyUp="limitText(this.form.pcomment,this.form.countdown,140);">{{ comment1pos }}</textarea>
             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input class="btn" type="submit" value="Save comment"/>
            </form>
            </div>
          <div>
          <form action="submitConstructiveComment" method = "post">
-	         <input type= "hidden" name = "essayeval_id" value = "{{essayeval_id }}">
+	         <input type= "hidden" name = "essay_id" value = "{{essay1_id }}">
           	<label>Constructive comment</label>
             <textarea name="ccomment" onKeyDown="limitText(this.form.ccomment,this.form.countdown,140);" 
-onKeyUp="limitText(this.form.ccomment,this.form.countdown,140);"></textarea>
+onKeyUp="limitText(this.form.ccomment,this.form.countdown,140);">{{ comment1neg }}</textarea>
             <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input class="btn" type="submit" value="Save comment"/>
           </form>
@@ -45,20 +45,20 @@ onKeyUp="limitText(this.form.ccomment,this.form.countdown,140);"></textarea>
           <div class="comment">
 	      <div>
           <form action="submitPositiveComment" method = "post">
-		    <input type= "hidden" name = "essayeval_id" value = "{{ essayeval_id }}">
+		    <input type= "hidden" name = "essay_id" value = "{{ essay2_id }}">
           	<label>Positive comment</label>
             <textarea name="pcomment" onKeyDown="limitText(this,this.form.countdown,140);" 
-onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
+onKeyUp="limitText(this,this.form.countdown,140);">{{ comment2pos }}</textarea>
              <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input class="btn" type="submit" value="Save comment"/>
           </form>
           </div>
           <div>
           <form action="submitConstructiveComment" method = "post">
-	         <input type= "hidden" name = "essayeval_id" value = "{{ essayeval_id }}">
+	         <input type= "hidden" name = "essay_id" value = "{{ essay2_id }}">
           	<label>Constructive comment</label>
             <textarea name="ccomment" onKeyDown="limitText(this,this.form.countdown,140);" 
-onKeyUp="limitText(this,this.form.countdown,140);"></textarea>
+onKeyUp="limitText(this,this.form.countdown,140);">{{ comment2neg }}</textarea>
              <label class="sub">(Maximum characters: 140), you have <input readonly type="text" class="c_in" name="countdown" size="3" value="140"> characters left</label>
             <input type="submit" class="btn" value="Save comment"/>
           </form>

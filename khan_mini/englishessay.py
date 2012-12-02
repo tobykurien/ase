@@ -54,12 +54,20 @@ class EnglishEssay(object):
                     i = 0 if i == len(ids)-1 else i+1
                 else:
                     i = 0
+            essay1_id = e[i]['essay1_id']
+            essay2_id = e[i]['essay2_id']                     
             essay1_text = self.getEssayText(conn, e[i]['essay1_id'])
             essay2_text = self.getEssayText(conn, e[i]['essay2_id'])
             score2 = e[i]['score2']
             if score2 == None:
                  score2 = 0.5
-            p = {'username':username, 'essay1_text':essay1_text, 'essay2_text':essay2_text, 'essayeval_id':ids[i],'asm':a,'score':score2}  
+                 
+            comment1pos = self.getCommentText(conn, essay1_id, username, 1)     
+            comment1neg = self.getCommentText(conn, essay1_id, username, -1)     
+            comment2pos = self.getCommentText(conn, essay2_id, username, 1)     
+            comment2neg = self.getCommentText(conn, essay2_id, username, -1)                                         
+                 
+            p = {'username':username, 'essay1_text':essay1_text, 'essay2_text':essay2_text, 'essayeval_id':ids[i],'asm':a,'score':score2,'essay1_id': essay1_id,'essay2_id': essay2_id, 'comment1pos':comment1pos,'comment1neg':comment1neg, 'comment2pos':comment2pos,'comment2neg':comment2neg}  
             return env.get_template('studentmarking.html').render(p) 
         else:
             esql = db.essayTable.select(db.essayTable.c.student_name == username).order_by(desc(db.essayTable.c.submitteddatetime))
@@ -74,7 +82,20 @@ class EnglishEssay(object):
     def getEssayText(self,conn, essayid):
         esql = db.essayTable.select(db.essayTable.c.id == essayid)
         e = conn.execute(esql).fetchone()
-        return e['essay_text']
+        if(e == None):
+            result = ""
+        else:
+            result = e['essay_text']
+        return result
+
+    def getCommentText(self,conn, essayid, username, commenttype):
+        esql = "select comment_text from comments where essay_id = %s and student_name='%s' and comment_type=%s " % (essayid, username, commenttype)
+        e = conn.execute(esql).fetchone()
+        if(e == None):
+            result = ""
+        else:
+            result = e['comment_text']
+        return result
 
     @cherrypy.expose
     def evalEssay(self, scorerange, essayeval_id, bsubmit):
@@ -103,26 +124,35 @@ class EnglishEssay(object):
         return self.index() 
     
     @cherrypy.expose
-    def submitPositiveComment(self, essayeval_id, pcomment, countdown):
+    def submitPositiveComment(self, essay_id, pcomment, countdown):
         username = cherrypy.session.get('username', None)
         if  username == None:
             raise cherrypy.HTTPRedirect("/login")
         
         conn = request.db
         submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
-        sql =  db.commentTable.insert().values({'essay_id':essayeval_id, 'comment_text':pcomment,'comment_type':-1,'submitteddatetime':submitteddatetime, 'student_name':username})
+        
+        sql = "delete from comments where essay_id = %s and student_name='%s' and comment_type=1" % (int(essay_id), username)
+        conn.execute(sql)
+        
+        sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':pcomment,'comment_type':1,'submitteddatetime':submitteddatetime, 'student_name':username})
         conn.execute(sql)
         print sql
         return self.index();
     
     @cherrypy.expose
-    def submitConstructiveComment(self, essayeval_id, ccomment, countdown):
+    def submitConstructiveComment(self, essay_id, ccomment, countdown):
         username = cherrypy.session.get('username', None)
         if  username == None:
 	        raise cherrypy.HTTPRedirect("/login")
         conn = request.db
         submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
-        sql =  db.commentTable.insert().values({'essay_id':essayeval_id, 'comment_text':ccomment,'comment_type':1,'submitteddatetime':submitteddatetime, 'student_name':username})
+
+        sql = "delete from comments where essay_id = %s and student_name='%s' and comment_type=-1" % (int(essay_id), username)
+        conn.execute(sql)
+
+
+        sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':ccomment,'comment_type':-1,'submitteddatetime':submitteddatetime, 'student_name':username})
         conn.execute(sql)
         print sql
         return self.index();

@@ -38,7 +38,7 @@
 	        <tr>
 	             <th>Constructive comments</th>
 	        </tr>
-	        {% for row in negative %}
+	        {% for row in constructive %}
 	            <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
 	                     <td>{{ row['comment_text'] | e}}</td>
 	            </tr>   
