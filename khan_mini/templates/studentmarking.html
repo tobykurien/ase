@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Assignment - {{ asm['title'] }}{% endblock %}
-
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/englishessay/admin">Admin</a></li>
+	<li><a href="#">Logout</a></li>
+{% endblock %}
 {% block content %}
 <div id="container">   
     <h1>Student Marking: {{ username }}</h1>
