@@ -11,6 +11,7 @@ h1{
 body{
 	background:#ececec;
 	font-family:Verdana, Geneva, sans-serif;
+	color:#333;
 }
 #logo{
 	width:850px;
@@ -80,6 +81,16 @@ body{
 }
 .comment label{
 	display:block;
+}
+.comment textarea{
+	width:330px;
+	height:50px;
+	border-radius:3px;
+	border:1px solid #ccc;
+}
+.comment .c_in{
+	height:15px;
+	font-size:10px;
 }
 label.sub{
 	font-size:10px;
