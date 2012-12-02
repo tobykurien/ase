@@ -5,7 +5,7 @@ import essaylib.db as db
 import hashlib
 from essaylib.saplugin import SAEnginePlugin, SATool
 from sqlalchemy import and_, or_, asc, desc
-import datetime
+import datetime,time
 import random, math
 import essaylib.scoring as scoring
 import numpy
@@ -32,8 +32,14 @@ class EnglishEssay(object):
             esql = db.essayTable.select(and_(db.essayTable.c.student_name == username, db.essayTable.c.assignment_id == a['id']))
             print ">>>>>>",esql, username, a['id'], str(a)
             e = conn.execute(esql).fetchall()
+            
+            secondsSinceStarted = time.time() - time.mktime(time.strptime(a['startdatetime'],'%Y-%m-%d %H:%M:%S') )  
+            duration  = a['duration']
+            timeremaining = duration*60 - secondsSinceStarted 
+            timeremaining = int(max(timeremaining, 0))
+            
             essay_text = e[0]['essay_text'] if len(e)>0 else ''
-            return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text }) 
+            return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text,'timeremaining': timeremaining}) 
         elif 'MARKING' in state:
             a = self.activeAssignment(conn, 'MARKING')
             esql = db.essayEvalTable.select(and_(db.essayEvalTable.c.student_name == username, db.essayEvalTable.c.assignment_id == a['id'])).order_by(db.essayEvalTable.c.id)
@@ -226,18 +232,18 @@ class EnglishEssay(object):
         return result
         
     @cherrypy.expose    
-    def admineditassignment(self, oper, assignmentid=None, title=None, description=None, bsubmit=None):
+    def admineditassignment(self, oper, assignmentid=None, title=None, description=None, duration=None, bsubmit=None):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
 
         conn = request.db
         if oper == 'edit':  
             startdatetime = (datetime.datetime.now().isoformat(' '))[:19]
-            sql = db.assignmentTable.update().where(db.assignmentTable.c.id == assignmentid).values({'title':title, 'description':description,'startdatetime':startdatetime})
+            sql = db.assignmentTable.update().where(db.assignmentTable.c.id == assignmentid).values({'title':title, 'description':description,'startdatetime':startdatetime, 'duration':duration})
             conn.execute(sql)
         elif oper == 'add': 
             startdatetime = (datetime.datetime.now().isoformat(' '))[:19]
-            sql = db.assignmentTable.insert().values({'title':title, 'description':description,'state':'READY','startdatetime':startdatetime})
+            sql = db.assignmentTable.insert().values({'title':title, 'description':description,'state':'READY','startdatetime':startdatetime, 'duration':duration})
             conn.execute(sql)
         elif oper == 'del': 
             conn.execute("delete from comments where essay_id in (select id from essay where assignment_id = %s)" % (int(assignmentid)))
@@ -251,13 +257,13 @@ class EnglishEssay(object):
              raise cherrypy.HTTPRedirect("admin")   
         else:
             if oper == "addnew":
-                row = ["new","",""]
+                row = ["new","","","",15]
                 oper = 'add'
             elif oper == "toedit":  
                 sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
                 row = conn.execute(sql).fetchone()
                 oper = 'edit'
-            result = env.get_template('admineditassignments.html').render({'id':row[0],'title':row[1],'description':row[2],'oper':oper})
+            result = env.get_template('admineditassignments.html').render({'id':row[0],'title':row[1],'description':row[2],'duration':row[4],'oper':oper})
             return result
 
 
