@@ -239,11 +239,11 @@ class EnglishEssay(object):
         row = conn.execute(rowsSql).fetchone()
 
        
-        positivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == -1))
+        positivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == 1))
         positive = conn.execute(positivesql).fetchall()
         
 
-        constructivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == 1))
+        constructivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == -1))
         constructive = conn.execute(constructivesql).fetchall()
       
 
