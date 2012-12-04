@@ -10,7 +10,28 @@
 <div id="container">   
     <h1>Essays for assignment {{ assignmentTitle }}</h1>
     <button class="btn" onclick="document.location='admin'">Up</button>
+    <button class="btn" onclick="javascript:document.getElementById('calcmarksdiv').style.display = 'block';">Calculate marks</button>
     <br/>    <br/>
+    <div id="calcmarksdiv" style="display: none;">
+        <form name="calcmarks" action="submitmarks">
+            <table class="data_table">
+                 <tr>
+                    <th>Item</th><th>Lowest</th><th>Highest</th>
+                 </tr>   
+                 <tr>
+                    <td>Rank</td><td>{{ lowrank }}</td><td>{{ highrank }}</td>
+                 </tr>
+                 <tr>
+                    <td>Mark</td>
+                          <td><input type="text" name="lowmark">{{ lowmark }}</input></td>
+                          <td><input type="text" name="highmark">{{ highmark }}</input></td>
+                 </tr>
+                    
+            </table>
+            <input type="submit" value="Save">
+        </form>
+    </div>    
+    <br/>
 
     <table class="data_table">
         <tr>

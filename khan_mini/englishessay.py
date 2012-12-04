@@ -98,10 +98,19 @@ class EnglishEssay(object):
         return result
 
     @cherrypy.expose
-    def evalEssay(self, scorerange, essayeval_id, bsubmit):
+    def evalEssay(self, scorerange, essayeval_id, pcomment1, pcomment2, ccomment1, ccomment2, bsubmit,pcountdown1, pcountdown2, ccountdown2, ccountdown1, essay1_id, essay2_id ):
+        username = cherrypy.session.get('username',None)
+        if  username == None:
+             raise cherrypy.HTTPRedirect("/login")
+             
         conn = request.db
         sql = db.essayEvalTable.update().where(db.essayEvalTable.c.id == essayeval_id).values({'score1': 1.0-float(scorerange), 'score2':float(scorerange)})
         conn.execute(sql)
+        self.submitComment(essay1_id, pcomment1, 1, username)
+        self.submitComment(essay2_id, pcomment2, 1, username)
+        self.submitComment(essay1_id, ccomment1, -1, username)
+        self.submitComment(essay2_id, ccomment2, -1, username)
+        
         return self.index(essayeval_id = essayeval_id)
 
 
@@ -123,43 +132,16 @@ class EnglishEssay(object):
         print sql
         return self.index() 
     
-    @cherrypy.expose
-    def submitPositiveComment(self, essay_id, pcomment, countdown):
-        username = cherrypy.session.get('username', None)
-        if  username == None:
-            raise cherrypy.HTTPRedirect("/login")
-        
+    def submitComment(self, essay_id, pcomment, comment_type,username):
         conn = request.db
         submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
         
-        sql = "delete from comments where essay_id = %s and student_name='%s' and comment_type=1" % (int(essay_id), username)
+        sql = "delete from comments where essay_id = %s and student_name='%s' and comment_type=%s" % (int(essay_id), username, int(comment_type))
         conn.execute(sql)
         
-        sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':pcomment,'comment_type':1,'submitteddatetime':submitteddatetime, 'student_name':username})
+        sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':pcomment,'comment_type':int(comment_type),'submitteddatetime':submitteddatetime, 'student_name':username})
         conn.execute(sql)
-        print sql
-        return self.index();
     
-    @cherrypy.expose
-    def submitConstructiveComment(self, essay_id, ccomment, countdown):
-        username = cherrypy.session.get('username', None)
-        if  username == None:
-	        raise cherrypy.HTTPRedirect("/login")
-        conn = request.db
-        submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
-
-        sql = "delete from comments where essay_id = %s and student_name='%s' and comment_type=-1" % (int(essay_id), username)
-        conn.execute(sql)
-
-
-        sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':ccomment,'comment_type':-1,'submitteddatetime':submitteddatetime, 'student_name':username})
-        conn.execute(sql)
-        print sql
-        return self.index();
-        
-    
-
-
     @cherrypy.expose    
     def viewessay(self, essayid):
         username = cherrypy.session.get('username',None)
@@ -215,7 +197,7 @@ class EnglishEssay(object):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         conn = request.db
-        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(asc(db.essayTable.c.student_name))
+        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(desc(db.essayTable.c.score))
         
         rows = conn.execute(rowsSql).fetchall()
         results = []
