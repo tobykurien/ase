@@ -22,7 +22,7 @@ for row in rows:
     if(len(rootcat) != 1):
         print "Something went wrong - more than one parent for %s,%s" % row
         continue
-    for month in ('January','February'):    
+    for month in ('January','February','March'):    
         c.execute("select id from %sgrade_categories where courseid = %s and parent=%s and fullname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], month))  
         rst = c.fetchall()
         if(len(rst)==0):
@@ -42,5 +42,9 @@ for row in rows:
             lastid = c.fetchone()[0]
             c.execute("""update %sgrade_categories set path='%s' where id = %s""" % (PREFIX, rtcat[3] + str(lastid)+"/", lastid))
             conn.commit()
-    
+            monthid = lastid
+        else:
+            monthid = rst[0][0]     
+        for day in range(1,32):
+            c.execute("select id from %sgrade_items where courseid = %s and parent=%s and fullname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], month))           
 
