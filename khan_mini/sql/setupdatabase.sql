@@ -23,7 +23,8 @@ create table essay(
  student_name text,
  essay_text text, 
  submitteddatetime text,
- score real);
+ score real,
+ grade real);
 
 
 drop table if exists comments; 

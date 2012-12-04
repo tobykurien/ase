@@ -13,18 +13,19 @@
     <button class="btn" onclick="javascript:document.getElementById('calcmarksdiv').style.display = 'block';">Calculate marks</button>
     <br/>    <br/>
     <div id="calcmarksdiv" style="display: none;">
-        <form name="calcmarks" action="submitmarks">
+        <form name="calcmarks" action="adminsubmitmarks">
+            <input type="hidden" name="assignmentid" value="{{ assignmentid }}"/>
             <table class="data_table">
                  <tr>
                     <th>Item</th><th>Lowest</th><th>Highest</th>
                  </tr>   
                  <tr>
-                    <td>Rank</td><td>{{ lowrank }}</td><td>{{ highrank }}</td>
+                    <td>Score</td><td>{{ lowscore }}</td><td>{{ highscore }}</td>
                  </tr>
                  <tr>
-                    <td>Mark</td>
-                          <td><input type="text" name="lowmark">{{ lowmark }}</input></td>
-                          <td><input type="text" name="highmark">{{ highmark }}</input></td>
+                    <td>Grade</td>
+                          <td><input type="text" name="lowgrade" value="{{ lowgrade }}"/></td>
+                          <td><input type="text" name="highgrade" value="{{ highgrade }}"/></td>
                  </tr>
                     
             </table>
@@ -35,13 +36,13 @@
 
     <table class="data_table">
         <tr>
-        {% for col in ['Student','Submitted','Score','Essay','Comment Count','Action'] %}
+        {% for col in ['Student','Submitted','Score','Grade','Essay','Comment Count','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-                {% for key in ['student_name','submitteddatetime','score'] %}
+                {% for key in ['student_name','submitteddatetime','score','grade'] %}
                      <td>{{ row[key] }}</td>
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>

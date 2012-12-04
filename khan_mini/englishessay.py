@@ -203,15 +203,30 @@ class EnglishEssay(object):
         results = []
         
         for row in rows:
-            result_row = {'id':row['id'],'student_name':row['student_name'], 'score':row['score'], 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
-         
+            result_row = {'id':row['id'],'student_name':row['student_name'], 'score':round(row['score'],2), 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
+            if row['grade'] == None: 
+                result_row['grade'] =None 
+            else: 
+                result_row['grade'] = round(row['grade'],0)
             essayid =  row['id']
             result_row['comment_count'] = self.getCommentCount(conn, essayid)
-            results.append(result_row) 			
+            results.append(result_row) 	
+            		
+        lowscore = round(results[len(rows)-1]['score'],2)
+        highscore = round(results[0]['score'],2)
+        lowgrade =  results[len(rows)-1]['grade']
+        highgrade =  results[0]['grade']
+        
+        if lowgrade == None:
+            lowgrade = 40
+        if highgrade == None:
+            highgrade = 80    
+ 
+ 
 
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
-        result = env.get_template('adminessayresults.html').render({'rows':results, 'assignmentTitle':assignmentTitle,'assignmentid':assignmentid })
+        result = env.get_template('adminessayresults.html').render({'rows':results, 'assignmentTitle':assignmentTitle,'assignmentid':assignmentid, 'lowscore':lowscore, 'highscore':highscore, 'lowgrade':lowgrade, 'highgrade':highgrade })
         return result
     
     
@@ -307,8 +322,8 @@ class EnglishEssay(object):
                 oper = 'edit'
             result = env.get_template('admineditassignments.html').render({'id':row[0],'title':row[1],'description':row[2],'duration':row[4],'oper':oper})
             return result
-
-
+    
+    
     def adminchangestate(self, state, assignmentid):
         conn = request.db
         state = state.upper()
@@ -358,7 +373,7 @@ class EnglishEssay(object):
             c = scoring.colley(A)
             c1 = scoring.standardize(c)
             for i,id in enumerate(ids):
-                sql = db.essayTable.update().where(db.essayTable.c.id == id).values({'score': c1[i]})
+                sql = db.essayTable.update().where(db.essayTable.c.id == id).values({'score': c1[i], 'grade':None})
                 conn.execute(sql)   
                 
 
@@ -398,7 +413,25 @@ class EnglishEssay(object):
             essayIndex += 1
         return result
 
-
+    @cherrypy.expose    
+    def adminsubmitmarks(self, assignmentid, lowgrade, highgrade):
+        if cherrypy.session.get('admin',None) == None:
+             return env.get_template('adminlogin.html').render()
+        conn = request.db
+        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(desc(db.essayTable.c.score))
+        
+        rows = conn.execute(rowsSql).fetchall()
+        lowscore = round(rows[len(rows)-1]['score'],2)
+        highscore = round(rows[0]['score'],2)
+        highgrade = float(highgrade)
+        lowgrade = float(lowgrade)
+        
+        for row in rows:
+            grade = (row['score']-lowscore)/(highscore-lowscore)*(highgrade - lowgrade) + lowgrade
+            sql = db.essayTable.update().where(db.essayTable.c.id == row['id']).values({'grade':grade})
+            conn.execute(sql)
+        
+        raise cherrypy.HTTPRedirect("admin")   
 
 def getPasswordHash(conn):
     return conn.execute(db.adminTable.select()).fetchone()['password']
