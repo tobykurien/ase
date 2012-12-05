@@ -18,8 +18,13 @@
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-                {% for key in ['submitteddatetime','score','grade'] %}
-                     <td>{{ row[key] }}</td>
+                <td>{{row['submitteddatetime'] }}</td>
+                {% for key in ['score','grade'] %}
+                    {% if row[key] == None %}
+                        <td>{{ row[key] }}</td>
+                     {% else %}
+                        <td>{{ row[key] | round }}</td>                     
+                     {% endif %}
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>
                 <td><button class="btn" onclick="document.location='viewessay?essayid={{ row['id'] }}'">View</button></a></td>
