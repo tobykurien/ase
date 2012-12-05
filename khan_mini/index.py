@@ -22,7 +22,7 @@ class KhanAcademyMini(object):
   
 
     @cherrypy.expose
-    def login(self, username=None, **args):
+    def login(self, username=None,pm=0, **args):
         global user
         if username == None:
             user = None
@@ -30,7 +30,10 @@ class KhanAcademyMini(object):
             return tmpl.render({})
         tmpl = env.get_template('landing.html')
         cherrypy.session['username'] = username;
-        return tmpl.render()   
+        if int(pm) == 1:
+           raise cherrypy.HTTPRedirect("/englishessay/index")
+        else:   
+            return tmpl.render()   
 
     @cherrypy.expose
     def khan(self):
