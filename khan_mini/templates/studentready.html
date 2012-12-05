@@ -12,13 +12,13 @@
     <p>Here is a list of your previous assignments
     <table class="data_table">
         <tr>
-        {% for col in ['Submitted','Score','Essay','Action'] %}
+        {% for col in ['Submitted','Score','Grade','Essay','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-                {% for key in ['submitteddatetime','score'] %}
+                {% for key in ['submitteddatetime','score','grade'] %}
                      <td>{{ row[key] }}</td>
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>

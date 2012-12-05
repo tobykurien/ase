@@ -1,10 +1,16 @@
 import MySQLdb as mdb
 import time
+import sys
+
+if(len(sys.argv) < 2):
+    print "Usage: python create_gradeitems_daily.py COURSEID"
+    sys.exit(0)
+courseid = sys.argv[1]   
 
 MOODLE_DB = 'moodle'
 USER = 'moodleuser'
 PASSWORD='moodlepass'
-SERVER = '192.168.1.10'
+SERVER = '192.168.56.2'
 PREFIX = 'mdl_'
 
 conn = mdb.connect(SERVER, USER, PASSWORD, MOODLE_DB);
@@ -46,5 +52,15 @@ for row in rows:
         else:
             monthid = rst[0][0]     
         for day in range(1,32):
-            c.execute("select id from %sgrade_items where courseid = %s and parent=%s and fullname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], month))           
+            itemname = month[:3] +"-%.2d" % day 
+            c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], itemname))           
+            rst = c.fetchall()
+            if(len(rst)==0): # does not exist
+                gradeitem = [courseid, monthid, itemname, "manual", 1,100,0,int(time.time()), int(time.time())]                
+                c.execute("insert into "+PREFIX+"""grade_items (
+                       courseid,categoryid,itemname,itemtype,
+                       gradetype,grademax,grademin,                       
+                       timecreated,timemodified) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """,gradeitem)
+                conn.commit()
+               
 
