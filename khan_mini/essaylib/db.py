@@ -13,8 +13,8 @@ commentTable = Table('comments', metadata, autoload = True, autoload_with= engin
 def _fk_pragma_on_connect(dbapi_con, con_record):
     dbapi_con.execute('pragma foreign_keys=ON')
 
-from sqlalchemy import event
-event.listen(engine, 'connect', _fk_pragma_on_connect)
+#from sqlalchemy import event
+#event.listen(engine, 'connect', _fk_pragma_on_connect)
 
 
 
