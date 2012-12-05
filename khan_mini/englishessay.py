@@ -347,6 +347,7 @@ class EnglishEssay(object):
                  repetitions = int(math.floor(maxCombinations / N))
             if repetitions >= 1:
                 pairs = self.assignPairs(N, repetitions)
+                print "pairs>>>>",pairs
                 for i in range(N):
                     for j in range(repetitions):
                         student_name = essays[i]['student_name']
@@ -361,6 +362,7 @@ class EnglishEssay(object):
             e = conn.execute(esql)
             essays = conn.execute(esql).fetchall()
             ids = [i['id'] for i in essays]
+            print 'ids>>>>>',ids
 
             esql = db.essayEvalTable.select(db.essayEvalTable.c.assignment_id == assignmentid)
             e = conn.execute(esql).fetchall()
