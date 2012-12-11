@@ -2,10 +2,10 @@ import MySQLdb as mdb
 import time
 import sys
 
-if(len(sys.argv) < 2):
+"""if(len(sys.argv) < 2):
     print "Usage: python create_gradeitems_daily.py COURSEID"
     sys.exit(0)
-courseid = sys.argv[1]   
+courseid = sys.argv[1]   """
 
 MOODLE_DB = 'moodle'
 USER = 'moodleuser'
@@ -23,7 +23,7 @@ def makeCat(courseid,catname):
     rootcat = c.fetchall()
     if(len(rootcat) != 1):
         print "Something went wrong - more than one parent for %s,%s" % (courseid,catname)
-        continue
+        raise Exception("Stopped!")
     rootcatid = rootcat[0][0]
     c.execute("select id from %sgrade_categories where courseid = %s and parent=%s and fullname='%s'  ;" % (PREFIX, courseid, rootcatid, catname))  
     rst = c.fetchall()
@@ -63,3 +63,6 @@ def makeGradeItem(courseid,rootcatid,catid,gradenames,grademax, grademin):
             conn.commit()
            
 
+rootcatid,catid = makeCat(12,"Unit 1_Fables with Clear Morals")
+gradenames = ["Author\\'s Message","Thin Clarifying Questions","Author\\'s Message 2","Thick Questions","Theme","Author\\'s Message 3","Author\\'s Message Quiz (Question 1)","Questioning Quiz (Question 2)","Connections Quiz (Question 3)","Author\\'s Message 2 Quiz (Question 4)","Connections 2 Quiz (Question 5)","Theme Quiz (Question 6)"]
+makeGradeItem(12,rootcatid,catid,gradenames,[2]*len(gradenames), [0]*len(gradenames))
