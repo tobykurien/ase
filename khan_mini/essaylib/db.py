@@ -3,7 +3,8 @@ from sqlalchemy import create_engine
 from settings import *
 
 metadata = MetaData()
-engine = create_engine('sqlite:///%s' % ESSAY_DB, echo=True)
+engine = create_engine("mysql://veesda:veesdap4s5@localhost/veesda",
+                isolation_level="READ UNCOMMITTED", echo=True)
 assignmentTable = Table('assignment', metadata, autoload = True, autoload_with= engine)
 adminTable = Table('admin', metadata, autoload = True, autoload_with= engine)
 essayTable = Table('essay', metadata, autoload = True, autoload_with= engine)
