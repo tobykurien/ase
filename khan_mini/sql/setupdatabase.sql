@@ -8,7 +8,7 @@ insert into admin values('54a2f7f92a5f975d8096af77a126edda7da60c5aa872ef1b871701
 
 drop table if exists assignment;
 create table assignment (
- id INTEGER PRIMARY KEY,
+ id INTEGER PRIMARY KEY AUTO_INCREMENT,
  title varchar(100),
  description varchar(255),
  state varchar(255),
@@ -18,7 +18,7 @@ create table assignment (
 
 drop table if exists essay;
 create table essay(
- id INTEGER PRIMARY KEY,
+ id INTEGER PRIMARY KEY AUTO_INCREMENT,
  assignment_id INTEGER REFERENCES assignment(id) ON DELETE CASCADE,
  student_name varchar(255),
  essay_text varchar(4096), 
@@ -29,7 +29,7 @@ create table essay(
 
 drop table if exists comments; 
 create table comments(
-  id INTEGER PRIMARY KEY, 
+  id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   essay_id INTEGER REFERENCES essay(id) ON DELETE CASCADE,
   comment_text varchar(4096),
   comment_type INTEGER, 
@@ -40,7 +40,7 @@ create table comments(
 
 drop table if exists essay_eval;
 create table essay_eval(
- id INTEGER PRIMARY KEY AUTOINCREMENT,
+ id INTEGER PRIMARY KEY AUTO_INCREMENT,
  assignment_id INTEGER REFERENCES assignment(id) ON DELETE CASCADE,
  student_name varchar(255),
  essay1_id integer,

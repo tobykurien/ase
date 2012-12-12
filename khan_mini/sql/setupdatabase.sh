@@ -4,4 +4,4 @@
 #sqlite3 ../db/englishessay.db < loadsampledata.sql   
 
 mysql -u veesda -p veesda < setupdatabase.sql   
-#mysql -u veesda -p veesda < loadsampledata.sql   
+mysql -u veesda -p veesda < loadsampledata.sql   

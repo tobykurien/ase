@@ -26,7 +26,7 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.dbpath = dbpath
  
     def start(self):
-        self.sa_engine = create_engine('sqlite:///%s' % self.dbpath, echo=True)
+        self.sa_engine = create_engine(self.dbpath, echo=True)
         #Base.metadata.create_all(self.sa_engine)
  
     def stop(self):

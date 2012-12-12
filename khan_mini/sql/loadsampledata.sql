@@ -14,6 +14,10 @@ insert into comments(id, essay_id,comment_text,comment_type, submitteddatetime,s
 insert into comments(id, essay_id,comment_text,comment_type, submitteddatetime,student_name) values (5,2,"You da best2!",1,'2012-06-18 12:00:00','s1');
 insert into comments(id, essay_id,comment_text,comment_type, submitteddatetime,student_name) values (6,3,"You da best3!",1,'2012-06-18 12:00:00','s2');
 
+ALTER TABLE assignment AUTO_INCREMENT = 4;
+ALTER TABLE essay AUTO_INCREMENT = 7;
+ALTER TABLE comments AUTO_INCREMENT = 7;
+
 
 
 
