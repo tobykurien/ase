@@ -42,7 +42,7 @@ class EnglishEssay(object):
 
         
     @cherrypy.expose    
-    def index(self, username=None, essayeval_id=None):
+    def index(self, username=None, essayeval_id=None, saved="0"):
         if username == None:
             username = cherrypy.session.get('username', None)
             if username == None:
@@ -61,7 +61,7 @@ class EnglishEssay(object):
             timeremaining = int(max(timeremaining, 0))
             
             essay_text = e[0]['essay_text'] if len(e)>0 else ''
-            return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text,'timeremaining': timeremaining}) 
+            return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text,'timeremaining': timeremaining, 'saved':saved}) 
         elif state=='MARKING':
             a = self.activeAssignment(conn, 'MARKING')
             esql = db.essayEvalTable.select(and_(db.essayEvalTable.c.student_name == username, db.essayEvalTable.c.assignment_id == a['id'])).order_by(db.essayEvalTable.c.id)
@@ -149,9 +149,7 @@ class EnglishEssay(object):
             submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
             sql = db.essayTable.insert().values({'student_name':username,'assignment_id':assignmentid,'essay_text':essay_text,'submitteddatetime':submitteddatetime})
             conn.execute(sql)
-            #cherrypy.session['essay_id'] = essay_id;
-            print sql
-        return self.index() 
+        raise cherrypy.HTTPRedirect("index?saved=1")
     
     def submitComment(self, essay_id, pcomment, comment_type,username):
         conn = request.db
