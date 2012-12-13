@@ -1,5 +1,6 @@
 import cherrypy
 from cherrypy import request
+from cherrypy import _cperror
 from settings import *
 import essaylib.db as db
 import hashlib
@@ -16,7 +17,29 @@ MARKINGREPETITIONS = 3
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('templates'))
 
-class EnglishEssay(object):       
+        
+def handle_error():
+    cherrypy.response.status = 500
+    cherrypy.response.body = [env.get_template('error.html').render({'error':_cperror.format_exc()}) ]
+
+
+class EnglishEssay(object):   
+    _cp_config = {'request.error_response': handle_error}     
+
+    def getState(self):
+        conn = request.db
+        sql = "select distinct state from assignment"
+        state = [s['state'] for s in conn.execute(sql).fetchall()]
+        states = [s for s in state if s not in ('READY','COMPLETED')]
+        result = None
+        if(len(states)>1):
+            raise Exception("State error:",states)
+        elif len(states)==0:
+            result = 'READY'
+        else:    
+            result = states[0]  
+        return result
+
         
     @cherrypy.expose    
     def index(self, username=None, essayeval_id=None):
@@ -25,9 +48,8 @@ class EnglishEssay(object):
             if username == None:
                 raise cherrypy.HTTPRedirect("/login")
         conn = request.db
-        sql = "select distinct state from assignment"
-        state = [s['state'] for s in conn.execute(sql).fetchall()]
-        if 'BUSY' in state:
+        state = self.getState()
+        if state=='BUSY':
             a = self.activeAssignment(conn, 'BUSY')
             esql = db.essayTable.select(and_(db.essayTable.c.student_name == username, db.essayTable.c.assignment_id == a['id']))
             print ">>>>>>",esql, username, a['id'], str(a)
@@ -40,7 +62,7 @@ class EnglishEssay(object):
             
             essay_text = e[0]['essay_text'] if len(e)>0 else ''
             return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text,'timeremaining': timeremaining}) 
-        elif 'MARKING' in state:
+        elif state=='MARKING':
             a = self.activeAssignment(conn, 'MARKING')
             esql = db.essayEvalTable.select(and_(db.essayEvalTable.c.student_name == username, db.essayEvalTable.c.assignment_id == a['id'])).order_by(db.essayEvalTable.c.id)
             e = conn.execute(esql).fetchall()
@@ -102,17 +124,15 @@ class EnglishEssay(object):
         username = cherrypy.session.get('username',None)
         if  username == None:
              raise cherrypy.HTTPRedirect("/login")
-             
-        conn = request.db
-        sql = db.essayEvalTable.update().where(db.essayEvalTable.c.id == essayeval_id).values({'score1': 1.0-float(scorerange), 'score2':float(scorerange)})
-        conn.execute(sql)
-        self.submitComment(essay1_id, pcomment1, 1, username)
-        self.submitComment(essay2_id, pcomment2, 1, username)
-        self.submitComment(essay1_id, ccomment1, -1, username)
-        self.submitComment(essay2_id, ccomment2, -1, username)
-        
+        if(self.getState() == 'MARKING'):     
+            conn = request.db
+            sql = db.essayEvalTable.update().where(db.essayEvalTable.c.id == essayeval_id).values({'score1': 1.0-float(scorerange), 'score2':float(scorerange)})
+            conn.execute(sql)
+            self.submitComment(essay1_id, pcomment1, 1, username)
+            self.submitComment(essay2_id, pcomment2, 1, username)
+            self.submitComment(essay1_id, ccomment1, -1, username)
+            self.submitComment(essay2_id, ccomment2, -1, username)
         return self.index(essayeval_id = essayeval_id)
-
 
 
     @cherrypy.expose
@@ -120,16 +140,17 @@ class EnglishEssay(object):
         username = cherrypy.session.get('username',None)
         if  username == None:
              raise cherrypy.HTTPRedirect("/login")
-        conn = request.db
+        if(self.getState() == 'BUSY'):     
+            conn = request.db
 
-        sql = db.essayTable.delete().where(and_(db.essayTable.c.assignment_id == assignmentid,db.essayTable.c.student_name == username))
-        conn.execute(sql)
+            sql = db.essayTable.delete().where(and_(db.essayTable.c.assignment_id == assignmentid,db.essayTable.c.student_name == username))
+            conn.execute(sql)
 
-        submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
-        sql = db.essayTable.insert().values({'student_name':username,'assignment_id':assignmentid,'essay_text':essay_text,'submitteddatetime':submitteddatetime})
-        conn.execute(sql)
-        #cherrypy.session['essay_id'] = essay_id;
-        print sql
+            submitteddatetime = (datetime.datetime.now().isoformat(' '))[:19]
+            sql = db.essayTable.insert().values({'student_name':username,'assignment_id':assignmentid,'essay_text':essay_text,'submitteddatetime':submitteddatetime})
+            conn.execute(sql)
+            #cherrypy.session['essay_id'] = essay_id;
+            print sql
         return self.index() 
     
     def submitComment(self, essay_id, pcomment, comment_type,username):
@@ -138,9 +159,9 @@ class EnglishEssay(object):
         
         sql = "delete from comments where essay_id = %s and student_name='%s' and comment_type=%s" % (int(essay_id), username, int(comment_type))
         conn.execute(sql)
-        
-        sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':pcomment,'comment_type':int(comment_type),'submitteddatetime':submitteddatetime, 'student_name':username})
-        conn.execute(sql)
+        if(len(pcomment.strip())):
+            sql =  db.commentTable.insert().values({'essay_id':essay_id, 'comment_text':pcomment,'comment_type':int(comment_type),'submitteddatetime':submitteddatetime, 'student_name':username})
+            conn.execute(sql)
     
     @cherrypy.expose    
     def viewessay(self, essayid):
@@ -192,6 +213,12 @@ class EnglishEssay(object):
         result = env.get_template('adminassignments.html').render({'rows':rows})
         return result
 
+
+    def saferound(self,aFloat, dec):
+        if aFloat != None:
+             aFloat = round(aFloat, dec)
+        return aFloat     
+
     @cherrypy.expose    
     def adminessayresults(self, assignmentid):
         if cherrypy.session.get('admin',None) == None:
@@ -203,7 +230,7 @@ class EnglishEssay(object):
         results = []
         
         for row in rows:
-            result_row = {'id':row['id'],'student_name':row['student_name'], 'score':round(row['score'],2), 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
+            result_row = {'id':row['id'],'student_name':row['student_name'], 'score':self.saferound(row['score'],2), 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
             if row['grade'] == None: 
                 result_row['grade'] =None 
             else: 
@@ -212,8 +239,8 @@ class EnglishEssay(object):
             result_row['comment_count'] = self.getCommentCount(conn, essayid)
             results.append(result_row) 	
             		
-        lowscore = round(results[len(rows)-1]['score'],2)
-        highscore = round(results[0]['score'],2)
+        lowscore = self.saferound(results[len(rows)-1]['score'],2)
+        highscore = self.saferound(results[0]['score'],2)
         lowgrade =  results[len(rows)-1]['grade']
         highgrade =  results[0]['grade']
         
@@ -367,15 +394,16 @@ class EnglishEssay(object):
             esql = db.essayEvalTable.select(db.essayEvalTable.c.assignment_id == assignmentid)
             e = conn.execute(esql).fetchall()
             A = numpy.matrix(numpy.zeros((len(ids),len(ids))))
+
             for i in e:
                 row = ids.index(i['essay1_id'])
                 col = ids.index(i['essay2_id'])
-                A[row,col] = i['score1']
-                A[col,row] = i['score2']
+                A[row,col] = i['score2']
+                A[col,row] = i['score1']
             c = scoring.colley(A)
             c1 = scoring.standardize(c)
             for i,id in enumerate(ids):
-                sql = db.essayTable.update().where(db.essayTable.c.id == id).values({'score': c1[i], 'grade':None})
+                sql = db.essayTable.update().where(db.essayTable.c.id == id).values({'score': float(c1[i]), 'grade':None})
                 conn.execute(sql)   
                 
 
@@ -423,17 +451,20 @@ class EnglishEssay(object):
         rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(desc(db.essayTable.c.score))
         
         rows = conn.execute(rowsSql).fetchall()
-        lowscore = round(rows[len(rows)-1]['score'],2)
-        highscore = round(rows[0]['score'],2)
+        lowscore = self.saferound(rows[len(rows)-1]['score'],2)
+        highscore = self.saferound(rows[0]['score'],2)
         highgrade = float(highgrade)
         lowgrade = float(lowgrade)
         
         for row in rows:
-            grade = (row['score']-lowscore)/(highscore-lowscore)*(highgrade - lowgrade) + lowgrade
+            score = float(row['score'])
+            grade = (score-lowscore)/(highscore-lowscore)*(highgrade - lowgrade) + lowgrade
             sql = db.essayTable.update().where(db.essayTable.c.id == row['id']).values({'grade':grade})
             conn.execute(sql)
         
-        raise cherrypy.HTTPRedirect("admin")   
+        raise cherrypy.HTTPRedirect("admin")  
+        
+
 
 def getPasswordHash(conn):
     return conn.execute(db.adminTable.select()).fetchone()['password']
