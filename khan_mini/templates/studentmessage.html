@@ -4,14 +4,13 @@
 	<li><a href="#">Home</a></li>
 	<li><a href="#">About</a></li>
 	<li><a href="/englishessay/admin">Admin</a></li>
-	<li><a href="/login">Logout</a></li>	
+    <li><a href="/login">Logout</a></li>
 {% endblock %}
 
 {% block content %}
-    <h1>System error - please call the teacher</h1>
+    <h1>{{ username }} - {{ heading }}</h1>
     <br/>
-    <b>Technical details</b><br/>
-    <pre>{{ error }}</pre>
+    <p>{{ message }}
 {% endblock %}
 
 

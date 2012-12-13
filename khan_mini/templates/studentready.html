@@ -12,14 +12,14 @@
     <p>Here is a list of your previous assignments
     <table class="data_table">
         <tr>
-        {% for col in ['Submitted','Score','Grade','Essay','Action'] %}
+        {% for col in ['Submitted','Grade','Essay','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
                 <td>{{row['submitteddatetime'] }}</td>
-                {% for key in ['score','grade'] %}
+                {% for key in ['grade'] %}
                     {% if row[key] == None %}
                         <td>{{ row[key] }}</td>
                      {% else %}

@@ -52,7 +52,6 @@ class EnglishEssay(object):
         if state=='BUSY':
             a = self.activeAssignment(conn, 'BUSY')
             esql = db.essayTable.select(and_(db.essayTable.c.student_name == username, db.essayTable.c.assignment_id == a['id']))
-            print ">>>>>>",esql, username, a['id'], str(a)
             e = conn.execute(esql).fetchall()
             
             secondsSinceStarted = time.time() - time.mktime(time.strptime(a['startdatetime'],'%Y-%m-%d %H:%M:%S') )  
@@ -64,8 +63,11 @@ class EnglishEssay(object):
             return env.get_template('studentbusy.html' ).render({'username':username, 'asm':a,'essay_text':essay_text,'timeremaining': timeremaining, 'saved':saved}) 
         elif state=='MARKING':
             a = self.activeAssignment(conn, 'MARKING')
+            done = False
             esql = db.essayEvalTable.select(and_(db.essayEvalTable.c.student_name == username, db.essayEvalTable.c.assignment_id == a['id'])).order_by(db.essayEvalTable.c.id)
             e = conn.execute(esql).fetchall()
+            if(len(e)==0):
+                return env.get_template('studentmessage.html').render({'username':username,'heading':'No essays to mark','message':'Maybe you logged in with the wrong username?'})    
             ids = [i['id'] for i in e]
             if essayeval_id == None:
                 i = 0
@@ -73,7 +75,10 @@ class EnglishEssay(object):
                 evalid = int(essayeval_id)
                 if evalid in ids:
                     i = ids.index(evalid)
-                    i = 0 if i == len(ids)-1 else i+1
+                    if i == len(ids)-1:
+                       done = True
+                    else:
+                       i = i + 1   
                 else:
                     i = 0
             essay1_id = e[i]['essay1_id']
@@ -83,14 +88,16 @@ class EnglishEssay(object):
             score2 = e[i]['score2']
             if score2 == None:
                  score2 = 0.5
-                 
-            comment1pos = self.getCommentText(conn, essay1_id, username, 1)     
-            comment1neg = self.getCommentText(conn, essay1_id, username, -1)     
-            comment2pos = self.getCommentText(conn, essay2_id, username, 1)     
-            comment2neg = self.getCommentText(conn, essay2_id, username, -1)                                         
-                 
-            p = {'username':username, 'essay1_text':essay1_text, 'essay2_text':essay2_text, 'essayeval_id':ids[i],'asm':a,'score':score2,'essay1_id': essay1_id,'essay2_id': essay2_id, 'comment1pos':comment1pos,'comment1neg':comment1neg, 'comment2pos':comment2pos,'comment2neg':comment2neg}  
-            return env.get_template('studentmarking.html').render(p) 
+            if not done:     
+                comment1pos = self.getCommentText(conn, essay1_id, username, 1)     
+                comment1neg = self.getCommentText(conn, essay1_id, username, -1)     
+                comment2pos = self.getCommentText(conn, essay2_id, username, 1)     
+                comment2neg = self.getCommentText(conn, essay2_id, username, -1)                                         
+                     
+                p = {'username':username, 'essay1_text':essay1_text, 'essay2_text':essay2_text, 'essayeval_id':ids[i],'asm':a,'score':score2,'essay1_id': essay1_id,'essay2_id': essay2_id, 'comment1pos':comment1pos,'comment1neg':comment1neg, 'comment2pos':comment2pos,'comment2neg':comment2neg}  
+                return env.get_template('studentmarking.html').render(p) 
+            else:
+                return env.get_template('studentmessage.html').render({'username':username,'heading':'Done marking','message':'Well done!'})    
         else:
             esql = db.essayTable.select(db.essayTable.c.student_name == username).order_by(desc(db.essayTable.c.submitteddatetime))
             rows = conn.execute(esql).fetchall()
@@ -208,7 +215,9 @@ class EnglishEssay(object):
                 return env.get_template('adminlogin.html').render() 
         rowSql = db.assignmentTable.select().order_by(db.assignmentTable.c.id.desc())
         rows = conn.execute(rowSql).fetchall()
-        result = env.get_template('adminassignments.html').render({'rows':rows})
+        message = cherrypy.session.get('message','')
+        cherrypy.session['message'] = ''
+        result = env.get_template('adminassignments.html').render({'rows':rows,'message':message})
         return result
 
 
@@ -357,11 +366,13 @@ class EnglishEssay(object):
     def adminchangestate(self, state, assignmentid):
         conn = request.db
         state = state.upper()
+        message = "Updated assignment"
         busy = False
         if state == 'BUSY':
             sql = db.assignmentTable.select(or_(db.assignmentTable.c.state == 'BUSY',db.assignmentTable.c.state == 'MARKING'))
             r = conn.execute(sql).fetchall()
             if(len(r) != 0):
+                message = "Only one assignment can be active at any time"
                 busy = True
   
         if state == 'MARKING':
@@ -377,7 +388,6 @@ class EnglishEssay(object):
                  repetitions = int(math.floor(maxCombinations / N))
             if repetitions >= 1:
                 pairs = self.assignPairs(N, repetitions)
-                print "pairs>>>>",pairs
                 for i in range(N):
                     for j in range(repetitions):
                         student_name = essays[i]['student_name']
@@ -388,26 +398,36 @@ class EnglishEssay(object):
                         conn.execute(esql)
         
         if state == "COMPLETED":
-            esql = "select id from essay where assignment_id = %s order by id" % (int(assignmentid)) #db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
-            e = conn.execute(esql)
-            essays = conn.execute(esql).fetchall()
-            ids = [i['id'] for i in essays]
-            print 'ids>>>>>',ids
-
-            esql = db.essayEvalTable.select(db.essayEvalTable.c.assignment_id == assignmentid)
+            esql = db.essayEvalTable.select(and_(db.essayEvalTable.c.assignment_id == assignmentid, or_(db.essayEvalTable.c.score1 == None,db.essayEvalTable.c.score2 == None)))
             e = conn.execute(esql).fetchall()
-            A = numpy.matrix(numpy.zeros((len(ids),len(ids))))
+            if(len(e)>0):
+                 message = "Not all students finished marking : click on VIEW to see which students are still outstanding"
+                 busy = True # prevent transition to the next state
+            else:             
+                esql = "select id from essay where assignment_id = %s order by id" % (int(assignmentid)) #db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
+                e = conn.execute(esql)
+                essays = conn.execute(esql).fetchall()
+                ids = [i['id'] for i in essays]
 
-            for i in e:
-                row = ids.index(i['essay1_id'])
-                col = ids.index(i['essay2_id'])
-                A[row,col] = i['score2']
-                A[col,row] = i['score1']
-            c = scoring.colley(A)
-            c1 = scoring.standardize(c)
-            for i,id in enumerate(ids):
-                sql = db.essayTable.update().where(db.essayTable.c.id == id).values({'score': float(c1[i]), 'grade':None})
-                conn.execute(sql)   
+                esql = db.essayEvalTable.select(db.essayEvalTable.c.assignment_id == assignmentid)
+                e = conn.execute(esql).fetchall()
+                A = numpy.matrix(numpy.zeros((len(ids),len(ids))))
+
+                for i in e:
+                    print i
+                    row = ids.index(i['essay1_id'])
+                    col = ids.index(i['essay2_id']) 
+                    s1 = i['score1'] 
+                    s2 = i['score2']
+                    if s1 == None: s1 = 0.5
+                    if s2 == None: s2 = 0.5
+                    A[row,col] = s2
+                    A[col,row] = s1
+                c = scoring.colley(A)
+                c1 = scoring.standardize(c)
+                for i,id in enumerate(ids):
+                    sql = db.essayTable.update().where(db.essayTable.c.id == id).values({'score': float(c1[i]), 'grade':None})
+                    conn.execute(sql)   
                 
 
         if not busy:        
@@ -416,20 +436,23 @@ class EnglishEssay(object):
             conn.execute(sql)
 
 
-        raise cherrypy.HTTPRedirect("admin")   
+        return message
 
     @cherrypy.expose    
     def adminopassignment(self, assignmentid,oper):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         if oper=='busy':
-            return self.adminchangestate('BUSY',assignmentid)
+            message = self.adminchangestate('BUSY',assignmentid)
         if oper=='ready':
-            return self.adminchangestate('READY',assignmentid)
+            message = self.adminchangestate('READY',assignmentid)
         if oper=='marking':
-            return self.adminchangestate('MARKING',assignmentid)
+            message = self.adminchangestate('MARKING',assignmentid)
         if oper=='complete':
-            return self.adminchangestate('COMPLETED',assignmentid)
+            message = self.adminchangestate('COMPLETED',assignmentid)
+        cherrypy.session['message'] =  message
+        raise cherrypy.HTTPRedirect("admin") 
+            
 
     def assignPairs(self, essaysCount, numberToSelect):
         result = []
