@@ -16,7 +16,7 @@ PREFIX = 'mdl_'
 conn = mdb.connect(SERVER, USER, PASSWORD, MOODLE_DB);
 c = conn.cursor()
 
-rst = c.execute("select id, fullname from %scourse;" % PREFIX)  
+rst = c.execute("select id, fullname from %scourse where id=%s;" % (PREFIX,courseid))  
 rows = c.fetchall()
 
 for row in rows:
@@ -56,11 +56,11 @@ for row in rows:
             c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], itemname))           
             rst = c.fetchall()
             if(len(rst)==0): # does not exist
-                gradeitem = [courseid, monthid, itemname, "manual", 1,100,0,int(time.time()), int(time.time())]                
+                gradeitem = [row[0], monthid, itemname, "manual", 1,100,0,int(time.time()), int(time.time()), day]                
                 c.execute("insert into "+PREFIX+"""grade_items (
                        courseid,categoryid,itemname,itemtype,
                        gradetype,grademax,grademin,                       
-                       timecreated,timemodified) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """,gradeitem)
+                       timecreated,timemodified,sortorder) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """,gradeitem)
                 conn.commit()
                
 
