@@ -220,11 +220,15 @@ class EnglishEssay(object):
         return aFloat     
 
     @cherrypy.expose    
-    def adminessayresults(self, assignmentid):
+    def adminessayresults(self, assignmentid, complete="0"):
         if cherrypy.session.get('admin',None) == None:
              return env.get_template('adminlogin.html').render()
         conn = request.db
-        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(desc(db.essayTable.c.score))
+        rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid)
+        if complete=="1":
+             rowsSql = rowsSql.order_by(desc(db.essayTable.c.score))
+        else:     
+             rowsSql = rowsSql.order_by(asc(db.essayTable.c.student_name))
         
         rows = conn.execute(rowsSql).fetchall()
         results = []
@@ -239,21 +243,22 @@ class EnglishEssay(object):
             result_row['comment_count'] = self.getCommentCount(conn, essayid)
             results.append(result_row) 	
             		
-        lowscore = self.saferound(results[len(rows)-1]['score'],2)
-        highscore = self.saferound(results[0]['score'],2)
-        lowgrade =  results[len(rows)-1]['grade']
-        highgrade =  results[0]['grade']
+        if len(rows)>0:   		
+            lowscore = self.saferound(results[len(rows)-1]['score'],2)
+            highscore = self.saferound(results[0]['score'],2)
+            lowgrade =  results[len(rows)-1]['grade']
+            highgrade =  results[0]['grade']
+        else:
+            lowscore = 0; highscore = 0; lowgrade = None; highgrade = None    
         
         if lowgrade == None:
             lowgrade = 40
         if highgrade == None:
-            highgrade = 80    
- 
- 
+            highgrade = 80                   
 
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
-        result = env.get_template('adminessayresults.html').render({'rows':results, 'assignmentTitle':assignmentTitle,'assignmentid':assignmentid, 'lowscore':lowscore, 'highscore':highscore, 'lowgrade':lowgrade, 'highgrade':highgrade })
+        result = env.get_template('adminessayresults.html').render({'rows':results, 'assignmentTitle':assignmentTitle,'assignmentid':assignmentid, 'lowscore':lowscore, 'highscore':highscore, 'lowgrade':lowgrade, 'highgrade':highgrade,'complete':complete })
         return result
     
     
@@ -451,11 +456,12 @@ class EnglishEssay(object):
         rowsSql = db.essayTable.select(db.essayTable.c.assignment_id == assignmentid).order_by(desc(db.essayTable.c.score))
         
         rows = conn.execute(rowsSql).fetchall()
-        lowscore = self.saferound(rows[len(rows)-1]['score'],2)
-        highscore = self.saferound(rows[0]['score'],2)
-        highgrade = float(highgrade)
-        lowgrade = float(lowgrade)
-        
+        if(len(rows)>0):
+            lowscore = self.saferound(rows[len(rows)-1]['score'],2)
+            highscore = self.saferound(rows[0]['score'],2)
+            highgrade = float(highgrade)
+            lowgrade = float(lowgrade)
+            
         for row in rows:
             score = float(row['score'])
             grade = (score-lowscore)/(highscore-lowscore)*(highgrade - lowgrade) + lowgrade
