@@ -52,7 +52,7 @@ def makeCat(courseid,catname):
 
 def makeGradeItem(courseid,rootcatid,catid,gradenames,grademax, grademin):
     for i,itemname in enumerate(gradenames):
-        c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, courseid, rootcatid, itemname))           
+        c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, courseid, catid, itemname))           
         rst = c.fetchall()
         if(len(rst)==0): # does not exist
             gradeitem = [courseid, catid, itemname, "manual", 1,grademax[i],grademin[i],int(time.time()), int(time.time()), i]                

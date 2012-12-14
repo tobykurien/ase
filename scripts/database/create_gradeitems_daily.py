@@ -48,7 +48,7 @@ for row in rows:
             monthid = rst[0][0]     
         for day in range(1,32):
             itemname = month[:3] +"-%.2d" % day 
-            c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], itemname))           
+            c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, row[0], monthid, itemname))           
             rst = c.fetchall()
             if(len(rst)==0): # does not exist
                 gradeitem = [row[0], monthid, itemname, "manual", 1,12,0,int(time.time()), int(time.time()), day]                
