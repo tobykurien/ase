@@ -1,17 +1,12 @@
 import MySQLdb as mdb
 import time
 import sys
+from settings import *
 
 if(len(sys.argv) < 2):
     print "Usage: python create_gradeitems_daily.py COURSEID"
     sys.exit(0)
 courseid = sys.argv[1]   
-
-MOODLE_DB = 'moodle'
-USER = 'moodleuser'
-PASSWORD='moodlepass'
-SERVER = '192.168.56.2'
-PREFIX = 'mdl_'
 
 conn = mdb.connect(SERVER, USER, PASSWORD, MOODLE_DB);
 c = conn.cursor()
@@ -28,7 +23,7 @@ for row in rows:
     if(len(rootcat) != 1):
         print "Something went wrong - more than one parent for %s,%s" % row
         continue
-    for month in ('January','February','March'):    
+    for month in ('January','February','March','April','May','June','July','August','September','October','November','December'):    
         c.execute("select id from %sgrade_categories where courseid = %s and parent=%s and fullname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], month))  
         rst = c.fetchall()
         if(len(rst)==0):
@@ -56,7 +51,7 @@ for row in rows:
             c.execute("select id from %sgrade_items where courseid = %s and categoryid=%s and itemname='%s'  ;" % (PREFIX, row[0], rootcat[0][0], itemname))           
             rst = c.fetchall()
             if(len(rst)==0): # does not exist
-                gradeitem = [row[0], monthid, itemname, "manual", 1,100,0,int(time.time()), int(time.time()), day]                
+                gradeitem = [row[0], monthid, itemname, "manual", 1,12,0,int(time.time()), int(time.time()), day]                
                 c.execute("insert into "+PREFIX+"""grade_items (
                        courseid,categoryid,itemname,itemtype,
                        gradetype,grademax,grademin,                       
