@@ -1,0 +1,3 @@
+firstname;lastname;username;password;lang;profile_field_aseid;profile_field_parentname1;profile_field_parentname2;profile_field_parentcellphone1;profile_field_parentcellphone2;profile_field_parentaddress;profile_field_sponsorname;email;maildisplay;cohort1;cohort2
+One;One;1;1;en;1;FatherOne;MotherOne;12345;23456;123 One Str;SponsorOne;student@africanschoolforexcellence.org;0;grade7;grade7a
+Two;Two;2;2;en;2;FatherTwo;MotherTwo;7545345;98753;234 Two Str;SponsorTwo;student@africanschoolforexcellence.org;0;grade7;grade7b

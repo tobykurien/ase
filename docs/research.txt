@@ -1,0 +1,134 @@
+ASE Moodle:
+===========
+
+- Running Moodle 2.3.2+
+
+
+Enrolment:
+==========
+
+- use the moodle_enrolment.csv file to set up users into a cohort, then upload
+- create and try uploading some sample students with latest fields
+
+
+Grading:
+=======
+
+- Can we grade per group? Ideally groups of 4, else individual
+- Core/Expeditionary team math:
+  - grade for accuracy 0 (unsatisfactory), 1 (needs work), 2 (good), 3 (exceptional)
+  - grade for creativity
+  - grade for persistence
+- Core/Expeditionary instructional math: (teacher)
+  - just a place for comments for each individual (if any)
+- Core Independent math: (khan)
+  - grading from KA (possibly automated)
+- Expeditionary Independent math: (mental math and other, e.g. logic math)
+  - done on pen & paper, marked by teacher, then capture pass/fail into Moodle
+  - modules with pass or fail
+  - ideally matrix of modules and students with ticks where students passed
+  - students cannot move forward until all modules completed
+- Independent Reading:
+  - Ideally, for each reading story, completed or not
+    - report of how many stories read, what level they are on, etc.
+- Partner reading:
+  - ? possibly grade or question-by-question
+- Instructional reading:
+  - place for comments
+
+
+Setting up Khan Academy-style exercises:
+========================================
+
+- Create course (topic-based)
+- Create Quiz activity
+- Add "simple calculated" questions to question bank
+  - e.g. {x} + {y}
+  - set as "Immediate with retries"
+  - set Hint 1 and Hint 2 for the retries
+  - set success feedback and grade boundary feedback if necessary
+  - generate a dataset for x and y
+  - copy the question using the same generated data set as many times as needed
+- Add the questions from the question bank into the quiz
+- In Site administration > Advanced features, enable conditional access
+  - now one activity can show based on passing the previous
+
+Lesson plan:
+============
+
+- Add a "page" or "wiki" activity to the course and hide it
+  - now only teachers can see and edit it
+
+Grade a classroom of students:
+==============================
+
+- Open {course} > Grade administration > Grader report
+- Turn editing on if needed
+- To add feedback, click the edit icon next to grade
+- Only editing teachers can do this
+  - Allow "edit grades" permission to non-editing teachers
+- Add manually graded items:
+  - Select Categories and items
+  - Add categories and items
+  - Add scales to grade an outcome, e.g. poor, good, great
+  - add outcomes to gradebook e.g comprehension, fluency, etc.
+
+Enrol/unenrol cohorts in Course:
+===============================
+- 120 students, 6 classes of 20
+  - TA only needs to grade 20 students
+  - TA goes with 20 students through team math, individual math, etc.
+  - Different TA's for different subjects
+
+- First open {course} > Users > Enrolled users
+  - add all cohorts using "Enrol cohort"
+- Open {course} > Users > Enrolment methods (click on it, don't open it out)
+  - /moodle/enrol/instances.php?id={courseid}
+- hide/show cohorts as needed
+
+Attendance record:
+==================
+
+- see http://docs.moodle.org/23/en/Attendance_module
+- Add attendance module to homoepage and set up sessions
+  
+Book library:
+===============
+
+Lesson evaluation:
+==================
+
+
+Teacher feedback of students:
+=============================
+
+- In grade report edit mode, add comments
+- Add People block and use "participants" link to add/view notes on students
+
+Teacher feedback of lesson:
+===========================
+
+
+Teacher as a student in a course:
+=================================
+
+TA feedback of Teacher:
+=======================
+
+
+Teacher feedback of TA:
+=======================
+
+Student feedback of teacher/TA:
+===============================
+
+Student feedback of lesson:
+===========================
+
+Sponsor view of student:
+========================
+
+- Add sponsor role and Mentees block as per http://docs.moodle.org/23/en/Parent_role
+- Add sponsor to student by editing student > Roles > assign roles relative to this user
+- make sure Sponsor role has relevant moodle/user:* permissions
+
