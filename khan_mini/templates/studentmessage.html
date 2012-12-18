@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block navigation %}
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="/englishessay/admin">Admin</a></li>
+    <li><a href="/login">Logout</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ username }} - {{ heading }}</h1>
+    <br/>
+    <p>{{ message }}
+{% endblock %}
+
+
+
+

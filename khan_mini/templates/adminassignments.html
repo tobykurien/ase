@@ -1,5 +1,25 @@
 {% extends "base.html" %}
+{% block js %}
+    <link rel="stylesheet" href="js/jquery.notice.css"/>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.notice.js"></script>
+    <script type="text/javascript">
+        function showmessage(message){
+		    jQuery.noticeAdd({
+                text: message,
+                stay: false
+             });
+        }
+    </script>    
+{% endblock %}
 {% block title %}Assignments{% endblock %}
+
+{% block onload %} 
+    {%if message != "" %}
+       javascript:showmessage('{{message}}');
+    {% endif %}
+{% endblock %}
+
 {% block navigation %}
 	<li><a href="#">Home</a></li>
 	<li><a href="#">About</a></li>
@@ -26,7 +46,7 @@
             {% endfor %}
                 <td>
                     {% if row['state']=='COMPLETED' %}
-                          <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ row['id'] }}'">View</button> 
+                          <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ row['id'] }}&complete=1'">View</button> 
                           <button class="btn" onclick="javascript:document.location='admineditassignment?assignmentid={{ row['id'] }}&oper=del'">Del</button> 
                     {% endif %}
                     {% if row[3]=='READY' %}
@@ -37,7 +57,7 @@
                     {% if row[3]=='BUSY' %}
                           <button onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=marking'">Mark</button>
                           <button class="btn" onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=ready'">Cancel</button>
-                          <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ row[0] }}'">View</button> 
+                          <button class="btn" onclick="document.location='adminessayresults?assignmentid={{ row[0] }}&complete=0'">View</button> 
                     {% endif %}
                     {% if row[3]=='MARKING' %}
                           <button class="btn" onclick="javascript:document.location='adminopassignment?assignmentid={{ row['id'] }}&oper=complete'">Complete</button>

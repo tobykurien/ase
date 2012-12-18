@@ -66,3 +66,4 @@ def makeGradeItem(courseid,rootcatid,catid,gradenames,grademax, grademin):
 rootcatid,catid = makeCat(12,"Unit 1_Fables with Clear Morals")
 gradenames = ["Author\\'s Message","Thin Clarifying Questions","Author\\'s Message 2","Thick Questions","Theme","Author\\'s Message 3","Author\\'s Message Quiz (Question 1)","Questioning Quiz (Question 2)","Connections Quiz (Question 3)","Author\\'s Message 2 Quiz (Question 4)","Connections 2 Quiz (Question 5)","Theme Quiz (Question 6)"]
 makeGradeItem(12,rootcatid,catid,gradenames,[2]*len(gradenames), [0]*len(gradenames))
+
