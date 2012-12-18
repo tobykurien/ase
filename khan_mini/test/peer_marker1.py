@@ -37,8 +37,13 @@ testPage(student,'/englishessay/', "Here is a list of your previous assignments"
 
 admin = makeCurlObject() 
 testPage(admin,'/englishessay/admin', "<title>Assignments - KhanAcademy</title>","Admin login failed", 'password=x')
-newass = {'assignmentid':'new','oper':'add','title':'My holiday','description':'My holiday'}
+
+newass = {'assignmentid':'new','oper':'add','title':'My holiday','description':'My holiday','duration':'15'}
 testPage(admin,'/englishessay/admineditassignment', "My holiday","New assignment failed", urlencode(newass))
+
+testPage(admin,'/englishessay/adminopassignment?assignmentid=1&oper=busy', """<button onclick="javascript:document.location='adminopassignment?assignmentid=1&oper=marking'">Mark</button>""","Set to busy failed")
+
+testPage(student,'/englishessay/', '''<form action="submitAssignment" method="post">''',"EnglishEssay not ready for submission")
 
 
 

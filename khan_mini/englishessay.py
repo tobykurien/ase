@@ -44,8 +44,6 @@ class EnglishEssay(object):
         
     @cherrypy.expose    
     def index(self, username=None, essayeval_id=None, saved="0"):
-        print "username>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",username
-
         if username == None:
             username = cherrypy.session.get('username', None)
             if username == None:
