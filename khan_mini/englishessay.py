@@ -10,6 +10,7 @@ import datetime,time
 import random, math
 import essaylib.scoring as scoring
 import numpy
+from essaylib.mysqlsession import MySQLSession
 
 
 MARKINGREPETITIONS = 3

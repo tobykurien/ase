@@ -6,6 +6,7 @@ from stream import Stream
 from settings import *
 import englishessay
 from essaylib.saplugin import SAEnginePlugin, SATool
+from essaylib.mysqlsession import MySQLSession
 
 # Jinja templating engine
 from jinja2 import Environment, FileSystemLoader
@@ -95,7 +96,6 @@ cherrypy.tree.mount(KhanAcademyMini(), '/', config=khanconf)
 SAEnginePlugin(cherrypy.engine,ESSAY_DB).subscribe()
 cherrypy.tools.db = SATool()
 cherrypy.tree.mount(englishessay.EnglishEssay(), '/englishessay', config=enlishessayconf)
-
 
 cherrypy.engine.start()
 cherrypy.engine.block()
