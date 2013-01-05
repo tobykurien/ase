@@ -10,20 +10,24 @@ threads = []
 
 for student in students
   threads << Thread.new(student) { |s|
-      res = Net::HTTP.post_form(URI.parse('http://localhost:8081/login'),
-                                          {'username'=> s, 'bsubmit'=>'Login'})
-      if res.body.include? "<title>Menu - KhanAcademy</title>"
-         puts "Logged in: #{s}" 
-      else
-         puts "ERROR: #{res.body}"
-      end
+      Net::HTTP.start('127.0.0.1', 8081) { |http|
+         req = Net::HTTP::Post.new('/login')
+         req.set_form_data({'username'=> s, 'bsubmit'=>'Login'}, ';')
       
-      res = Net::HTTP.get(URI.parse('http://localhost:8081/englishessay/'))
-      if res.include? ""
-         puts "#{s} ready to enter essay" 
-      else
-         puts "ERROR: #{res.body}"
-      end
+         res = http.request(req)
+         if res.body.include? "<title>Menu - KhanAcademy</title>"
+            puts "Logged in: #{s}" 
+         else
+            puts "ERROR: #{res.body}"
+         end
+         
+         res = http.get('/englishessay/')
+         if res.body.include? "<title>Assignment - "
+            puts "#{s} ready to enter essay" 
+         else
+            puts "ERROR: #{res.body}"
+         end
+      }
   }
 end
 
