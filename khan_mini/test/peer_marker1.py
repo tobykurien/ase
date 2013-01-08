@@ -14,15 +14,12 @@ def makeCurlObject():
     return c
 
 def sendRequest(curlObject, path, postfields=""):
-    print "in sendRequest"
     buf = cStringIO.StringIO()
     c = curlObject
     c.setopt(c.WRITEFUNCTION, buf.write)
     c.setopt(c.URL, SERVER+path)
     c.setopt(c.POSTFIELDS, postfields)
-    print "before sending"
     result = c.perform()
-    print "after sending"
     result =  buf.getvalue()
     buf.close()
     return result
@@ -48,7 +45,7 @@ def testPageRex(curlObject, path, expectedRE, message, postfields=""):
     return result
 
 
-NumberOfStudents = 5
+NumberOfStudents = 10
 studentArr = [makeCurlObject() for i in range(NumberOfStudents)]
 #student
 for i,student in enumerate(studentArr):
