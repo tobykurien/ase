@@ -180,6 +180,8 @@ class EnglishEssay(object):
         
         rowsSql = db.essayTable.select(db.essayTable.c.id == essayid)
         row = conn.execute(rowsSql).fetchone()
+        
+        result_row = {'id':row['id'],'student_name':row['student_name'], 'grade':self.saferound(row['grade'],0), 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
 
         # figure out the next and previous essay id
         idSql = db.essayTable.select(db.essayTable.c.student_name == username)
@@ -199,7 +201,7 @@ class EnglishEssay(object):
         negative = conn.execute(sql).fetchall()
 
           
-        result = env.get_template('studentviewessay.html').render({'row':row,'assignmentid':assignmentid,'assignmentTitle':assignmentTitle, 'previousid':previousid, 'nextid':nextid,'negative':negative, 'positive':positive})
+        result = env.get_template('studentviewessay.html').render({'row':result_row,'assignmentid':assignmentid,'assignmentTitle':assignmentTitle, 'previousid':previousid, 'nextid':nextid,'negative':negative, 'positive':positive})
         return result
 
 
@@ -304,7 +306,8 @@ class EnglishEssay(object):
         conn = request.db
         rowsSql = db.essayTable.select(and_(db.essayTable.c.assignment_id == assignmentid, db.essayTable.c.id == essayid))
         row = conn.execute(rowsSql).fetchone()
-
+        
+        result_row = {'id':row['id'],'student_name':row['student_name'], 'grade':self.saferound(row['grade'],0), 'essay_text':row['essay_text'],'submitteddatetime':row['submitteddatetime']}
        
         positivesql = db.commentTable.select(and_(db.commentTable.c.essay_id == essayid, db.commentTable.c.comment_type == 1))
         positive = conn.execute(positivesql).fetchall()
@@ -325,7 +328,7 @@ class EnglishEssay(object):
         sql = db.assignmentTable.select(db.assignmentTable.c.id == assignmentid)
         assignmentTitle = conn.execute(sql).fetchone()['title']
           
-        result = env.get_template('adminviewessay.html').render({'row':row,'positive':positive, 'constructive':constructive, 'assignmentid':assignmentid,'assignmentTitle':assignmentTitle, 'previousid':previousid, 'nextid':nextid})
+        result = env.get_template('adminviewessay.html').render({'row':result_row ,'positive':positive, 'constructive':constructive, 'assignmentid':assignmentid,'assignmentTitle':assignmentTitle, 'previousid':previousid, 'nextid':nextid})
         return result
         
     @cherrypy.expose    
@@ -486,11 +489,15 @@ class EnglishEssay(object):
             
         for row in rows:
             score = float(row['score'])
-            grade = (score-lowscore)/(highscore-lowscore)*(highgrade - lowgrade) + lowgrade
+            if(highscore == lowscore):
+                grade = highgrade
+            else:    
+                grade = (score-lowscore)/(highscore-lowscore)*(highgrade - lowgrade) + lowgrade
+            grade = round(grade,0)    
             sql = db.essayTable.update().where(db.essayTable.c.id == row['id']).values({'grade':grade})
             conn.execute(sql)
         
-        raise cherrypy.HTTPRedirect("admin")  
+        raise cherrypy.HTTPRedirect("adminessayresults?assignmentid=%s&complete=1" % assignmentid)  
         
 
 

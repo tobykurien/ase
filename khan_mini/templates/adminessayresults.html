@@ -38,13 +38,13 @@
 
     <table class="data_table">
         <tr>
-        {% for col in ['Student','Submitted','Grade','Essay','Comment Count','Action'] %}
+        {% for col in ['Student','Submitted','Grade','Score','Essay','Comment Count','Action'] %}
              <th>{{ col }}</th>
         {% endfor %}
         </tr>
         {% for row in rows %}
             <tr class="{{ loop.cycle('oddrowcolor', 'evenrowcolor') }}">
-                {% for key in ['student_name','submitteddatetime','grade'] %}
+                {% for key in ['student_name','submitteddatetime','grade','score'] %}
                      <td>{{ row[key] }}</td>
                 {% endfor %}
                 <td>{{ row['essay_text'][:20].ljust(20) }} </td>

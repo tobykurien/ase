@@ -7,6 +7,7 @@ from settings import *
 import englishessay
 from essaylib.saplugin import SAEnginePlugin, SATool
 from essaylib.mysqlsession import MySQLSession
+import random
 
 # Jinja templating engine
 from jinja2 import Environment, FileSystemLoader

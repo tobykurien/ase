@@ -37,7 +37,8 @@ def colley(A):
     return linalg.solve(C, b)
 
 def standardize(r):
-    r = (r - numpy.mean(r))/ numpy.std(r)
+    #r = (r - numpy.mean(r))/ numpy.std(r)
+    r = numpy.round(r, 2)
     return r
 
  

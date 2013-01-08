@@ -31,11 +31,19 @@ def testPage(curlObject, path, expectedText, message, postfields=""):
        raise Exception(message)
     return result
 
+def testPageRex(curlObject, path, expectedRE, message, postfields=""):
+    result = sendRequest(curlObject, path, postfields)
+    if re.search(expectedRE, result) == None:
+       print result
+       raise Exception(message)
+    return result
 
+#student
 student1 = makeCurlObject()     
 testPage(student1,'/login', "<title>Menu - KhanAcademy</title>","Login failed", 'username=s1')
 testPage(student1,'/englishessay/', "Here is a list of your previous assignments","EnglishEssay failed")
 
+#teacher
 admin = makeCurlObject() 
 testPage(admin,'/englishessay/admin', "<title>Assignments - KhanAcademy</title>","Admin login failed", 'password=x')
 
@@ -82,7 +90,26 @@ for i,student in enumerate([student1, student2, student3]):
     m = re.search("""<input type="hidden" name="essayeval_id" value="(\d+)"/>""", result)    
     essayevalid = m.groups()[0]
     
-    s1mark = {'essayeval_id':essayevalid,'essay1_id':str(essay1),'essay2_id':str(essay2),'scorerange':'0.0','pcomment1':'pcomment1','ccomment1':'ccomment1','ccomment2':'ccomment2','pcomment2':'pcomment2','bsubmit':'Next >','pcountdown1':'0','pcountdown2':'0','ccountdown1':'0','ccountdown2':'0'}
+    s1mark = {'essayeval_id':essayevalid,'essay1_id':str(essay1),'essay2_id':str(essay2), 'scorerange':'0.0','pcomment1':'pcomment%s'% essay1,'ccomment1':'ccomment%s'%essay1,'ccomment2':'ccomment%s'%essay2,'pcomment2':'pcomment%s'%essay2,'bsubmit':'Next >','pcountdown1':'0','pcountdown2':'0','ccountdown1':'0','ccountdown2':'0'}
     testPage(student, '/englishessay/evalEssay',"s%s - Done marking" % studentid,"Submitting marking failed", urlencode(s1mark))
+
+# teacher set marking mode
+testPage(admin,'/englishessay/adminopassignment?assignmentid=1&oper=complete', """<button class="btn" onclick="document.location='adminessayresults?assignmentid=1&complete=1'">View</button> ""","Set to complete failed")
+
+# Student view result before grading
+for i,student in enumerate([student1, student2, student3]):
+    studentid = str(i+1)
+    testPageRex(student,'/englishessay/', '''<td>None</td>([^<]*)<td>Student %s''' % studentid,"Student essay not correct after marking s%s" % studentid)
+    testPage(student, '/englishessay/viewessay?essayid=%s' % studentid,"<b>Grade</b> : None<br/>","Submitting view essay mark failed")
+
+## teacher grades
+calcmarks = {"lowgrade":40, "highgrade":80, "assignmentid":1}
+testPage(admin,'/englishessay/adminsubmitmarks', """<td>80.0</td>""","Set to complete failed", urlencode(calcmarks))
+
+
+
+
+
+
 
 print "Tests done"
