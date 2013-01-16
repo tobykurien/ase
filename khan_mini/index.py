@@ -7,6 +7,7 @@ from settings import *
 import englishessay
 from essaylib.saplugin import SAEnginePlugin, SATool
 from essaylib.mysqlsession import MySQLSession
+import random
 
 # Jinja templating engine
 from jinja2 import Environment, FileSystemLoader
@@ -20,7 +21,12 @@ class KhanAcademyMini(object):
         
     def getUser(self):
         return cherrypy.session.get('username', None)
-  
+
+    def getKhanInstance(self):
+        if (cherrypy.session.get('instance', None) == None):
+           randomInstance = KHAN_INSTANCES[random.randint(0, len(KHAN_INSTANCES)-1)]
+           cherrypy.session['instance'] = randomInstance
+        return "%s:%s" % (KHAN_BASE_URL2, cherrypy.session.get('instance', '8080'))  
 
     @cherrypy.expose
     def login(self, username=None,pm=0, **args):
@@ -67,7 +73,7 @@ class KhanAcademyMini(object):
         url = "%s/api/v1/videos/%s" % (KHAN_BASE_URL, vid_id)
         response = urllib2.urlopen(url).read()
         data = json.loads(response)
-        data['khan_base_url'] = KHAN_BASE_URL
+        data['khan_base_url'] = self.getKhanInstance()
         data['topic'] = topic
         tmpl = env.get_template('video.html')
         return tmpl.render(data)
@@ -77,7 +83,7 @@ class KhanAcademyMini(object):
         url = "%s/api/v1/exercises/%s" % (KHAN_BASE_URL, exercise_id)
         response = urllib2.urlopen(url).read()
         data = json.loads(response)
-        data['khan_base_url'] = KHAN_BASE_URL
+        data['khan_base_url'] = self.getKhanInstance()
         data['topic'] = topic
         
         url = "%s/api/v1/exercises/%s/followup_exercises" % (KHAN_BASE_URL, exercise_id)

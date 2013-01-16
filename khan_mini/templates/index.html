@@ -9,8 +9,9 @@
 {% block content %}
     <h1>Topics</h1>
     
-    <a href="/login">{{ login }}</a>
-
+<!--    
+<a href="/login">{{ login }}</a>
+-->
 <ul id="topics">
 {% for item in children %}
     {% if item.kind == "Topic" %}
