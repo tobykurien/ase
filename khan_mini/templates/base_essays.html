@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}{% endblock %} - KhanAcademy</title>
+    {% endblock %}
+    {% block js %}
+    {% endblock %}
+</head>
+<body onload="{% block onload %}{% endblock %}">
+  <div id="wrapper">
+	<div id="header">
+    	<div id="logo">
+        	<img src="img/logo.png" width="229"/>
+        </div>
+    </div>
+    <div id="nav">
+    	<ul>
+        	<li><a href="http://ase/">Home</a></li>
+		{% block navigation %}
+        	<li><a href="/englishessay/">Top</a></li>
+        	<li><a href="javascript:location.reload();">Reload</a></li>
+	      <li><a href="/englishessay/admin">Admin</a></li>
+		{% endblock %}
+        </ul>
+        <div style="clear:both"></div>
+    </div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+        &copy; Copyright 2012 by <a href="http://africanschoolforexcellence.org/">ASE</a>.
+        {% endblock %}
+    </div>
+   </div>
+</body>
+
