@@ -46,5 +46,9 @@ def makeGradeItem(conn,c,courseid,rootcatid,catid,gradenames,grademax, grademin)
                    gradetype,grademax,grademin,                       
                    timecreated,timemodified,sortorder) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """,gradeitem)
             conn.commit()
-           
+      
+def deleteAllGradeItems(conn,c,courseid):
+   c.execute("delete from %sgrade_categories where courseid = %s and parent is not null;" % (PREFIX, courseid))           
+   c.execute("delete from %sgrade_items where courseid = %s;" % (PREFIX, courseid))           
+   conn.commit()  
 

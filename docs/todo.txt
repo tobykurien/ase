@@ -1,0 +1,12 @@
+Virtual machine:
+- upgrade to 64-bit OS
+- install tinyproxy and configure so that Internet is routed through virtual machine
+
+Network setup:
+- Better configuration for remote access. Currently cannot remotely access khan_mini or Peer Marker
+- Allow access to the server from the ASE-Tsakane-Official wifi
+- Automatically restore backups at House4Hack for redundant copy (and to check data and access previous backup)
+
+Moodle:
+- Tool to allow course creator to upload grade items via the Python script
+
