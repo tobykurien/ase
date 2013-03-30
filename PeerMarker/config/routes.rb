@@ -1,5 +1,7 @@
 PeerMarker::Application.routes.draw do
-  resources :assignments
+  resources :assignments do
+    put 'changestate', :on => :member
+  end
 
 
   get "home/index"

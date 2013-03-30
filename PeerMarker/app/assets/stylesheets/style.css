@@ -132,12 +132,7 @@ table.altrowstable td {
     border-style: solid;
     border-color: #a9c6c9;
 }
-.evenrowcolor{
-    background-color:#EBE8EC;
-}
-.oddrowcolor{
-    background-color:#ffffff;
-}
+
 
 
 #container {
@@ -166,11 +161,17 @@ table.altrowstable td {
 .data_table td{
 	border-bottom: 1px solid #fff;
 	border-top: 1px solid transparent;
-	background: #e8edff;
 	padding:6px;
 }
 .data_table tbody tr:hover td{
 	background: #d0dafd;
+}
+
+.evenrowcolor{
+    background-color:#EBE8EC;
+}
+.oddrowcolor{
+    background-color:#ffffff;
 }
 /* buttons */
 #addnew{

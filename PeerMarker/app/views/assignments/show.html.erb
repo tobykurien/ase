@@ -16,10 +16,14 @@
 </p>
 
 <p>
-  <b>Startdatetime:</b>
-  <%= @assignment.startdatetime %>
+  <b>Start Datetime:</b>
+  <%= show_started(@assignment.startdatetime) %>
 </p>
 
+<p>
+  <b>State</b>
+  <%= @assignment.state %>
+</p>
 
 <%= link_to 'Edit', edit_assignment_path(@assignment) %> |
 <%= link_to 'Back', assignments_path %>

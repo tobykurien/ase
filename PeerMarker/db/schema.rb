@@ -16,10 +16,11 @@ ActiveRecord::Schema.define(:version => 20130330131939) do
   create_table "assignments", :force => true do |t|
     t.string   "title"
     t.string   "description"
-    t.integer  "duration"
+    t.integer  "duration",      :default => 15,    :null => false
     t.datetime "startdatetime"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.string   "state",         :default => "NEW", :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
 end

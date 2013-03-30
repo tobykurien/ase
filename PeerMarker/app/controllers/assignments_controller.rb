@@ -80,4 +80,18 @@ class AssignmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  # PUT /assignments/start  
+  def changestate
+    @assignment = Assignment.find(params[:id])
+    @assignment.state = params[:newstate]
+
+    respond_to do |format|
+        if(@assignment.save)
+           format.html {redirect_to assignments_url, notice: 'State successfully updated'}
+        else   
+           format.html {redirect_to assignments_url, notice: 'Could not update the state'}
+        end  
+    end    
+  end
 end

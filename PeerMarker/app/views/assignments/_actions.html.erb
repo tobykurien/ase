@@ -1,0 +1,11 @@
+    <% if assignment.state == 'NEW' %>
+       <%= link_to 'Show', assignment %>
+       <%= link_to 'Edit', edit_assignment_path(assignment) %>
+       <%= button_to "Start", options={ :action => "changestate", :id => assignment.id, :newstate => :BUSY },html_options={:method => :put} %>
+       <%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+    <% else %>
+       <%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+
+    <% end %>

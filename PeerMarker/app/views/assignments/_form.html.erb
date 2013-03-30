@@ -17,15 +17,11 @@
   </div>
   <div class="field">
     <%= f.label :description %><br />
-    <%= f.text_field :description %>
+    <%= f.text_area :description,:cols=>80%>
   </div>
   <div class="field">
     <%= f.label :duration %><br />
     <%= f.number_field :duration %>
-  </div>
-  <div class="field">
-    <%= f.label :startdatetime %><br />
-    <%= f.datetime_select :startdatetime %>
   </div>
   <div class="actions">
     <%= f.submit %>
