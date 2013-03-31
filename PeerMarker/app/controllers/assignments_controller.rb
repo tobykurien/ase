@@ -86,12 +86,21 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
     @assignment.state = params[:newstate]
 
-    respond_to do |format|
-        if(@assignment.save)
-           format.html {redirect_to assignments_url, notice: 'State successfully updated'}
-        else   
-           format.html {redirect_to assignments_url, notice: 'Could not update the state'}
-        end  
-    end    
+    if(@assignment.save)
+       case @assignment.state
+          when "MARKING"
+             populateMarking            
+          end
+       end
+    
+       redirect_to assignments_url, notice: 'State successfully updated'
+    else   
+       redirect_to assignments_url, notice: 'Could not update the state'
+    end  
+  end
+  
+  
+  def populateMarking
+     puts "populating marking"
   end
 end

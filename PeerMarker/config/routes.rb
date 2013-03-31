@@ -6,8 +6,15 @@ PeerMarker::Application.routes.draw do
 
 
   get "home/index"
+  get "home/student"
   
   root :to => "home#index"
+  
+  match 'login' => 'home#login'
+  match 'student' => 'home#student'
+  match 'logout' => 'home#logout'  
+  match 'save' => 'home#save'  
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

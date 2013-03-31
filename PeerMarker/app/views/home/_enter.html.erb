@@ -1,0 +1,23 @@
+<%= form_for(:essay, :url => save_url(:id => @essay, :assignment_id => @essay.assignment_id)) do |f| %>
+  <table>
+     <tr>
+        <td><b>Title:</b></td><td><%= @assignment.title %></h2></td>
+     </tr>
+     <tr>
+        <td><b>Description:</b></td><td><%= @assignment.description %></h2></td>
+     </tr>
+  </table>  
+  <br>
+
+  <div class="field">
+    <b><%= f.label :essay_text %></b>:<br />
+    <%= f.text_area :essay_text,:cols=>80%>
+  </div>    
+  
+  <%= hidden_field(:essay, :assignment_id) %>
+  <div class="actions">
+    <%= f.submit "Save"%>
+  </div>
+
+  
+<% end %>
