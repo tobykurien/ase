@@ -26,4 +26,6 @@
 </p>
 
 <%= link_to 'Edit', edit_assignment_path(@assignment) %> |
+<%= link_to 'Destroy', @assignment, method: :delete, data: { confirm: 'Are you sure?' } %>|
+<%= link_to "Restart", options={ :action => "changestate", :id => @assignment.id, :newstate => :NEW },html_options={:method => :put} %> |
 <%= link_to 'Back', assignments_path %>

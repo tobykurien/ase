@@ -173,6 +173,9 @@ table.altrowstable td {
 .oddrowcolor{
     background-color:#ffffff;
 }
+.action-button-td{
+    padding:1px;
+}
 /* buttons */
 #addnew{
 	border:1px solid #ccc;

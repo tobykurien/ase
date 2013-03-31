@@ -88,9 +88,8 @@ class AssignmentsController < ApplicationController
 
     if(@assignment.save)
        case @assignment.state
-          when "MARKING"
+          when :MARKING
              populateMarking            
-          end
        end
     
        redirect_to assignments_url, notice: 'State successfully updated'
@@ -98,8 +97,7 @@ class AssignmentsController < ApplicationController
        redirect_to assignments_url, notice: 'Could not update the state'
     end  
   end
-  
-  
+    
   def populateMarking
      puts "populating marking"
   end

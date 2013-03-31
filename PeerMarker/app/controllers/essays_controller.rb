@@ -2,7 +2,8 @@ class EssaysController < ApplicationController
   # GET /essays
   # GET /essays.json
   def index
-    @essays = Essay.all
+    assignment_id = params[:assignment_id]
+    @essays = Essay.where(:assignment_id => assignment_id)
 
     respond_to do |format|
       format.html # index.html.erb
