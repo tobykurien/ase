@@ -1,3 +1,4 @@
+    <%= link_to 'Essays', assignment_essays_path(assignment) %>
     <% if assignment.state == 'NEW' %>
        <%= link_to 'Show', assignment %>
        <%= link_to 'Edit', edit_assignment_path(assignment) %>

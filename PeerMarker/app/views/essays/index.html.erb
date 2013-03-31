@@ -1,0 +1,31 @@
+<h1>Listing essays</h1>
+
+<table class="data_table">
+  <tr>
+    <th>Student Name</th>
+    <th>Essay Text</th>
+    <th>Score</th>
+    <th>Grade</th>
+    <th>Actions</th>
+  </tr>
+
+<% @essays.each do |essay| %>
+  <tr class="<%= cycle("oddrowcolor","evenrowcolor") %>">
+    <td><%= essay.studentname %></td>
+    <td><%= make_short(essay.essay_text) %></td>
+    <td><%= not_marked(essay.score) %></td>
+    <td><%= not_marked(essay.grade) %></td>
+    <td>
+        <%= link_to 'Show', assignment_essay_url(essay.assignment_id, essay.id) %>
+        <%= link_to 'Edit', edit_assignment_essay_path(essay.assignment_id, essay.id) %>
+        <%= link_to 'Destroy', assignment_essay_url(essay.assignment_id, essay.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+    </td>
+    
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Essay', new_assignment_essay_path %>
+<%= link_to 'Back', assignments_path %>

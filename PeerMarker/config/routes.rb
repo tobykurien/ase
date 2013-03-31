@@ -1,6 +1,7 @@
 PeerMarker::Application.routes.draw do
   resources :assignments do
     put 'changestate', :on => :member
+    resources :essays
   end
 
 

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  studentname: MyString
+  essay_text: MyString
+  score: 9.99
+  grade: 9.99
+  assignment: 
+
+two:
+  studentname: MyString
+  essay_text: MyString
+  score: 9.99
+  grade: 9.99
+  assignment: 

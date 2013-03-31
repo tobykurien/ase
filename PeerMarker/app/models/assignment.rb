@@ -1,6 +1,7 @@
 class Assignment < ActiveRecord::Base
     attr_accessible :description, :duration, :startdatetime, :title, :state
     validate :check_state
+    has_many :essays
 
     def self.current_assignment
         list = Assignment.where ({:state => ["BUSY","MARKING"]})
