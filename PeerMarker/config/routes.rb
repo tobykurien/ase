@@ -1,6 +1,7 @@
 PeerMarker::Application.routes.draw do
   resources :assignments do
     put 'changestate', :on => :member
+    get 'markedprogress', :on => :member
     resources :essays
   end
 
@@ -8,12 +9,13 @@ PeerMarker::Application.routes.draw do
   get "home/index"
   get "home/student"
   
-  root :to => "home#index"
+  root :to => "home#student"
   
   match 'login' => 'home#login'
   match 'student' => 'home#student'
   match 'logout' => 'home#logout'  
   match 'save' => 'home#save'  
+  match 'score' => 'home#score'  
 
 
   # The priority is based upon order of creation:

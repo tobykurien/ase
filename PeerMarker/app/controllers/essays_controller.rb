@@ -4,7 +4,7 @@ class EssaysController < ApplicationController
   def index
     assignment_id = params[:assignment_id]
     @essays = Essay.where(:assignment_id => assignment_id)
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @essays }

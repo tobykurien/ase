@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  student_name: MyString
+  essay1_id: 1
+  essay2_id: MyString
+  score1: 9.99
+  score2: 9.99
+
+two:
+  student_name: MyString
+  essay1_id: 1
+  essay2_id: MyString
+  score1: 9.99
+  score2: 9.99

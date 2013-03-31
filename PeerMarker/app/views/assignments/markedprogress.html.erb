@@ -1,0 +1,18 @@
+<h1>Listing Marking Progress</h1>
+
+<table class="data_table">
+  <tr>
+    <th>Student Name</th>
+    <th>Pairs Marked</th>
+    <th>Total</th>
+  </tr>
+
+<% @markprogress.each do |progress| %>
+  <tr class="<%= cycle('oddrowcolor', 'evenrowcolor') -%>">
+    <td><%= progress.studentname %></td>
+    <td><%= progress.marked %></td>
+    <td><%= progress.total %></td>
+  </tr>
+<% end %>
+</table>
+<%= link_to 'Back', assignments_path %>

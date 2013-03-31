@@ -1,1 +1,37 @@
-mark
+<table>
+     <tr>
+        <td><b>Title:</b></td><td><%= @assignment.title %></td>
+     </tr>
+     <tr>
+        <td><b>Description:</b></td><td><%= @assignment.description %></td>
+     </tr>
+</table> 
+
+<table>
+     <tr>
+          <td><b>Essay 1</b></td>
+     </tr>
+     <tr>
+          <td><%= @essay1.essay_text %></td>
+     </tr>     
+     <tr>
+          <td><b>Essay 2</b></td>
+     </tr>
+     <tr>
+          <td><%= @essay2.essay_text %></td>
+     </tr>     
+</table>
+<br>
+<%= form_for :essayeval, :url => score_url(:mark_index => @mark_index,:id => @essayeval.id)  do |f|%>
+    Which of Essay 1 and Essay 2 do you like better?  If they are about the same, choose somewhere in the middle:<br><br>
+    <b>Essay 1</b>
+         <% 11.times do |i| %>
+            <input type="radio" name="scorerange" value="<%= i/10.0 %>" class="score" <% if i == @score*10 %> checked="checked" <% end %> /> 
+         <% end %>
+
+    <b>Essay 2</b> <br/><br/>
+    <div class="actions">
+      <%= f.submit "Score"%>
+    </div>
+<% end %>
+

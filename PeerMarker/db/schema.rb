@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130331081127) do
+ActiveRecord::Schema.define(:version => 20130331223001) do
 
   create_table "assignments", :force => true do |t|
     t.string   "title"
@@ -21,6 +21,17 @@ ActiveRecord::Schema.define(:version => 20130331081127) do
     t.string   "state",         :default => "NEW", :null => false
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
+  end
+
+  create_table "essay_evals", :force => true do |t|
+    t.string   "studentname"
+    t.integer  "assignment_id"
+    t.integer  "essay1_id"
+    t.string   "essay2_id"
+    t.decimal  "score1"
+    t.decimal  "score2"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "essays", :force => true do |t|

@@ -3,8 +3,12 @@
    <td class="action-button-td">
     <%= button_to 'Essays', assignment_essays_path(assignment),html_options={:method => :get} %>
    </td> 
-   <td class="action-button-td">  
-     <%= button_to 'Show', assignment,html_options={:method => :get} %>
+   <td class="action-button-td">
+   <% if assignment.state == 'MARKING' %>  
+       <%= button_to 'Marking', markedprogress_assignment_path(assignment),html_options={:method => :get} %>
+   <% else %>
+       <%= button_to 'Show', assignment,html_options={:method => :get} %>   
+   <% end %>  
    </td>  
 
    <td class="action-button-td">  

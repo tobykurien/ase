@@ -88,8 +88,8 @@ class AssignmentsController < ApplicationController
 
     if(@assignment.save)
        case @assignment.state
-          when :MARKING
-             populateMarking            
+          when "MARKING"
+             populateMarking @assignment           
        end
     
        redirect_to assignments_url, notice: 'State successfully updated'
@@ -97,8 +97,64 @@ class AssignmentsController < ApplicationController
        redirect_to assignments_url, notice: 'Could not update the state'
     end  
   end
-    
-  def populateMarking
-     puts "populating marking"
+  
+  def markedprogress
+     assignment_id = params[:assignment_id]
+     @markprogress  = EssayEval.select("studentname, count(score1) marked, count(1) total").where(:assignment_id => 1).group("studentname")
   end
+    
+  def populateMarking(assignment)
+  
+      EssayEval.where(:assignment_id => assignment.id).delete_all
+      essays = assignment.essays
+      essayCount = essays.length
+
+      repetitions = 3
+      maxCombinations = factorial(essayCount)/factorial(essayCount-2)/factorial(2)
+      if maxCombinations< essayCount*repetitions then
+         repetitions = (maxCombinations / essayCount).floor.to_i
+      end   
+      pairs = assignPairs(essayCount, repetitions)   
+      essayCount.times.each do |i|
+         repetitions.times.each do |j|
+            index = i*repetitions+j
+            
+            ee = EssayEval.new
+            ee.essay1_id = essays[pairs[index][0]].id
+            ee.essay2_id = essays[pairs[index][1]].id
+            ee.studentname = essays[i].studentname
+            ee.assignment_id = assignment.id
+            ee.save
+         end
+      end   
+     
+  end
+  
+  def assignPairs(essaysCount, numberToSelect)
+    result = []
+    essayIndex = 0
+
+    while essayIndex < essaysCount do
+        numberIndex = 0
+        while numberIndex < numberToSelect do
+            a = rand(essaysCount)
+            b = rand(essaysCount)
+            if not (result.include? [a,b]) and not (result.include? [b,a]) and not a==b and not a==essayIndex and not b==essayIndex then
+                result.append([a,b])
+                numberIndex += 1
+            end    
+        end        
+        essayIndex += 1
+    end    
+    return result
+  end  
+  
+  def factorial(n)
+    n.zero? ? 1 : n * factorial(n - 1)
+  end
+  
+end
+
+class MarkProgress
+   attr_accessor :studentname, :pairsmarked, :total
 end

@@ -6,7 +6,6 @@ class HomeController < ApplicationController
       checkIfLoggedIn!
       @student = session[:username]   
       @assignment = Assignment.current_assignment
-      puts(@assignment.id)
       @form_from_state = 'list'
       if(@assignment != nil) then
           case @assignment.state
@@ -17,6 +16,15 @@ class HomeController < ApplicationController
                  end    
                  @form_from_state = 'enter'
              when "MARKING"
+                 evals = EssayEval.where(:studentname => @student)
+                 @mark_index = params[:mark_index]+1 rescue 0
+                 if @mark_index >= evals.length 
+                     @mark_index = 0
+                 end    
+                 @essayeval = evals[@mark_index]
+                 @score = @essayeval.score1.nil? ? 0.5 : @essayeval.score1
+                 @essay1 = Essay.find(@essayeval.essay1_id)
+                 @essay2 = Essay.find(@essayeval.essay2_id)                 
                  @form_from_state = 'mark'         
           end   
       end
@@ -31,6 +39,15 @@ class HomeController < ApplicationController
     redirect_to student_url, notice: 'Essay saved.' 
   end
   
+  def score
+    checkIfLoggedIn!
+    evals = EssayEval.find(params[:id])
+    evals.score1 = params[:scorerange].to_f
+    evals.score2 = 1-evals.score1
+    evals.save
+    redirect_to student_url(:mark_index => params[:mark_index]), notice: 'Essay saved.' 
+  end
+    
   def login 
       if params[:username] then
           session[:username] = params[:username]
