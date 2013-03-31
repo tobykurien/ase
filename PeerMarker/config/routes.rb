@@ -16,6 +16,7 @@ PeerMarker::Application.routes.draw do
   match 'logout' => 'home#logout'  
   match 'save' => 'home#save'  
   match 'score' => 'home#score'  
+  match 'showessay' => 'home#showessay'
 
 
   # The priority is based upon order of creation:

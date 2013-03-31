@@ -88,6 +88,9 @@ class AssignmentsController < ApplicationController
 
     if(@assignment.save)
        case @assignment.state
+          when "BUSY"
+             @assignment.startdatetime = Date.current
+             @assignment.save
           when "MARKING"
              populateMarking @assignment           
        end

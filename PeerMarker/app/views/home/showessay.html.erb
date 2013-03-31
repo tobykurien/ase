@@ -1,0 +1,16 @@
+<p>
+  <b>Essay:</b>
+  <%= @essay.essay_text %>
+</p>
+
+<p>
+  <b>Score</b>
+  <%= not_marked(@essay.score) %>
+</p>
+
+<p>
+  <b>Grade</b>
+  <%= not_marked(@essay.grade) %>
+</p>
+
+<%= link_to 'Back', student_path %>

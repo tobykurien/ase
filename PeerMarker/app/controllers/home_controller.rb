@@ -6,7 +6,6 @@ class HomeController < ApplicationController
       checkIfLoggedIn!
       @student = session[:username]   
       @assignment = Assignment.current_assignment
-      @form_from_state = 'list'
       if(@assignment != nil) then
           case @assignment.state
              when "BUSY"
@@ -27,6 +26,9 @@ class HomeController < ApplicationController
                  @essay2 = Essay.find(@essayeval.essay2_id)                 
                  @form_from_state = 'mark'         
           end   
+      else
+          @form_from_state = 'list'
+          @essays = Essay.where(:studentname => @student).order("created_at DESC")      
       end
   end
   
@@ -58,6 +60,10 @@ class HomeController < ApplicationController
   def logout 
       session.delete :username
       redirect_to login_url      
+  end
+  
+  def showessay
+      @essay = Essay.find(params[:id])
   end
   
   
