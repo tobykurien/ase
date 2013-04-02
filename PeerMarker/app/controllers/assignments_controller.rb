@@ -1,3 +1,5 @@
+require 'scoring'
+
 class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
@@ -92,7 +94,9 @@ class AssignmentsController < ApplicationController
              @assignment.startdatetime = Date.current
              @assignment.save
           when "MARKING"
-             populateMarking @assignment           
+             populateMarking @assignment 
+          when "COMPLETE"
+             doscoring @assignment             
        end
     
        redirect_to assignments_url, notice: 'State successfully updated'
@@ -154,6 +158,11 @@ class AssignmentsController < ApplicationController
   
   def factorial(n)
     n.zero? ? 1 : n * factorial(n - 1)
+  end
+  
+  def doscoring(assignment)
+    
+  
   end
   
 end
