@@ -13,4 +13,19 @@
   <%= not_marked(@essay.grade) %>
 </p>
 
+<b>Comments</b>
+<table class="data_table">
+  <tr>
+    <th>Positive Comment</th>
+    <th>Constructive Comment</th>
+  </tr>
+
+<% @evals.each do |eval| %>
+  <tr class="<%= cycle('oddrowcolor', 'evenrowcolor') -%>">
+    <td><%= eval[1] %></td>
+    <td><%= eval[2] %></td>
+  </tr>
+<% end %>
+</table>
+<br/>
 <%= link_to 'Back', student_path %>

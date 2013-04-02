@@ -6,23 +6,59 @@
         <td><b>Description:</b></td><td><%= @assignment.description %></td>
      </tr>
 </table> 
+<br/>
+<%= form_for @essayeval, :url => score_path(:mark_index => @mark_index,:id => @essayeval.id)  do |f|%>
 
-<table>
-     <tr>
-          <td><b>Essay 1</b></td>
-     </tr>
-     <tr>
-          <td><%= @essay1.essay_text %></td>
-     </tr>     
-     <tr>
-          <td><b>Essay 2</b></td>
-     </tr>
-     <tr>
-          <td><%= @essay2.essay_text %></td>
-     </tr>     
-</table>
-<br>
-<%= form_for :essayeval, :url => score_url(:mark_index => @mark_index,:id => @essayeval.id)  do |f|%>
+    <table>
+         <tr>
+              <td><b>Essay 1</b></td>
+         </tr>
+         <tr>
+              <td><%= @essay1.essay_text %></td>
+         </tr>    
+
+         <tr>
+              <td><b>Positive Comment</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :pcomment1,:cols=>80, :rows=>3 %></td>
+         </tr>    
+         <tr>
+              <td><b>Constructive Comment</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :ccomment1,:cols=>80, :rows=>3 %></td>
+         </tr>    
+         <tr>
+              <td><br/></td>
+         </tr>    
+         
+         <tr>
+              <td><b>Essay 2</b></td>
+         </tr>
+         <tr>
+              <td><%= @essay2.essay_text %></td>
+         </tr>     
+         <tr>
+              <td><b>Positive Comment</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :pcomment2,:cols=>80, :rows=>3 %></td>
+         </tr>    
+         <tr>
+              <td><b>Constructive Comment</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :ccomment2,:cols=>80, :rows=>3 %></td>
+         </tr>    
+
+    </table>
+    <br>
+
     Which of Essay 1 and Essay 2 do you like better?  If they are about the same, choose somewhere in the middle:<br><br>
     <b>Essay 1</b>
          <% 11.times do |i| %>
@@ -30,6 +66,8 @@
          <% end %>
 
     <b>Essay 2</b> <br/><br/>
+    
+    
     <div class="actions">
       <%= f.submit "Score"%>
     </div>

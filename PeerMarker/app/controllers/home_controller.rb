@@ -46,7 +46,8 @@ class HomeController < ApplicationController
     evals = EssayEval.find(params[:id])
     evals.score1 = params[:scorerange].to_f
     evals.score2 = 1-evals.score1
-    evals.save
+
+    evals.update_attributes(params[:essay_eval])
     redirect_to student_url(:mark_index => params[:mark_index]), notice: 'Essay saved.' 
   end
     
@@ -64,6 +65,10 @@ class HomeController < ApplicationController
   
   def showessay
       @essay = Essay.find(params[:id])
+      puts @essay.inspect
+      eval1 = EssayEval.where(:essay1_id => params[:id]).all.map {|e| [e.pcomment1, e.ccomment1]}
+      eval2 = EssayEval.where(:essay2_id => params[:id]).all.map {|e| [e.pcomment2, e.ccomment2]}      
+      @evals = eval1 + eval2
   end
   
   
