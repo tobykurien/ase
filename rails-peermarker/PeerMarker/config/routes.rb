@@ -11,12 +11,12 @@ PeerMarker::Application.routes.draw do
   
   root :to => "home#student"
   
-  match 'login' => 'home#login'
-  match 'student' => 'home#student'
-  match 'logout' => 'home#logout'  
-  match 'save' => 'home#save'  
-  match 'score' => 'home#score'  
-  match 'showessay' => 'home#showessay'
+  match 'login' => 'home#login', via: :get
+  match 'student' => 'home#student', via: :get
+  match 'logout' => 'home#logout', via: :get 
+  match 'save' => 'home#save', via: :get
+  match 'score' => 'home#score', via: :get  
+  match 'showessay' => 'home#showessay', via: :get
 
 
   # The priority is based upon order of creation:

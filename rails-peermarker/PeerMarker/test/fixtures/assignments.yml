@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  title: MyString
-  description: MyString
-  duration: 1
-  startdatetime: 2013-03-30 15:19:39
+  id: 1
+  title: This is essay 1
+  description: Essay one question description
+  duration: 15
+  status: MARKING
 
 two:
-  title: MyString
-  description: MyString
-  duration: 1
-  startdatetime: 2013-03-30 15:19:39
+  id: 2
+  title: This is essay 2
+  description: Essay two question description
+  duration: 15
+

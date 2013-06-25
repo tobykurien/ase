@@ -28,24 +28,24 @@ ActiveRecord::Schema.define(:version => 20130402223001) do
     t.integer  "assignment_id"
     t.integer  "essay1_id"
     t.integer  "essay2_id"
-    t.decimal  "score1"
-    t.decimal  "score2"
+    t.decimal  "score1",        :precision => 10, :scale => 0
+    t.decimal  "score2",        :precision => 10, :scale => 0
     t.string   "pcomment1"
     t.string   "ccomment1"
     t.string   "pcomment2"
     t.string   "ccomment2"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
 
   create_table "essays", :force => true do |t|
     t.string   "studentname"
     t.string   "essay_text"
-    t.decimal  "score"
-    t.decimal  "grade"
+    t.decimal  "score",         :precision => 10, :scale => 0
+    t.decimal  "grade",         :precision => 10, :scale => 0
     t.integer  "assignment_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
 
   add_index "essays", ["assignment_id"], :name => "index_essays_on_assignment_id"
