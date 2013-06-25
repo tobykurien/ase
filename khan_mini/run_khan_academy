@@ -1,0 +1,5 @@
+nohup /usr/bin/python "./code/google_appengine/dev_appserver.py" --datastore_path="./code/datastore" --use_sqlite "./code/khanacademy-stable" --address=0.0.0.0 --port 8080 > khan1.out &
+nohup /usr/bin/python "./code/google_appengine/dev_appserver.py" --datastore_path="./code/datastore" --use_sqlite "./code/khanacademy-stable" --address=0.0.0.0 --port 8082 > khan2.log &
+nohup /usr/bin/python "./code/google_appengine/dev_appserver.py" --datastore_path="./code/datastore" --use_sqlite "./code/khanacademy-stable" --address=0.0.0.0 --port 8083 > khan3.log &
+nohup /usr/bin/python "./code/google_appengine/dev_appserver.py" --datastore_path="./code/datastore" --use_sqlite "./code/khanacademy-stable" --address=0.0.0.0 --port 8084 > khan4.log &
+nohup /usr/bin/python "./code/google_appengine/dev_appserver.py" --datastore_path="./code/datastore" --use_sqlite "./code/khanacademy-stable" --address=0.0.0.0 --port 8085 > khan5.log &
