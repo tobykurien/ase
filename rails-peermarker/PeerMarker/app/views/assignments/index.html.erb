@@ -1,0 +1,32 @@
+<h1>Listing assignments</h1>
+
+<table class="data_table">
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Duration</th>
+    <th>State</th>
+    <th>Startdatetime</th>
+    <th>Actions</th>
+  </tr>
+
+<% @assignments.each do |assignment| %>
+  <tr class="<%= cycle('oddrowcolor', 'evenrowcolor') -%>">
+    <td><%= assignment.title %></td>
+    <td><%= assignment.description %></td>
+    <td><%= assignment.duration %></td>
+    <td><%= assignment.state %></td>    
+    <td><%= show_started( assignment.startdatetime) %></td>
+    <td>
+    <%= render :partial =>  "assignments/actions", 
+               :locals => {:assignment => assignment} %>
+    </td>           
+  </tr>
+<% end %>
+</table>
+<p id="notice"><%= notice %></p>
+
+<br />
+
+<%= link_to 'New Assignment', new_assignment_path %>
+

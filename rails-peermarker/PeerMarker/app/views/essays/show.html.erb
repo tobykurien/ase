@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Student Name:</b>
+  <%= @essay.studentname %>
+</p>
+
+<p>
+  <b>Essay:</b>
+  <%= @essay.essay_text %>
+</p>
+
+<p>
+  <b>Submitted:</b>
+  <%= @essay.created_at %>
+</p>
+
+<p>
+  <b>Last changed:</b>
+  <%= @essay.updated_at %>
+</p>
+
+
+<p>
+  <b>Score</b>
+  <%= not_marked(@essay.score) %>
+</p>
+
+<p>
+  <b>Grade</b>
+  <%= not_marked(@essay.grade) %>
+</p>
+
+
+<%= link_to 'Edit', edit_assignment_essay_path(@essay) %> |
+<%= link_to 'Back', assignment_essays_path %>
