@@ -161,7 +161,34 @@ class AssignmentsController < ApplicationController
   end
   
   def doscoring(assignment)
+    essays = Essay.where(:assignment_id => assignment).all
+    ids = essays.map {|i| i['id'] }
+  
+    essay_evals = EssayEval.where(:assignment_id => assignment).all
+    a = Matrix.zero(essay_evals.count)
     
+    essay_evals.each do |i|
+      row = ids.index(i['essay1_id'])
+      col = ids.index(i['essay2_id']) 
+      s1 = i['score1'] 
+      s2 = i['score2']
+      s1 = 0.5 if s1.nil?
+      s2 = 0.5 if s2.nil?
+      a[row,col] = s1
+      a[col,row] = s2
+    end
+    
+    puts a
+    c = colley(a)
+    puts c
+    c1 = standardize(c)
+    puts c1
+
+    essays.each do |e|
+      e.score = c1[0,ids.index(e['id'])]
+      e.grade = nil
+      e.save!
+    end
   
   end
   

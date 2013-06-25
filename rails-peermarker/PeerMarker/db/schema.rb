@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20130402223001) do
     t.string   "studentname"
     t.integer  "assignment_id"
     t.integer  "essay1_id"
-    t.string   "essay2_id"
+    t.integer  "essay2_id"
     t.decimal  "score1"
     t.decimal  "score2"
     t.string   "pcomment1"

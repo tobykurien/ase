@@ -22,8 +22,8 @@
 
 <% @evals.each do |eval| %>
   <tr class="<%= cycle('oddrowcolor', 'evenrowcolor') -%>">
+    <td><%= eval[0] %></td>
     <td><%= eval[1] %></td>
-    <td><%= eval[2] %></td>
   </tr>
 <% end %>
 </table>
