@@ -70,7 +70,6 @@ class Marking
 
     c = colley(a)
     c1 = standardize(c)
-    puts ">>>>>>>>>>>>>>>", c1.inspect
 
     essays.each do |e|
       puts c1[0,ids.index(e['id'])].to_f
