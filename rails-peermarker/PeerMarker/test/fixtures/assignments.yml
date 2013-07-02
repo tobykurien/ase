@@ -5,7 +5,7 @@ one:
   title: This is essay 1
   description: Essay one question description
   duration: 15
-  status: MARKING
+  state: MARKING
 
 two:
   id: 2

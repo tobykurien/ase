@@ -95,9 +95,9 @@ class AssignmentsController < ApplicationController
              @assignment.startdatetime = Date.current
              @assignment.save
           when "MARKING"
-             populateMarking @assignment 
+             Marking.new.populateMarking @assignment 
           when "COMPLETE"
-             doscoring @assignment             
+             Marking.new.doscoring @assignment             
        end
     
        redirect_to assignments_url, notice: 'State successfully updated'

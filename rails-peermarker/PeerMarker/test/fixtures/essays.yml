@@ -4,17 +4,17 @@ one:
   id: 1
   studentname: s1
   essay_text: Student 1 essay answer
-  assignment: 1
+  assignment_id: 1
 
 two:
   id: 2
   studentname: s2
   essay_text: Student 2 essay answer
-  assignment: 1
+  assignment_id: 1
   
 three:
   id: 3
   studentname: s3
   essay_text: Student 3 essay answer
-  assignment: 1
+  assignment_id: 1
 
