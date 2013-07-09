@@ -89,18 +89,24 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
     @assignment.state = params[:newstate]
 
+    redirected = false            
     if(@assignment.save)
        case @assignment.state
           when "BUSY"
-             @assignment.startdatetime = Date.current
+             @assignment.startdatetime = Time.now
              @assignment.save
           when "MARKING"
              Marking.new.populateMarking @assignment 
+          when "GRADING"
+             Marking.new.doscoring @assignment 
+             redirect_to grading_assignment_url, notice: 'Grading successfully updated'
+             redirected = true            
           when "COMPLETE"
-             Marking.new.doscoring @assignment             
+             # do nothing
+              
        end
     
-       redirect_to assignments_url, notice: 'State successfully updated'
+       redirect_to assignments_url, notice: 'State successfully updated' unless redirected
     else   
        redirect_to assignments_url, notice: 'Could not update the state'
     end  
@@ -109,6 +115,42 @@ class AssignmentsController < ApplicationController
   def markedprogress
      assignment_id = params[:assignment_id]
      @markprogress  = EssayEval.select("studentname, count(score1) marked, count(1) total").where(:assignment_id => 1).group("studentname")
+  end
+  
+  def grading
+    @assignment = Assignment.find(params[:id])
+    @sorted = Essay.where({:assignment_id => @assignment.id}).order({:score => :asc}).to_a
+    @bottom = @sorted[0]
+    
+    @top = @sorted[@sorted.count-1]
+    
+  end
+  
+  def update_grading
+     updategrade()
+     redirect_to assignments_url, notice: 'Grading successfully updated'
+  end
+  
+  def updategrade()
+    assignment_id = (params["id"]).to_i
+    sorted = Essay.where({:assignment_id => assignment_id}).order({:score => :asc})
+
+    bottom = sorted[0]    
+    top = sorted[sorted.count-1]
+    
+    bottom_grade = 40.0 
+    bottom_grade = params['bottom_grade'].to_f if params.keys.include? 'bottom_grade'
+
+    top_grade = 80.0 
+    top_grade = params['top_grade'].to_f if params.keys.include? 'top_grade'
+
+
+    sorted.each do |essay|
+       essay.grade = (essay.score - bottom.score) / (top.score-bottom.score) * (top_grade - bottom_grade) + bottom_grade
+       essay.save! 
+    
+    end
+    
   end
     
 

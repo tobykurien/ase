@@ -2,6 +2,8 @@ PeerMarker::Application.routes.draw do
   resources :assignments do
     put 'changestate', :on => :member
     get 'markedprogress', :on => :member
+    get 'grading', :on => :member
+    post 'update_grading', :on => :member
     resources :essays
   end
 
@@ -15,9 +17,9 @@ PeerMarker::Application.routes.draw do
   match 'student' => 'home#student', via: [:get, :post]
   match 'logout' => 'home#logout', via: :get 
   match 'save' => 'home#save', via: :get
-  match 'score' => 'home#score', via: :get  
+  match 'score' => 'home#score', via: [:get, :post, :patch]  
   match 'showessay' => 'home#showessay', via: :get
-
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

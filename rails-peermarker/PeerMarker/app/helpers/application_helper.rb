@@ -3,4 +3,6 @@ module ApplicationHelper
       session.has_key? :username
    end
 
+
+
 end

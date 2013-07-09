@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20130402223001) do
     t.integer  "duration",      default: 15,    null: false
     t.datetime "startdatetime"
     t.string   "state",         default: "NEW", null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "essay_evals", force: true do |t|
@@ -28,26 +28,26 @@ ActiveRecord::Schema.define(version: 20130402223001) do
     t.integer  "assignment_id"
     t.integer  "essay1_id"
     t.integer  "essay2_id"
-    t.decimal  "score1"
-    t.decimal  "score2"
+    t.decimal  "score1",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "score2",        precision: 5, scale: 2, default: 0.0
     t.string   "pcomment1"
     t.string   "ccomment1"
     t.string   "pcomment2"
     t.string   "ccomment2"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "essays", force: true do |t|
     t.string   "studentname"
     t.string   "essay_text"
-    t.decimal  "score"
-    t.decimal  "grade"
+    t.decimal  "score",         precision: 5, scale: 2, default: 0.0
+    t.decimal  "grade",         precision: 5, scale: 2, default: 0.0
     t.integer  "assignment_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "essays", ["assignment_id"], name: "index_essays_on_assignment_id"
+  add_index "essays", ["assignment_id"], name: "index_essays_on_assignment_id", using: :btree
 
 end

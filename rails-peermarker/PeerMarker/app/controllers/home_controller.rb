@@ -1,9 +1,11 @@
 class HomeController < ApplicationController
+  before_filter :checkIfLoggedIn!, :except => [:login]
+
   def index
   end
   
   def student
-      checkIfLoggedIn!
+      
       @student = session[:username]   
       @assignment = Assignment.current_assignment
       if(@assignment != nil) then
@@ -21,10 +23,14 @@ class HomeController < ApplicationController
                      @mark_index = 0
                  end    
                  @essayeval = evals[@mark_index]
-                 @score = @essayeval.score1.nil? ? 0.5 : @essayeval.score1
-                 @essay1 = Essay.find(@essayeval.essay1_id)
-                 @essay2 = Essay.find(@essayeval.essay2_id)                 
-                 @form_from_state = 'mark'         
+                 unless @essayeval.nil? 
+                   @score = @essayeval.score1.nil? ? 0.5 : @essayeval.score1
+                   @essay1 = Essay.find(@essayeval.essay1_id)
+                   @essay2 = Essay.find(@essayeval.essay2_id)                 
+                   @form_from_state = 'mark'         
+                 else   
+                   throw "Could not find essays to evaluate for student:"+@student.to_s
+                 end
           end   
       else
           @form_from_state = 'list'
@@ -33,7 +39,7 @@ class HomeController < ApplicationController
   end
   
   def save
-    checkIfLoggedIn!
+    
     @essay = Essay.find(params[:id]) rescue Essay.new
     @essay.studentname = session[:username]
     @essay.update_attributes(params[:essay])
@@ -42,7 +48,7 @@ class HomeController < ApplicationController
   end
   
   def score
-    checkIfLoggedIn!
+    
     evals = EssayEval.find(params[:id])
     evals.score1 = params[:scorerange].to_f
     evals.score2 = 1-evals.score1
@@ -72,10 +78,11 @@ class HomeController < ApplicationController
   
   
   def checkIfLoggedIn!
-      if session.has_key? :username then
+      if session.has_key? :username and not session[:username].nil?then
            return true
-      else
+      else      
            redirect_to login_url
+           return false
       end
   end
   
