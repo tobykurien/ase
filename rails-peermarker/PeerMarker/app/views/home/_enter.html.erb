@@ -1,4 +1,4 @@
-<%= form_for(:essay, :url => save_url(:id => @essay, :assignment_id => @essay.assignment_id)) do |f| %>
+<%= form_for(:essay, :url => save_url(:id => @essay, :assignment_id => @essay.assignment_id, :action => 'post'), :html => { :id => "essay" }) do |f| %>
   <table>
      <tr>
         <td><b>Title:</b></td><td><%= @assignment.title %></h2></td>
@@ -15,9 +15,9 @@
   </div>    
   
   <%= hidden_field(:essay, :assignment_id) %>
-  <div class="actions">
-    <%= f.submit "Save"%>
-  </div>
-
-  
+ 
 <% end %>
+
+
+
+<button id="save-button" disabled="true" onclick="Home.save('<%= save_url(:id => @essay, :assignment_id => @essay.assignment_id) %>')">Saved</button>

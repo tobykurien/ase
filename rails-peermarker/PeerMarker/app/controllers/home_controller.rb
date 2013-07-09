@@ -44,7 +44,11 @@ class HomeController < ApplicationController
     @essay.studentname = session[:username]
     @essay.update_attributes(params[:essay])
 
-    redirect_to student_url, notice: 'Essay saved.' 
+    respond_to do |format|
+      format.html { redirect_to student_url, notice: 'Essay saved.' }
+      format.json { render json: {:status => 'saved'} }
+    end
+    
   end
   
   def score
