@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :checkIfLoggedIn!, :except => [:login]
+  before_filter :checkIfLoggedIn!, :except => [:login,:logout]
 
   def index
   end
@@ -22,19 +22,20 @@ class HomeController < ApplicationController
                  @timeremaining = 0 if @timeremaining < 0
              when "MARKING"
                  evals = EssayEval.where(:studentname => @student)
-                 @mark_index = params[:mark_index]+1 rescue 0
+                 @mark_index = params[:mark_index].to_i+1 rescue 0
                  if @mark_index >= evals.length 
-                     @mark_index = 0
-                 end    
-                 @essayeval = evals[@mark_index]
-                 unless @essayeval.nil? 
-                   @score = @essayeval.score1.nil? ? 0.5 : @essayeval.score1
-                   @essay1 = Essay.find(@essayeval.essay1_id)
-                   @essay2 = Essay.find(@essayeval.essay2_id)                 
-                   @form_from_state = 'mark'         
-                 else   
-                   throw "Could not find essays to evaluate for student:"+@student.to_s
-                 end
+                    @form_from_state = 'done_marking' 
+                 else    
+                   @essayeval = evals[@mark_index]
+                   unless @essayeval.nil? 
+                     @score = @essayeval.score1.nil? ? 0.5 : @essayeval.score1
+                     @essay1 = Essay.find(@essayeval.essay1_id)
+                     @essay2 = Essay.find(@essayeval.essay2_id)                 
+                     @form_from_state = 'mark'         
+                   else   
+                     throw "Could not find essays to evaluate for student:"+@student.to_s
+                   end
+                 end  
           end   
       else
           @form_from_state = 'list'
@@ -62,6 +63,7 @@ class HomeController < ApplicationController
     evals.score2 = 1-evals.score1
 
     evals.update_attributes(params[:essay_eval])
+    puts ">>>>>>>>..",@mark_index
     redirect_to student_url(:mark_index => params[:mark_index]), notice: 'Essay saved.' 
   end
     

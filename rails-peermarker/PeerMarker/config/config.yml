@@ -1,8 +1,8 @@
 development:
-  password: x   
+  password: xxx   
 test:
-  password: x   
+  password: xxx  
 
 production:
-  password: x   
+  password: xxx   
 

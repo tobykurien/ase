@@ -156,8 +156,8 @@ class AssignmentsController < ApplicationController
   end
    
   def checkIfLoggedIn!
-      if session.has_key? :admin and not session[:admin].nil?then
-           return session[:admin] == APP_CONFIG['password']
+      if session.has_key? :admin and not session[:admin].nil? then
+           return true
       else      
            redirect_to admin_login_url
            return false
@@ -167,9 +167,12 @@ class AssignmentsController < ApplicationController
 
   def login 
       if params[:admin] then
-          session[:admin] = params[:admin]
-          redirect_to assignments_url
+          if params[:admin] == APP_CONFIG['password']
+            session[:admin] = params[:admin]
+            redirect_to assignments_url
+          end  
       end    
+      
   end
   
 
