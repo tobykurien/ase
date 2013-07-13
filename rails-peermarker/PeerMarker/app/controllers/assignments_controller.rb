@@ -98,6 +98,7 @@ class AssignmentsController < ApplicationController
              @assignment.startdatetime = Time.now
              @assignment.save
           when "MARKING"
+             puts '>>>>'
              Marking.new.populateMarking @assignment 
           when "GRADING"
              Marking.new.doscoring @assignment 
@@ -146,9 +147,10 @@ class AssignmentsController < ApplicationController
     top_grade = 80.0 
     top_grade = params['top_grade'].to_f if params.keys.include? 'top_grade'
 
-
+    score_range = top.score - bottom.score
+    score_range = 1 if score_range == 0
     sorted.each do |essay|
-       essay.grade = (essay.score - bottom.score) / (top.score-bottom.score) * (top_grade - bottom_grade) + bottom_grade
+       essay.grade = (essay.score - bottom.score) / (score_range) * (top_grade - bottom_grade) + bottom_grade
        essay.save! 
     
     end

@@ -17,6 +17,7 @@ PeerMarker::Application.routes.draw do
   match 'student' => 'home#student', via: [:get, :post]
   match 'logout' => 'home#logout', via: :get 
   match 'save' => 'home#save', via: :post
+  match 'save_eval' => 'home#save_eval', via: [:post, :patch] 
   match 'score' => 'home#score', via: [:get, :post, :patch]  
   match 'showessay' => 'home#showessay', via: :get
   

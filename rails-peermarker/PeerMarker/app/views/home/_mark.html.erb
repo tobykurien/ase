@@ -18,18 +18,18 @@
          </tr>    
 
          <tr>
-              <td><b>Positive Comment</b></td>
+              <td><b>What is your favourite thing about essay 1?</b></td>
          </tr>
 
          <tr>
-              <td><%= f.text_area :pcomment1,:cols=>80, :rows=>3 %></td>
+              <td><%= f.text_area :pcomment1,:cols=>80, :rows=>3, :class=>"autosave" %></td>
          </tr>    
          <tr>
-              <td><b>Constructive Comment</b></td>
+              <td><b>How can essay 1 be improved?</b></td>
          </tr>
 
          <tr>
-              <td><%= f.text_area :ccomment1,:cols=>80, :rows=>3 %></td>
+              <td><%= f.text_area :ccomment1,:cols=>80, :rows=>3, :class=>"autosave" %></td>
          </tr>    
          <tr>
               <td><br/></td>
@@ -42,35 +42,37 @@
               <td><%= @essay2.essay_text %></td>
          </tr>     
          <tr>
-              <td><b>Positive Comment</b></td>
+              <td><b>What is your favourite thing about essay 2?</b></td>
          </tr>
 
          <tr>
-              <td><%= f.text_area :pcomment2,:cols=>80, :rows=>3 %></td>
+              <td><%= f.text_area :pcomment2,:cols=>80, :rows=>3, :class=>"autosave" %></td>
          </tr>    
          <tr>
-              <td><b>Constructive Comment</b></td>
+              <td><b>How can essay 2 be improved?</b></td>
          </tr>
 
          <tr>
-              <td><%= f.text_area :ccomment2,:cols=>80, :rows=>3 %></td>
+              <td><%= f.text_area :ccomment2,:cols=>80, :rows=>3, :class=>"autosave" %></td>
          </tr>    
 
     </table>
     <br>
 
     Which of Essay 1 and Essay 2 do you like better?  If they are about the same, choose somewhere in the middle:<br><br>
-    <b>Essay 1</b>
-         <% 11.times do |i| %>
-            <input type="radio" name="scorerange" value="<%= i/10.0 %>" class="score" <% if i == @score*10 %> checked="checked" <% end %> /> 
-         <% end %>
+    <center>
+      <b>Essay 1</b>
+           <% 11.times do |i| %>
+              <input type="radio" name="scorerange" value="<%= i/10.0 %>" class="score" <% if i == @score*10 %> checked="checked" <% end %> /> 
+           <% end %>
 
-    <b>Essay 2</b> <br/><br/>
+      <b>Essay 2</b> <br/><br/>
+    </center>
     
-   <center> 
-     <div style="margin:0px auto">
-        <%= f.submit "Save"%>
-     </div>
-   </center>  
 <% end %>
+   <center> 
+           <button id="save-button" disabled="true" onclick="Home.save_eval('<%= save_eval_url(:id => @essayeval.id) %>')">Saved</button>
+           <button id="next-button" onclick="Home.save_eval('<%= save_eval_url(:id => @essayeval.id) %>',<%= @mark_index %>)">Next</button>
+   </center>  
+
 

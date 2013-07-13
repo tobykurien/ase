@@ -22,7 +22,8 @@ class HomeController < ApplicationController
                  @timeremaining = 0 if @timeremaining < 0
              when "MARKING"
                  evals = EssayEval.where(:studentname => @student)
-                 @mark_index = params[:mark_index].to_i+1 rescue 0
+                 @mark_index = 0
+                 @mark_index = params[:mark_index].to_i+1 unless params[:mark_index].nil?
                  if @mark_index >= evals.length 
                     @form_from_state = 'done_marking' 
                  else    
@@ -43,8 +44,7 @@ class HomeController < ApplicationController
       end
   end
   
-  def save
-    
+  def save    
     @essay = Essay.find(params[:id]) rescue Essay.new
     @essay.studentname = session[:username]
     @essay.update_attributes(params[:essay])
@@ -55,16 +55,32 @@ class HomeController < ApplicationController
     end
     
   end
-  
-  def score
+=begin  
+  def save_eval
+    @essay = Essay.find(params[:id]) rescue Essay.new
+    @essay.studentname = session[:username]
+    @essay.update_attributes(params[:essay])
+
+    respond_to do |format|
+      format.html { redirect_to student_url, notice: 'Essay saved.' }
+      format.json { render json: {:status => 'saved'} }
+    end
     
+  end
+=end  
+  
+  def save_eval
     evals = EssayEval.find(params[:id])
     evals.score1 = params[:scorerange].to_f
     evals.score2 = 1-evals.score1
 
     evals.update_attributes(params[:essay_eval])
-    puts ">>>>>>>>..",@mark_index
-    redirect_to student_url(:mark_index => params[:mark_index]), notice: 'Essay saved.' 
+    
+    respond_to do |format|
+      format.html { redirect_to student_url(:mark_index => params[:mark_index]), notice: 'Essay saved.'  }
+      format.json { render json: {:status => 'saved'} }
+    end
+    
   end
     
   def login 

@@ -4,7 +4,6 @@
   <tr>
     <th>Date</th>
     <th>Essay Text</th>
-    <th>Score</th>
     <th>Grade</th>
     <th>Actions</th>
   </tr>
@@ -13,7 +12,6 @@
   <tr class="<%= cycle("oddrowcolor","evenrowcolor") %>">
     <td><%= essay.created_at.strftime("%Y-%m-%d %H:%M") %></td>
     <td><%= make_short(essay.essay_text) %></td>
-    <td><%= not_marked(essay.score) %></td>
     <td><%= not_marked(essay.grade) %></td>
     <td>
         <%= link_to 'Show', showessay_url(:id => essay) %>
