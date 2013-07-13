@@ -16,6 +16,10 @@ class HomeController < ApplicationController
                      @essay = @assignment.essays.new
                  end    
                  @form_from_state = 'enter'
+                 endtime = @assignment.startdatetime + @assignment.duration*60
+                 @timeremaining = (endtime - Time.now).to_i
+                 puts @timeremaining
+                 @timeremaining = 0 if @timeremaining < 0
              when "MARKING"
                  evals = EssayEval.where(:studentname => @student)
                  @mark_index = params[:mark_index]+1 rescue 0
@@ -70,6 +74,7 @@ class HomeController < ApplicationController
   
   def logout 
       session.delete :username
+      session.delete :admin
       redirect_to login_url      
   end
   

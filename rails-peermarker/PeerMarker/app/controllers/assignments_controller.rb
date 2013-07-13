@@ -2,6 +2,8 @@ require 'scoring'
 require 'marking'
 
 class AssignmentsController < ApplicationController
+  before_filter :checkIfLoggedIn!, :except => [:login]
+  
   # GET /assignments
   # GET /assignments.json
   def index
@@ -152,7 +154,24 @@ class AssignmentsController < ApplicationController
     end
     
   end
-    
+   
+  def checkIfLoggedIn!
+      if session.has_key? :admin and not session[:admin].nil?then
+           return session[:admin] == APP_CONFIG['password']
+      else      
+           redirect_to admin_login_url
+           return false
+      end
+  end 
+
+
+  def login 
+      if params[:admin] then
+          session[:admin] = params[:admin]
+          redirect_to assignments_url
+      end    
+  end
+  
 
 end
 

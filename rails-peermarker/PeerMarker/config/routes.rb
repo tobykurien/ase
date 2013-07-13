@@ -20,6 +20,10 @@ PeerMarker::Application.routes.draw do
   match 'score' => 'home#score', via: [:get, :post, :patch]  
   match 'showessay' => 'home#showessay', via: :get
   
+  match 'admin_login' => 'assignments#login',  via: [:get,:post]
+  match 'admin_logout' => 'assignments#logout', via: :get 
+  
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

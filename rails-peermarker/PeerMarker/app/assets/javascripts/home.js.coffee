@@ -33,4 +33,8 @@ $(document).ready ->
     timeout = ()-> 
       $('#save-button').click()
     setTimeout timeout, 5000
- 
+
+  t= countdown 'countdown', 0, $('#countdown').attr('data-timeremaining')
+  $('#countdown').html(t)
+  $('#countdown').counter({})
+

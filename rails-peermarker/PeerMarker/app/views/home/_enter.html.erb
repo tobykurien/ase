@@ -1,3 +1,4 @@
+<div id="countdown" data-timeremaining="<%= @timeremaining %>" class="counter counter-analog" data-direction="down" data-format="23:59:59" align="right"></div>
 <%= form_for(:essay, :url => save_url(:id => @essay, :assignment_id => @essay.assignment_id, :action => 'post'), :html => { :id => "essay" }) do |f| %>
   <table>
      <tr>
