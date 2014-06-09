@@ -1,0 +1,24 @@
+<div id="countdown" data-timeremaining="<%= @timeremaining %>" class="counter counter-analog" data-direction="down" data-format="23:59:59" align="right"></div>
+<%= form_for(:essay, :url => save_url(:id => @essay, :assignment_id => @essay.assignment_id, :action => 'post'), :html => { :id => "essay" }) do |f| %>
+  <table>
+     <tr>
+        <td><b>Title:</b></td><td><%= @assignment.title %></h2></td>
+     </tr>
+     <tr>
+        <td><b>Description:</b></td><td><%= @assignment.description %></h2></td>
+     </tr>
+  </table>  
+  <br>
+
+  <div class="field">
+    <b><%= f.label :essay_text %></b>:<br />
+    <%= f.text_area :essay_text, :cols=>80, :rows=>"10", :class=>"autosave" %>
+  </div>    
+  
+  <%= hidden_field(:essay, :assignment_id) %>
+ 
+<% end %>
+
+
+
+<button id="save-button" disabled="true" onclick="Home.save_enter('<%= save_url(:id => @essay, :assignment_id => @essay.assignment_id) %>')">Saved</button>

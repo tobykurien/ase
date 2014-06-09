@@ -1,0 +1,38 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  studentname: s1
+  essay1_id: 2
+  essay2_id: 3
+  score1: 1
+  score2: 0
+  assignment_id: 1
+  pcomment1: s1 pcomment essay s2
+  ccomment1: s1 ccomment essay s2
+  pcomment2: s1 pcomment essay s3
+  ccomment2: s1 ccomment essay s3
+
+two:
+  studentname: s2
+  essay1_id: 1
+  essay2_id: 3
+  score1: 1
+  score2: 0
+  assignment_id: 1  
+  pcomment1: s2 pcomment essay s1
+  ccomment1: s2 ccomment essay s1
+  pcomment2: s2 pcomment essay s3
+  ccomment2: s2 ccomment essay s3
+
+three:
+  studentname: s3
+  essay1_id: 1
+  essay2_id: 2
+  score1: 1
+  score2: 0
+  assignment_id: 1  
+  pcomment1: s3 pcomment essay s1
+  ccomment1: s3 ccomment essay s1
+  pcomment2: s3 pcomment essay s2
+  ccomment2: s3 ccomment essay s2
+

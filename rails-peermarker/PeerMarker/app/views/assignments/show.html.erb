@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @assignment.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @assignment.description %>
+</p>
+
+<p>
+  <b>Duration:</b>
+  <%= @assignment.duration %>
+</p>
+
+<p>
+  <b>Start Datetime:</b>
+  <%= show_started(@assignment.startdatetime) %>
+</p>
+
+<p>
+  <b>State</b>
+  <%= @assignment.state %>
+</p>
+
+<%= link_to 'Edit', edit_assignment_path(@assignment) %> |
+<%= link_to 'Destroy', @assignment, method: :delete, data: { confirm: 'Are you sure?' } %>|
+<%= link_to "Restart", options={ :action => "changestate", :id => @assignment.id, :newstate => :NEW },html_options={:method => :put} %> |
+<%= link_to 'Back', assignments_path %>

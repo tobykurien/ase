@@ -1,0 +1,197 @@
+@charset "utf-8";
+/* CSS Document */
+*,html{
+	padding:0;
+	margin:0;
+}
+h1{
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:normal;
+}
+body{
+	background:#ececec;
+	font-family:Verdana, Geneva, sans-serif;
+	color:#333;
+}
+#logo{
+	width:850px;
+	margin:0 auto;
+	height:80px;
+}
+#wrapper{
+	width:850px;
+	margin:0 auto;
+	margin-top:20px;
+	border-top:8px solid #000;
+	border-radius:5px;
+}
+#header{
+	background:url(<%= asset_data_uri 'bg_h.png' %>) repeat-x;
+	padding:10px;
+}
+#content{
+	background:#fff;
+	margin-top:15px;
+	padding:18px;
+}
+#nav{
+	background:#fff;
+	height:46px;
+}
+#nav ul{
+	background:#fff;
+	border-bottom:2px solid #ccc;
+}
+#nav ul li{
+	float:left;
+	padding:15px;
+	font-family:Verdana, Geneva, sans-serif;
+	list-style:none;
+	font-size:12px;
+}
+#nav ul li a{
+	color:#000;
+	text-decoration:none;
+}
+#content{
+	font-size:12px;
+	border-bottom:2px solid #ccc;
+}
+#footer{
+	font-size:12px;
+	background:#3a3a3a;
+	border:1px solid #3a3a3a;
+	border-radius:5px;
+	color:#636262;
+	padding:15px;
+	margin-top:15px;
+}
+#footer a{
+	color:#636262;
+}
+#footer a:hover{
+	color:#fff;
+}
+/* form changes in duration*/
+.comment{
+	margin-top:10px;
+	padding:10px;
+	border:1px solid #ccc;
+	border-radius:5px;
+}
+.comment label{
+	display:block;
+}
+.comment textarea{
+	width:330px;
+	height:50px;
+	border-radius:3px;
+	border:1px solid #ccc;
+}
+.comment .c_in{
+	height:15px;
+	font-size:10px;
+}
+label.sub{
+	font-size:10px;
+}
+/*
+   Simple Base Stylesheet - http://fvsch.com/code/base-stylesheet/
+   Helps makes browser default styles more consistent. Updated: 2011-10-02.
+*/
+body {margin: 0; padding: 0; font-size: 100%; line-height: 1.5}
+article, aside, figcaption, figure, footer, header, hgroup, nav, section {display: block;}
+h1, h2, h3, h4 {margin: 1em 0 .5em; line-height: 1.25;}
+h1 {font-size: 2em;}
+h2 {font-size: 1.5em;}
+h3 {font-size: 1.2em;}
+ul, ol {margin: 1em 0; padding-left: 40px;}
+p, figure {margin: 1em 0;}
+a img {border: none;}
+sup, sub {line-height: 0;}
+
+table.altrowstable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 0px;
+    border-color: #a9c6c9;
+    border-collapse: collapse;
+}
+table.altrowstable th {
+    border-width: 0px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+    background-color:#629DD1;
+    color:#ffffff;
+}
+table.altrowstable td {
+    border-width: 0px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+
+
+
+#container {
+  margin: 0 auto;
+  width: 700px;
+  text-align: left;
+  }
+
+.score {
+  width: 20px;
+  height: 20px;
+}
+/* data table */
+.data_table{
+	border-collapse:collapse;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	width:680px;
+}
+.data_table th{
+	border-top: 4px solid #aabcfe;
+	border-bottom: 1px solid #fff;
+	background: #b9c9fe;
+	padding:6px;
+	font-size:13px;
+}
+.data_table td{
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid transparent;
+	padding:6px;
+}
+.data_table tbody tr:hover td{
+	background: #d0dafd;
+}
+
+.evenrowcolor{
+    background-color:#EBE8EC;
+}
+.oddrowcolor{
+    background-color:#ffffff;
+}
+.action-button-td{
+    padding:1px;
+}
+/* buttons */
+#addnew{
+	border:1px solid #ccc;
+	padding:4px;
+	cursor:pointer;
+	box-shadow:1px 1px 5px #ccc;
+}
+#addnew:hover{
+	background:#CFCFCF;
+}
+.btn{
+	border:1px solid #ccc;
+	padding:2px;
+	cursor:pointer;
+	box-shadow:1px 1px 3px #ccc;
+}
+.btn:hover{
+	background:#C4C4C4;
+}

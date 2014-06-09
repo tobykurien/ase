@@ -1,0 +1,8 @@
+development:
+  password: xxx   
+test:
+  password: xxx  
+
+production:
+  password: xxx   
+

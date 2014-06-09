@@ -1,0 +1,31 @@
+<p>
+  <b>Essay:</b>
+  <%= @essay.essay_text %>
+</p>
+
+<p>
+  <b>Score</b>
+  <%= not_marked(@essay.score) %>
+</p>
+
+<p>
+  <b>Grade</b>
+  <%= not_marked(@essay.grade) %>
+</p>
+
+<b>Comments</b>
+<table class="data_table">
+  <tr>
+    <th>Positive Comment</th>
+    <th>Constructive Comment</th>
+  </tr>
+
+<% @evals.each do |eval| %>
+  <tr class="<%= cycle('oddrowcolor', 'evenrowcolor') -%>">
+    <td><%= eval[0] %></td>
+    <td><%= eval[1] %></td>
+  </tr>
+<% end %>
+</table>
+<br/>
+<%= link_to 'Back', student_path %>

@@ -1,0 +1,39 @@
+<table style="border-spacing:0px">
+   <tr>
+   <td class="action-button-td">
+    <%= button_to 'Essays', assignment_essays_path(assignment),html_options={:method => :get} %>
+   </td> 
+   <td class="action-button-td">
+   <% if assignment.state == 'MARKING' %>  
+       <%= button_to 'Progress', markedprogress_assignment_path(assignment),html_options={:method => :get} %>
+   <% elsif assignment.state == 'GRADING' %>  
+       <%= button_to 'Grade', grading_assignment_path(assignment),html_options={:method => :get} %>
+   <% else %>
+       <%= button_to 'Show', assignment,html_options={:method => :get} %>   
+   <% end %>  
+   </td>  
+
+   <td class="action-button-td">  
+     
+        <% if assignment.state == 'NEW' %>
+           <%= button_to "Start", options={ :action => "changestate", :id => assignment.id, :newstate => :BUSY },html_options={:method => :put} %>
+        <% elsif assignment.state == 'BUSY' %>
+           <%= button_to "Mark", options={ :action => "changestate", :id => assignment.id, :newstate => :MARKING },html_options={:method => :put} %>
+        <% elsif assignment.state == 'MARKING' %>
+           <%= button_to "Grading", options={ :action => "changestate", :id => assignment.id, :newstate => :GRADING },html_options={:method => :put} %>
+
+        <% elsif assignment.state == 'GRADING' %>
+           <%= button_to "Complete", options={ :action => "changestate", :id => assignment.id, :newstate => :COMPLETE },html_options={:method => :put} %>
+        <% end %>
+
+
+    </td>
+    <td class="action-button-td"> 
+      <% unless ['COMPLETE','NEW'].include? assignment.state   %> 
+         <%= button_to "Reset", options={ :action => "changestate", :id => assignment.id, :newstate => :NEW },html_options={:method => :put} %>
+      <% end %>   
+       
+    </td>
+   </tr>
+</table>      
+

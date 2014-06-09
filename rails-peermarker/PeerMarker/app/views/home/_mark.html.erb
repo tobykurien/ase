@@ -1,0 +1,78 @@
+<table>
+     <tr>
+        <td><b>Title:</b></td><td><%= @assignment.title %></td>
+     </tr>
+     <tr>
+        <td><b>Description:</b></td><td><%= @assignment.description %></td>
+     </tr>
+</table> 
+<br/>
+<%= form_for @essayeval, :url => score_path(:mark_index => @mark_index,:id => @essayeval.id)  do |f|%>
+
+    <table>
+         <tr>
+              <td><b>Essay 1</b></td>
+         </tr>
+         <tr>
+              <td><%= @essay1.essay_text %></td>
+         </tr>    
+
+         <tr>
+              <td><b>What is your favourite thing about essay 1?</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :pcomment1,:cols=>80, :rows=>3, :class=>"autosave" %></td>
+         </tr>    
+         <tr>
+              <td><b>How can essay 1 be improved?</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :ccomment1,:cols=>80, :rows=>3, :class=>"autosave" %></td>
+         </tr>    
+         <tr>
+              <td><br/></td>
+         </tr>    
+         
+         <tr>
+              <td><b>Essay 2</b></td>
+         </tr>
+         <tr>
+              <td><%= @essay2.essay_text %></td>
+         </tr>     
+         <tr>
+              <td><b>What is your favourite thing about essay 2?</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :pcomment2,:cols=>80, :rows=>3, :class=>"autosave" %></td>
+         </tr>    
+         <tr>
+              <td><b>How can essay 2 be improved?</b></td>
+         </tr>
+
+         <tr>
+              <td><%= f.text_area :ccomment2,:cols=>80, :rows=>3, :class=>"autosave" %></td>
+         </tr>    
+
+    </table>
+    <br>
+
+    Which of Essay 1 and Essay 2 do you like better?  If they are about the same, choose somewhere in the middle:<br><br>
+    <center>
+      <b>Essay 1</b>
+           <% 11.times do |i| %>
+              <input type="radio" name="scorerange" value="<%= i/10.0 %>" class="score" <% if i == @score*10 %> checked="checked" <% end %> /> 
+           <% end %>
+
+      <b>Essay 2</b> <br/><br/>
+    </center>
+    
+<% end %>
+   <center> 
+           <button id="save-button" disabled="true" onclick="Home.save_eval('<%= save_eval_url(:id => @essayeval.id) %>')">Saved</button>
+           <button id="next-button" onclick="Home.save_eval('<%= save_eval_url(:id => @essayeval.id) %>',<%= @mark_index %>)">Next</button>
+   </center>  
+
+

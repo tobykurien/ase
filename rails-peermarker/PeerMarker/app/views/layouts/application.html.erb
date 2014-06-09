@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PeerMarker</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+ <div id="wrapper">
+	<div id="header">
+    	<div id="logo">
+    	    <%= image_tag "logo.png" %>
+        	<!--<img src="img/logo.png" width="229"/>-->
+        </div>
+    </div>
+    <div id="nav">
+    	<ul>
+        	<li><a href="/student">Home</a></li>
+            <li><a href="/assignments">Admin</a></li>
+            <li><% if loggedin? %><%= link_to "Logout",logout_url %><% end %></li>
+        </ul>
+        <div style="clear:both"></div>
+    </div>
+    <div id="content">
+         <%= yield %>
+    </div>
+    <div id="footer">
+        &copy; Copyright 2012 by <a href="http://africanschoolforexcellence.org/">ASE</a>.
+    </div>
+   </div>
+
+
+
+
+
+</body>
+</html>

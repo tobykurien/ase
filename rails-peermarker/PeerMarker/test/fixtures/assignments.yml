@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  title: This is essay 1
+  description: Essay one question description
+  duration: 15
+  state: MARKING
+  startdatetime: <%= Time.now %>
+
+two:
+  id: 2
+  title: This is essay 2
+  description: Essay two question description
+  duration: 15

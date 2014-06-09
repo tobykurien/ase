@@ -1,0 +1,43 @@
+<%= form_for([@assignment, @essay]) do |f| %>
+  <% if @essay.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@essay.errors.count, "error") %> prohibited this essay from being saved:</h2>
+
+      <ul>
+      <% @essay.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+   
+  <table>
+     <tr>
+        <td><b>Title:</b></td><td><%= @assignment.title %></h2></td>
+     </tr>
+     <tr>
+        <td><b>Description:</b></td><td><%= @assignment.description %></h2></td>
+     </tr>
+  </table>  
+  <br>
+
+  <div class="field">
+    <b><%= f.label :studentname %></b>:<br />
+    <%= f.text_field :studentname,:cols=>80%>
+  </div>    
+
+  
+  <div class="field">
+    <b><%= f.label :essay_text %></b>:<br />
+    <%= f.text_area :essay_text,:cols=>80%>
+  </div>    
+  
+  <div class="field">
+    <b><%= f.label :grade %></b>:<br />
+    <%= f.text_field :grade%>
+  </div>  
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

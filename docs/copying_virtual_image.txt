@@ -1,0 +1,6 @@
+Copying the Virtualbox image from dev machine to live:
+- Just copy the VDI and re-create the VM using the VDI
+- Once booted in, eth0 may not exist. To fix this, delete:
+  /etc/udev/rules.d/70-persistent-net.rules
+  
+
